@@ -1,0 +1,208 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #121212; /* Deep Black */
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+}
+
+.form-card {
+    background-color: #1e1e1e; /* Dark Gray Card */
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    border-top: 5px solid #FF8C00; /* Orange Accent */
+}
+
+h2 {
+    margin-bottom: 10px;
+    font-size: 28px;
+}
+
+.highlight {
+    color: #FF8C00;
+}
+
+p {
+    color: #B3B3B3;
+    margin-bottom: 25px;
+    font-size: 14px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #333;
+    background-color: #2a2a2a;
+    color: white;
+    outline: none;
+    transition: border 0.3s;
+}
+
+input:focus {
+    border-color: #FF8C00;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 12px;
+    background-color: #FF8C00;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #e67e00;
+}
+
+.switch-text {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.switch-text a {
+    color: #FF8C00;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Previous styles remain, add/update these: */
+
+body {
+    background-color: #121212;
+    color: #ffffff;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* New Layout Wrapper */
+.split-screen {
+    display: flex;
+    width: 900px; /* Fixed width for a professional look */
+    height: 550px;
+    background-color: #1e1e1e;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+}
+
+/* Left Side: Logo & Quote */
+.left-panel {
+    flex: 1;
+    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+                url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800'); /* Tech background */
+    background-size: cover;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 2px solid #FF8C00;
+}
+
+.logo-section h1 {
+    color: #FF8C00;
+    font-size: 32px;
+    letter-spacing: 2px;
+    border-left: 4px solid #fff;
+    padding-left: 15px;
+}
+
+.quote-section blockquote {
+    font-style: italic;
+    color: #fff;
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.quote-section span {
+    display: block;
+    margin-top: 10px;
+    color: #FF8C00;
+    font-weight: bold;
+}
+
+/* Right Side: The Form */
+.right-panel {
+    flex: 1.2;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Error Message Styling */
+.error-msg {
+    color: #ff4d4d;
+    font-size: 12px;
+    margin-top: 5px;
+    display: none; /* Hidden by default */
+}
+
+/* Responsive adjustment */
+@media (max-width: 800px) {
+    .left-panel { display: none; }
+    .split-screen { width: 400px; }
+}
+
+/* Position the input group relative so the icon can be absolute */
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+/* Add padding to the right so text doesn't overlap the icon */
+input[type="password"], 
+input[type="text"] {
+    padding-right: 45px;
+}
+
+/* The Eye Icon Button */
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 38px; /* Adjust based on your label height */
+    cursor: pointer;
+    color: #B3B3B3;
+    font-size: 18px;
+    user-select: none;
+    transition: color 0.3s;
+}
+
+.toggle-password:hover {
+    color: #FF8C00;
+}
