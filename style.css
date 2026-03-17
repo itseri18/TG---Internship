@@ -206,3 +206,23 @@ input[type="text"] {
 .toggle-password:hover {
     color: #FF8C00;
 }
+
+/* Core Variables */
+:root {
+    --primary-orange: #FF6B00; /* ProTech orange */
+    --dark-sidebar: #1E1E1E; /* Deep gray */
+    --main-bg: white;
+    --text-primary: #333;
+    --table-header: #1A3C34; /* Dark Teal (exact match) */
+    --border-gray: #E0E0E0;
+    --status-green: #2D5A27;
+}
+
+/* Layout Reset */
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text-primary);
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+}

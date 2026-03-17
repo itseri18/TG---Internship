@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PO Tracker | TeamGlobal</title>
+    <link rel="stylesheet" href="Dashboard_POTracker.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="header-left">
+            <img src="Assets/logo.png" alt="" class="header-logo">
+        </div>
+        <div class="header-right">
+            <i class="fa-solid fa-bell notification-icon"></i>
+            <div class="profile-icon">
+                <i class="fa-solid fa-circle-user"></i>
+            </div>
+        </div>
+    </header>
+
+    <div class="app-container">
+        <aside class="sidebar">
+            <nav class="side-nav">
+                <div class="menu-item">
+                    <i class="fa-solid fa-table-cells-large"></i> 
+                    <span>Dashboard</span>
+                    <i class="fa-solid fa-chevron-down caret"></i>
+                </div>
+                
+                <div class="sub-menu">
+                    <a href="Dashboard_PRTracker.html">PR tracker</a>
+                </div>
+                <div class="active-tab">
+                        <i class="fa-solid fa-arrow-right"></i>
+                        <a href="Dashboard_POTracker.html">PO Tracker</a> 
+                    </div>
+                <div class="sub-menu">
+                    <a href="#">Payment</a>
+                </div>
+                <div class="sub-menu">
+                    <a href="#">Savings</a>
+                </div>
+                <div class="sub-menu">
+                    <a href="#">Delivery Tracker</a>
+                </div>
+
+                <div class="menu-item">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Supplier</span>
+                </div>
+                
+                <div class="menu-item">
+                    <i class="fa-solid fa-box-archive"></i>
+                    <span>Inventory</span>
+                    <i class="fa-solid fa-chevron-down caret"></i>
+                </div>
+            </nav>
+        </aside>
+
+        <main class="content-area">
+            <section class="title-section">
+                <h1>Purchase Order Tracker</h1>
+                <p>Manage and track all purchase orders and supplier commitments.</p>
+            </section>
+
+            <section class="filters-bar">
+                <div class="search-box">
+                    <input type="text" placeholder="Search by PO No., Supplier, Project, Department..">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+                <div class="actions">
+                    <div class="date-select">
+                        <i class="fa-regular fa-calendar"></i>
+                        Date Range
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <button class="add-btn">+ Add Purchase Order</button>
+                </div>
+            </section>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>PO No.</th>
+                            <th>Supplier Name</th>
+                            <th>Item</th>
+                            <th>PIC</th>
+                            <th>Date</th>
+                            <th>Date Needed</th>
+                            <th>Requestor</th>
+                            <th>Delivered/Pick-Up Date</th>
+                            <th>Delivered At</th>
+                            <th>Purpose/Project</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>PO 2026-001</td>
+                            <td>MTLBS</td>
+                            <td>-</td>
+                            <td>Mich</td>
+                            <td>8/14/2026</td>
+                            <td>9/14/2026</td>
+                            <td>Roger Ignacio</td>
+                            <td>8/17/2026</td>
+                            <td>Warehouse</td>
+                            <td>Projects Team</td>
+                            <td class="status-done">Received</td>
+                            <td class="action-icons">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                                <i class="fa-solid fa-trash"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+<div id="calendarDropdown" class="calendar-dropdown">
+    <div class="calendar-range-header">
+        <span id="rangeDisplay">Select Dates</span>
+    </div>
+    <div class="calendar-picker">
+        <div class="calendar-month-nav">
+            <i class="fa-solid fa-chevron-left" id="prevMonth"></i>
+            <span id="currentMonthYear" style="font-weight: bold; color: #444;">January 2026</span>
+            <i class="fa-solid fa-chevron-right" id="nextMonth"></i>
+        </div>
+        <div class="calendar-grid" id="calendarGrid"></div>
+        <div class="calendar-footer">
+            <span id="saveCalendarBtn">Save</span>
+        </div>
+    </div>
+</div>
+    
+<div id="prModal" class="modal-overlay">
+    <div class="modal-content" style="width: 700px; border-radius: 20px; background: #f4f4f4;">
+        <div class="modal-header">
+            <h2 style="font-family: inherit; font-weight: 500; font-size: 22px;">Create New Purchase Order</h2>
+            <i class="fa-solid fa-xmark close-modal" id="closeModal"></i>
+        </div>
+        <div class="modal-body">
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label>P.O Number</label>
+                <input type="text" id="modalPONum" style="background: #e8e8e8; border: 1px solid #ccc;">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Supplier Name</label>
+                    <div class="custom-select" id="selectSupplier">
+                        <div class="select-trigger" style="background: #ccc; border: 1px solid #bbb;">
+                            <span>Select</span> <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                        <div class="options-list">
+                            <div>MTLBS</div>
+                            <div>ROCKWELL</div>
+                            <div>OPEMS</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Item</label>
+                    <input type="text" id="modalItem" style="background: #e8e8e8; border: 1px solid #ccc;">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Person in charge</label>
+                    <div class="custom-select" id="selectPIC">
+                        <div class="select-trigger" style="background: #ccc; border: 1px solid #bbb;">
+                            <span>Select</span> <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                        <div class="options-list">
+                            <div>Mich</div>
+                            <div>Sherlyn</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Requestor</label>
+                    <input type="text" id="modalRequestor" style="background: #e8e8e8; border: 1px solid #ccc;">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Date Needed</label>
+                    <div class="custom-date-picker" id="datePicker1">
+                        <div class="input-icon-wrap" style="background: #e8e8e8; border: 1px solid #ccc; border-radius: 10px;">
+                            <i class="fa-regular fa-calendar left-icon"></i>
+                            <input type="text" placeholder="dd/mm/yyyy" readonly style="background: transparent; border: none;">
+                            <i class="fa-solid fa-chevron-down right-icon"></i>
+                        </div>
+                        <div class="mini-calendar" id="cal1"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Delivered Pick-Up Date</label>
+                    <div class="custom-date-picker" id="datePicker2">
+                        <div class="input-icon-wrap" style="background: #e8e8e8; border: 1px solid #ccc; border-radius: 10px;">
+                            <i class="fa-regular fa-calendar left-icon"></i>
+                            <input type="text" placeholder="dd/mm/yyyy" readonly style="background: transparent; border: none;">
+                            <i class="fa-solid fa-chevron-down right-icon"></i>
+                        </div>
+                        <div class="mini-calendar" id="cal2"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label>Delivered At</label>
+                <input type="text" id="modalDeliveredAt" style="background: #e8e8e8; border: 1px solid #ccc;">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Purpose/Project</label>
+                    <div class="custom-select" id="selectProject">
+                        <div class="select-trigger" style="background: #ccc; border: 1px solid #bbb;">
+                            <span>Select</span> <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                        <div class="options-list">
+                            <div>Projects Team</div>
+                            <div>Maintenance</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <div class="custom-select" id="selectStatus">
+                        <div class="select-trigger" style="background: #ccc; border: 1px solid #bbb;">
+                            <span>Select</span> <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                        <div class="options-list">
+                            <div>Received</div>
+                            <div>Pending</div>
+                            <div>Cancelled</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer" style="justify-content: flex-end; gap: 10px; border: none; padding-top: 0;">
+            <button class="btn-cancel" id="cancelModal" style="background: transparent; color: #333;">Cancel</button>
+            <button class="btn-create" style="background: #ff6a00; border-radius: 8px; padding: 10px 40px;">Create</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// --- GLOBAL STATE ---
+const prModal = document.getElementById('prModal');
+const addPrBtn = document.querySelector('.add-btn');
+const closePr = document.getElementById('closeModal');
+const cancelPr = document.getElementById('cancelModal');
+const searchInput = document.querySelector('.search-box input');
+const tableBody = document.querySelector('table tbody');
+
+// Range Calendar State (For the Main Dashboard Filter)
+let currentViewDate = new Date(2026, 0, 1);
+let rangeStart = null;
+let rangeEnd = null;
+
+// Mini Calendar State (For the Modal Inputs)
+const calendarStates = {
+    cal1: { date: new Date(), selected: null },
+    cal2: { date: new Date(), selected: null }
+};
+
+// --- MODAL CONTROLS ---
+addPrBtn.onclick = () => prModal.style.display = 'flex';
+[closePr, cancelPr].forEach(btn => {
+    btn.onclick = (e) => {
+        e.stopPropagation();
+        prModal.style.display = 'none';
+    };
+});
+
+// --- REFINED SEARCH LOGIC ---
+function filterTable() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const rows = tableBody.querySelectorAll('tr');
+
+    rows.forEach(row => {
+        const cells = row.getElementsByTagName('td');
+        if (cells.length === 0) return;
+
+        // 1. Text Filter Logic
+        const poNo = cells[0].innerText.toLowerCase();
+        const supplier = cells[1].innerText.toLowerCase();
+        const pic = cells[3].innerText.toLowerCase();
+        const project = cells[9].innerText.toLowerCase();
+        const matchesSearch = poNo.includes(searchTerm) || 
+                              supplier.includes(searchTerm) || 
+                              pic.includes(searchTerm) || 
+                              project.includes(searchTerm);
+
+        // 2. Date Filter Logic
+        let matchesDate = true;
+        if (rangeStart && rangeEnd) {
+            // Index 4 is the "Date" column in your table
+            const rowDateText = cells[4].innerText; 
+            const rowDate = new Date(rowDateText);
+            
+            // Normalize dates to midnight for accurate comparison
+            const checkDate = new Date(rowDate.getFullYear(), rowDate.getMonth(), rowDate.getDate()).getTime();
+            const start = new Date(rangeStart.getFullYear(), rangeStart.getMonth(), rangeStart.getDate()).getTime();
+            const end = new Date(rangeEnd.getFullYear(), rangeEnd.getMonth(), rangeEnd.getDate()).getTime();
+            
+            matchesDate = (checkDate >= start && checkDate <= end);
+        }
+
+        // Show row only if BOTH search and date conditions are met
+        row.style.display = (matchesSearch && matchesDate) ? "" : "none";
+    });
+}
+
+// --- MAIN DATE RANGE CALENDAR LOGIC ---
+const dateRangeBtn = document.querySelector('.date-select');
+const rangeCalendarWrap = document.getElementById('calendarDropdown');
+const rangeGrid = document.getElementById('calendarGrid');
+const rangeMonthYearLabel = document.getElementById('currentMonthYear');
+
+function renderRangeCalendar() {
+    if (!rangeGrid) return;
+    rangeGrid.innerHTML = '';
+    
+    const year = currentViewDate.getFullYear();
+    const month = currentViewDate.getMonth();
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    
+    rangeMonthYearLabel.innerText = `${monthNames[month]} ${year}`;
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const lastDate = new Date(year, month + 1, 0).getDate();
+
+    ['Su','Mo','Tu','We','Th','Fr','Sa'].forEach(d => {
+        const div = document.createElement('div');
+        div.className = 'day-name';
+        div.innerText = d;
+        rangeGrid.appendChild(div);
+    });
+
+    for (let i = 0; i < firstDay; i++) {
+        const empty = document.createElement('div');
+        empty.className = 'day mute';
+        rangeGrid.appendChild(empty);
+    }
+
+    for (let i = 1; i <= lastDate; i++) {
+        const dayDiv = document.createElement('div');
+        dayDiv.className = 'day';
+        dayDiv.innerText = i;
+        const thisDate = new Date(year, month, i);
+
+        if (rangeStart && isSameDay(thisDate, rangeStart)) dayDiv.classList.add('selected-edge');
+        if (rangeEnd && isSameDay(thisDate, rangeEnd)) dayDiv.classList.add('selected-edge');
+        if (rangeStart && rangeEnd && thisDate > rangeStart && thisDate < rangeEnd) {
+            dayDiv.classList.add('in-range');
+        }
+
+        dayDiv.onclick = (e) => {
+            e.stopPropagation(); // Prevents calendar from closing
+            handleRangeSelect(thisDate);
+        };
+        rangeGrid.appendChild(dayDiv);
+    }
+}
+
+function handleRangeSelect(date) {
+    if (!rangeStart || (rangeStart && rangeEnd)) {
+        rangeStart = date;
+        rangeEnd = null;
+    } else if (date < rangeStart) {
+        rangeEnd = rangeStart;
+        rangeStart = date;
+    } else {
+        rangeEnd = date;
+    }
+    renderRangeCalendar();
+}
+
+dateRangeBtn.onclick = (e) => {
+    e.stopPropagation();
+    const isHidden = (rangeCalendarWrap.style.display === 'none' || rangeCalendarWrap.style.display === '');
+    closeAllDropdowns(); // Close other things first
+    
+    if (isHidden) {
+        rangeCalendarWrap.style.display = 'block';
+        renderRangeCalendar();
+    } else {
+        rangeCalendarWrap.style.display = 'none';
+    }
+};
+
+document.getElementById('prevMonth').onclick = (e) => {
+    e.stopPropagation();
+    currentViewDate.setMonth(currentViewDate.getMonth() - 1);
+    renderRangeCalendar();
+};
+
+document.getElementById('nextMonth').onclick = (e) => {
+    e.stopPropagation();
+    currentViewDate.setMonth(currentViewDate.getMonth() + 1);
+    renderRangeCalendar();
+};
+
+document.getElementById('saveCalendarBtn').onclick = (e) => {
+    e.stopPropagation();
+    if (rangeStart && rangeEnd) {
+        const options = { month: 'short', day: 'numeric' };
+        // Update the button text to show selected range
+        dateRangeBtn.innerHTML = `<i class="fa-regular fa-calendar"></i> ${rangeStart.toLocaleDateString('en-US', options)} - ${rangeEnd.toLocaleDateString('en-US', options)} <i class="fa-solid fa-chevron-down"></i>`;
+        
+        // Run the filter
+        filterTable();
+    }
+    rangeCalendarWrap.style.display = 'none';
+};
+
+// --- MINI CALENDAR (MODAL) LOGIC ---
+document.querySelectorAll('.custom-date-picker .input-icon-wrap').forEach(wrap => {
+    wrap.onclick = function(e) {
+        e.stopPropagation();
+        const parent = this.parentElement;
+        const calId = parent.querySelector('.mini-calendar').id;
+        const wasOpen = parent.classList.contains('open');
+        closeAllDropdowns();
+        if (!wasOpen) {
+            parent.classList.add('open');
+            renderMiniCalendar(calId);
+        }
+    };
+});
+
+function renderMiniCalendar(key) {
+    const state = calendarStates[key];
+    const container = document.getElementById(key);
+    const year = state.date.getFullYear();
+    const month = state.date.getMonth();
+    
+    const firstDay = new Date(year, month, 1).getDay();
+    const lastDate = new Date(year, month + 1, 0).getDate();
+
+    let html = `<div class="mini-calendar-header"><i class="fa-solid fa-chevron-left" onclick="changeMiniMonth(event, '${key}', -1)"></i><span>${state.date.toLocaleString('default', { month: 'long' })} ${year}</span><i class="fa-solid fa-chevron-right" onclick="changeMiniMonth(event, '${key}', 1)"></i></div><div class="mini-grid">`;
+    html += ['Su','Mo','Tu','We','Th','Fr','Sa'].map(d => `<div class="mini-day-name">${d}</div>`).join('');
+
+    for (let x = 0; x < firstDay; x++) html += `<div class="mini-day mute"></div>`;
+    for (let i = 1; i <= lastDate; i++) {
+        const isSelected = isSameDay(new Date(year, month, i), state.selected) ? 'selected' : '';
+        html += `<div class="mini-day ${isSelected}" onclick="selectMiniDate(event, '${key}', ${i})">${i}</div>`;
+    }
+    container.innerHTML = html + `</div>`;
+}
+
+function changeMiniMonth(e, key, delta) {
+    e.stopPropagation();
+    calendarStates[key].date.setMonth(calendarStates[key].date.getMonth() + delta);
+    renderMiniCalendar(key);
+}
+
+function selectMiniDate(e, key, day) {
+    e.stopPropagation();
+    const state = calendarStates[key];
+    state.selected = new Date(state.date.getFullYear(), state.date.getMonth(), day);
+    const formatted = `${String(day).padStart(2, '0')}/${String(state.selected.getMonth() + 1).padStart(2, '0')}/${state.selected.getFullYear()}`;
+    document.getElementById(key).parentElement.querySelector('input').value = formatted;
+    closeAllDropdowns();
+}
+
+// --- DROPDOWNS ---
+document.querySelectorAll('.select-trigger').forEach(trigger => {
+    trigger.onclick = function(e) {
+        e.stopPropagation();
+        const parent = this.parentElement;
+        const wasOpen = parent.classList.contains('open');
+        closeAllDropdowns();
+        if (!wasOpen) parent.classList.add('open');
+    };
+});
+
+document.querySelectorAll('.options-list div').forEach(option => {
+    option.onclick = function(e) {
+        e.stopPropagation();
+        const parent = this.closest('.custom-select');
+        parent.querySelector('span').innerText = this.innerText;
+        parent.classList.remove('open');
+    };
+});
+
+// --- UTILS ---
+function closeAllDropdowns() {
+    document.querySelectorAll('.custom-select, .custom-date-picker').forEach(el => el.classList.remove('open'));
+    rangeCalendarWrap.style.display = 'none';
+}
+
+function isSameDay(d1, d2) {
+    return d1 && d2 && d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() && d1.getDate() === d2.getDate();
+}
+
+window.onclick = () => closeAllDropdowns();
+
+// --- CREATE PO ---
+document.querySelector('.btn-create').onclick = function() {
+    const po = document.getElementById('modalPONum').value;
+    if (!po) return alert("Enter PO Number");
+    
+    const row = document.createElement('tr');
+    row.innerHTML = `
+        <td>${po}</td>
+        <td>${document.querySelector('#selectSupplier span').innerText}</td>
+        <td>${document.getElementById('modalItem').value}</td>
+        <td>${document.querySelector('#selectPIC span').innerText}</td>
+        <td>${new Date().toLocaleDateString()}</td>
+        <td>${document.querySelector('#datePicker1 input').value}</td>
+        <td>${document.getElementById('modalRequestor').value}</td>
+        <td>${document.querySelector('#datePicker2 input').value}</td>
+        <td>${document.getElementById('modalDeliveredAt').value}</td>
+        <td>${document.querySelector('#selectProject span').innerText}</td>
+        <td class="status-done">${document.querySelector('#selectStatus span').innerText}</td>
+        <td class="action-icons"><i class="fa-solid fa-pen-to-square"></i> <i class="fa-solid fa-trash" onclick="this.closest('tr').remove()"></i></td>
+    `;
+    tableBody.appendChild(row);
+    prModal.style.display = 'none';
+};
+
+const slider = document.querySelector('.table-wrapper');
+let isDown = false;
+let startX;
+let scrollLeft;
+
+slider.addEventListener('mousedown', (e) => {
+    isDown = true;
+    slider.classList.add('active');
+    startX = e.pageX - slider.offsetLeft;
+    scrollLeft = slider.scrollLeft;
+    slider.style.cursor = 'grabbing';
+});
+
+slider.addEventListener('mouseleave', () => {
+    isDown = false;
+    slider.style.cursor = 'default';
+});
+
+slider.addEventListener('mouseup', () => {
+    isDown = false;
+    slider.style.cursor = 'grab';
+});
+
+slider.addEventListener('mousemove', (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - slider.offsetLeft;
+    const walk = (x - startX) * 2; // The number 2 determines scroll speed
+    slider.scrollLeft = scrollLeft - walk;
+});
+
+// Set initial cursor
+slider.style.cursor = 'grab';
+
+</script>
+
+</body>
+</html>
