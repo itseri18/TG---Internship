@@ -32,6 +32,7 @@ body {
 h2 {
     margin-bottom: 10px;
     font-size: 28px;
+    color: #f3f1f0;
 }
 
 .highlight {
@@ -123,15 +124,21 @@ body {
 
 /* Left Side: Logo & Quote */
 .left-panel {
-    flex: 1;
-    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
-                url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800'); /* Tech background */
+    background: linear-gradient(rgba(247, 246, 246, 0.71), rgba(0,0,0,0.7)), 
+                url('Assets/Gemini_Generated_Image_fn585mfn585mfn58.png'); /* Tech background */
     background-size: cover;
     padding: 40px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     border-right: 2px solid #FF8C00;
+}
+
+
+.brand-logo {
+    max-width: 200px;   /* Adjusted size for a corner logo */
+    height: auto;
+    display: block;
 }
 
 .logo-section h1 {

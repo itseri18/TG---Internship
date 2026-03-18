@@ -29,23 +29,21 @@
                     <span>Dashboard</span>
                     <i class="fa-solid fa-chevron-down caret"></i>
                 </div>
-                
-                <div class="sub-menu">
-                    <a href="Dashboard_PRTracker.html">PR tracker</a>
-                </div>
-                <div class="active-tab">
-                        <i class="fa-solid fa-arrow-right"></i>
-                        <a href="Dashboard_POTracker.html">PO Tracker</a> 
+                    <div class="sub-menu">
+                        <a href="Dashboard_PRTracker.html">PR tracker</a>
                     </div>
-                <div class="sub-menu">
-                    <a href="#">Payment</a>
-                </div>
-                <div class="sub-menu">
-                    <a href="#">Savings</a>
-                </div>
-                <div class="sub-menu">
-                    <a href="#">Delivery Tracker</a>
-                </div>
+                    <div class="active-tab">
+                        <a href="Dashboard_POTracker.html">PO Tracker</a> 
+                        </div>
+                    <div class="sub-menu">
+                       <a href="Dashboard_Payment.html">Payment</a>
+                    </div>
+                    <div class="sub-menu">
+                        <a href="Dashboard_Savings.html">Savings</a>
+                    </div>
+                    <div class="sub-menu">
+                        <a href="Dashboard_DeliveryTracker.html">Delivery Tracker</a>
+                    </div>
 
                 <div class="menu-item">
                     <i class="fa-solid fa-users"></i>
@@ -57,6 +55,21 @@
                     <span>Inventory</span>
                     <i class="fa-solid fa-chevron-down caret"></i>
                 </div>
+                    <div class="sub-menu">
+                        <a href="#">YTD</a>
+                        </div>
+                    <div class="sub-menu">
+                        <a href="#">Products</a> 
+                    </div>
+                    <div class="sub-menu">
+                        <a href="#">Stock In</a>
+                    </div>
+                    <div class="sub-menu">
+                        <a href="#">Stock Out</a>
+                    </div>
+                    <div class="sub-menu">
+                        <a href="#">Pull-Out Supplies</a>
+                    </div>
             </nav>
         </aside>
 
@@ -509,28 +522,61 @@ function isSameDay(d1, d2) {
 
 window.onclick = () => closeAllDropdowns();
 
-// --- CREATE PO ---
+// --- CREATE / SAVE PO ---
 document.querySelector('.btn-create').onclick = function() {
     const po = document.getElementById('modalPONum').value;
     if (!po) return alert("Enter PO Number");
+
+    const supplier = document.querySelector('#selectSupplier span').innerText;
+    const item = document.getElementById('modalItem').value;
+    const pic = document.querySelector('#selectPIC span').innerText;
+    const dateNeeded = document.querySelector('#datePicker1 input').value;
+    const requestor = document.getElementById('modalRequestor').value;
+    const deliveryDate = document.querySelector('#datePicker2 input').value;
+    const deliveredAt = document.getElementById('modalDeliveredAt').value;
+    const project = document.querySelector('#selectProject span').innerText;
+    const status = document.querySelector('#selectStatus span').innerText;
+
+    if (editingRow) {
+        // UPDATE EXISTING ROW
+        const cells = editingRow.getElementsByTagName('td');
+        cells[0].innerText = po;
+        cells[1].innerText = supplier;
+        cells[2].innerText = item;
+        cells[3].innerText = pic;
+        // cells[4] is the "Date" (usually creation date, we leave it)
+        cells[5].innerText = dateNeeded;
+        cells[6].innerText = requestor;
+        cells[7].innerText = deliveryDate;
+        cells[8].innerText = deliveredAt;
+        cells[9].innerText = project;
+        cells[10].innerText = status;
+        cells[10].className = (status === "Received") ? "status-done" : ""; // Update class for color
+    } else {
+        // CREATE NEW ROW (Your original logic)
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${po}</td>
+            <td>${supplier}</td>
+            <td>${item}</td>
+            <td>${pic}</td>
+            <td>${new Date().toLocaleDateString()}</td>
+            <td>${dateNeeded}</td>
+            <td>${requestor}</td>
+            <td>${deliveryDate}</td>
+            <td>${deliveredAt}</td>
+            <td>${project}</td>
+            <td class="${status === 'Received' ? 'status-done' : ''}">${status}</td>
+            <td class="action-icons">
+                <i class="fa-solid fa-pen-to-square"></i> 
+                <i class="fa-solid fa-trash" onclick="this.closest('tr').remove()"></i>
+            </td>
+        `;
+        tableBody.appendChild(row);
+    }
     
-    const row = document.createElement('tr');
-    row.innerHTML = `
-        <td>${po}</td>
-        <td>${document.querySelector('#selectSupplier span').innerText}</td>
-        <td>${document.getElementById('modalItem').value}</td>
-        <td>${document.querySelector('#selectPIC span').innerText}</td>
-        <td>${new Date().toLocaleDateString()}</td>
-        <td>${document.querySelector('#datePicker1 input').value}</td>
-        <td>${document.getElementById('modalRequestor').value}</td>
-        <td>${document.querySelector('#datePicker2 input').value}</td>
-        <td>${document.getElementById('modalDeliveredAt').value}</td>
-        <td>${document.querySelector('#selectProject span').innerText}</td>
-        <td class="status-done">${document.querySelector('#selectStatus span').innerText}</td>
-        <td class="action-icons"><i class="fa-solid fa-pen-to-square"></i> <i class="fa-solid fa-trash" onclick="this.closest('tr').remove()"></i></td>
-    `;
-    tableBody.appendChild(row);
     prModal.style.display = 'none';
+    editingRow = null; // Reset state
 };
 
 const slider = document.querySelector('.table-wrapper');
@@ -567,6 +613,80 @@ slider.addEventListener('mousemove', (e) => {
 // Set initial cursor
 slider.style.cursor = 'grab';
 
+</script>
+
+<script>
+document.querySelectorAll('.side-nav .menu-item').forEach(item => {
+    // 1. Initial State: Hide sub-menus on page load (Optional)
+    toggleSubMenus(item, false); 
+
+    item.style.cursor = 'pointer'; // Ensure user knows it's clickable
+
+    item.addEventListener('click', function() {
+        // Toggle the caret rotation
+        const caret = this.querySelector('.caret');
+        if (caret) {
+            caret.style.transform = caret.style.transform === 'rotate(180deg)' ? 'rotate(0deg)' : 'rotate(180deg)';
+            caret.style.transition = 'transform 0.3s ease';
+        }
+
+        // Check current state of the first sub-menu item to determine if we show or hide
+        const firstSub = this.nextElementSibling;
+        const isHidden = !firstSub || firstSub.style.display === 'none';
+        
+        toggleSubMenus(this, isHidden);
+    });
+});
+
+function toggleSubMenus(menuItem, show) {
+    let next = menuItem.nextElementSibling;
+    
+    while (next && (next.classList.contains('sub-menu') || next.classList.contains('active-tab'))) {
+        next.style.display = show ? 'block' : 'none';
+        next = next.nextElementSibling;
+    }
+}
+
+// --- EDIT PO LOGIC ---
+let editingRow = null; // Keeps track of which row we are editing
+
+tableBody.onclick = function(e) {
+    // Check if the clicked element is the edit icon
+    if (e.target.classList.contains('fa-pen-to-square')) {
+        editingRow = e.target.closest('tr');
+        const cells = editingRow.getElementsByTagName('td');
+
+        // 1. Fill Text Inputs
+        document.getElementById('modalPONum').value = cells[0].innerText;
+        document.getElementById('modalItem').value = cells[2].innerText;
+        document.getElementById('modalRequestor').value = cells[6].innerText;
+        document.getElementById('modalDeliveredAt').value = cells[8].innerText;
+
+        // 2. Fill Custom Selects (Updating the span text)
+        document.querySelector('#selectSupplier span').innerText = cells[1].innerText;
+        document.querySelector('#selectPIC span').innerText = cells[3].innerText;
+        document.querySelector('#selectProject span').innerText = cells[9].innerText;
+        document.querySelector('#selectStatus span').innerText = cells[10].innerText;
+
+        // 3. Fill Date Inputs
+        document.querySelector('#datePicker1 input').value = cells[5].innerText;
+        document.querySelector('#datePicker2 input').value = cells[7].innerText;
+
+        // 4. Change Modal UI
+        document.querySelector('.modal-header h2').innerText = "Edit Purchase Order";
+        document.querySelector('.btn-create').innerText = "Save Changes";
+        
+        prModal.style.display = 'flex';
+    }
+};
+
+// Reset Modal when clicking "Add" button
+addPrBtn.addEventListener('click', () => {
+    editingRow = null;
+    document.querySelector('.modal-header h2').innerText = "Create New Purchase Order";
+    document.querySelector('.btn-create').innerText = "Create";
+    // Optional: Clear inputs here if desired
+});
 </script>
 
 </body>

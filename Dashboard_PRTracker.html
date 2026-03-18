@@ -29,23 +29,21 @@
                     <span>Dashboard</span>
                     <i class="fa-solid fa-chevron-down caret"></i>
                 </div>
-                
-                <div class="active-tab">
-                        <i class="fa-solid fa-arrow-right"></i>
+                    <div class="active-tab">
                         <a href="Dashboard_PRTracker.html">PR tracker</a>
+                        </div>
+                    <div class="sub-menu">
+                        <a href="Dashboard_POTracker.html">PO Tracker</a> 
                     </div>
-                <div class="sub-menu">
-                    <a href="Dashboard_POTracker.html">PO Tracker</a> 
-                </div>
-                <div class="sub-menu">
-                    <a href="#">Payment</a>
-                </div>
-                <div class="sub-menu">
-                    <a href="#">Savings</a>
-                </div>
-                <div class="sub-menu">
-                    <a href="#">Delivery Tracker</a>
-                </div>
+                    <div class="sub-menu">
+                        <a href="Dashboard_Payment.html">Payment</a>
+                    </div>
+                    <div class="sub-menu">
+                        <a href="Dashboard_Savings.html">Savings</a>
+                    </div>
+                    <div class="sub-menu">
+                        <a href="Dashboard_DeliveryTracker.html">Delivery Tracker</a>
+                    </div>
 
                 <div class="menu-item">
                     <i class="fa-solid fa-users"></i>
@@ -57,6 +55,21 @@
                     <span>Inventory</span>
                     <i class="fa-solid fa-chevron-down caret"></i>
                 </div>
+                    <div class="sub-menu">
+                        <a href="#">YTD</a>
+                        </div>
+                    <div class="sub-menu">
+                        <a href="#">Products</a> 
+                    </div>
+                    <div class="sub-menu">
+                        <a href="#">Stock In</a>
+                    </div>
+                    <div class="sub-menu">
+                        <a href="#">Stock Out</a>
+                    </div>
+                    <div class="sub-menu">
+                        <a href="#">Pull-Out Supplies</a>
+                    </div>
             </nav>
         </aside>
 
@@ -767,6 +780,39 @@ document.getElementById('saveCalendarBtn').onclick = function() {
     filterTable();
 };
 
+</script>
+
+<script>
+document.querySelectorAll('.side-nav .menu-item').forEach(item => {
+    // 1. Initial State: Hide sub-menus on page load (Optional)
+    toggleSubMenus(item, false); 
+
+    item.style.cursor = 'pointer'; // Ensure user knows it's clickable
+
+    item.addEventListener('click', function() {
+        // Toggle the caret rotation
+        const caret = this.querySelector('.caret');
+        if (caret) {
+            caret.style.transform = caret.style.transform === 'rotate(180deg)' ? 'rotate(0deg)' : 'rotate(180deg)';
+            caret.style.transition = 'transform 0.3s ease';
+        }
+
+        // Check current state of the first sub-menu item to determine if we show or hide
+        const firstSub = this.nextElementSibling;
+        const isHidden = !firstSub || firstSub.style.display === 'none';
+        
+        toggleSubMenus(this, isHidden);
+    });
+});
+
+function toggleSubMenus(menuItem, show) {
+    let next = menuItem.nextElementSibling;
+    
+    while (next && (next.classList.contains('sub-menu') || next.classList.contains('active-tab'))) {
+        next.style.display = show ? 'block' : 'none';
+        next = next.nextElementSibling;
+    }
+}
 </script>
 
 </body>

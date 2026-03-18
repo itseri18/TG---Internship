@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PR Tracker | TeamGlobal</title>
+    <link rel="stylesheet" href="Dashboard_Payment.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="header-left">
+            <img src="Assets/logo.png" alt="" class="header-logo">
+        </div>
+        <div class="header-right">
+            <i class="fa-solid fa-bell notification-icon"></i>
+            <div class="profile-icon">
+                <i class="fa-solid fa-circle-user"></i>
+            </div>
+        </div>
+    </header>
+
+    <div class="app-container">
+        <aside class="sidebar">
+            <nav class="side-nav">
+                <div class="menu-item">
+                    <i class="fa-solid fa-table-cells-large"></i> 
+                    <span>Dashboard</span>
+                    <i class="fa-solid fa-chevron-down caret"></i>
+                </div>
+                    <div class="sub-menu">
+                        <a href="Dashboard_PRTracker.html">PR tracker</a>
+                    </div>
+                    <div class="sub-menu">
+                        <a href="Dashboard_POTracker.html">PO Tracker</a> 
+                    </div>
+                    <div class="active-tab">
+                        <a href="Dashboard_Payment.html">Payment</a>
+                    </div>
+                    <div class="sub-menu">
+                        <a href="Dashboard_Savings.html">Savings</a>
+                    </div>
+                    <div class="sub-menu">
+                        <a href="Dashboard_DeliveryTracker.html">Delivery Tracker</a>
+                    </div>
+
+                <div class="menu-item">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Supplier</span>
+                </div>
+                
+                <div class="menu-item">
+                    <i class="fa-solid fa-box-archive"></i>
+                    <span>Inventory</span>
+                    <i class="fa-solid fa-chevron-down caret"></i>
+                </div>
+                    <div class="sub-menu">
+                        <a href="#">YTD</a>
+                        </div>
+                    <div class="sub-menu">
+                        <a href="#">Products</a> 
+                    </div>
+                    <div class="sub-menu">
+                        <a href="#">Stock In</a>
+                    </div>
+                    <div class="sub-menu">
+                        <a href="#">Stock Out</a>
+                    </div>
+                    <div class="sub-menu">
+                        <a href="#">Pull-Out Supplies</a>
+                    </div>
+            </nav>
+        </aside>
+
+        <main class="content-area">
+            <section class="title-section">
+                <h1>Payment Tracker</h1>
+                <p>Manage and track all payment transactions.</p>
+            </section>
+
+            <section class="filters-bar">
+                <div class="search-box">
+                    <input type="text" placeholder="Search by PO No., Supplier Name..">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+                <div class="actions">
+                    <button class="add-btn">+ Add Payment</button>
+                </div>
+            </section>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>PO No.</th>
+                            <th>Supplier Name</th>
+                            <th>Due Date</th>
+                            <th>Mode of Payment</th>
+                            <th>Status</th>
+                            <th>Amount</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>P2026-0801</td>
+                            <td>MTLBS</td>
+                            <td>1/1/2026</td>
+                            <td>Check Payment</td>
+                            <td class="status-done">Done</td>
+                            <td>6,937.50</td>
+                            <td class="action-icons">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                                <i class="fa-solid fa-trash"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+<div id="prModal" class="modal-overlay">
+    <div class="modal-content" style="width: 700px; border-radius: 30px; background: #f2f1ef; padding: 30px;">
+        <div class="modal-header" style="border: none; margin-bottom: 20px;">
+            <h2 style="font-family: inherit; font-weight: 500; font-size: 24px; color: #000;">Add New Payment</h2>
+            <i class="fa-solid fa-xmark close-modal" id="closeModal" style="font-size: 20px; color: #666;"></i>
+        </div>
+        
+        <div class="modal-body">
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">PO Number</label>
+                <input type="text" id="modalPONum" style="width: 100%; height: 45px; background: #e0e0e0; border: 1px solid #ccc; border-radius: 10px; padding: 0 15px;">
+            </div>
+
+            <div class="form-row" style="display: flex; gap: 20px; margin-bottom: 15px;">
+                <div class="form-group" style="flex: 1;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500;">Supplier Name</label>
+                    <input type="text" id="modalSupplier" style="width: 100%; height: 45px; background: #e0e0e0; border: 1px solid #ccc; border-radius: 10px; padding: 0 15px;">
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500;">Mode of payment</label>
+                    <div class="custom-select" id="selectMode" style="height: 45px; background: #c8c8c8; border: 1px solid #bbb; border-radius: 10px;">
+                        <div class="select-trigger" style="display: flex; justify-content: space-between; align-items: center; height: 100%; padding: 0 15px;">
+                            <span>Select</span> <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row" style="display: flex; gap: 20px; margin-bottom: 15px;">
+                <div class="form-group" style="flex: 1;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500;">Amount</label>
+                    <div style="position: relative;">
+                        <input type="number" id="modalAmount" style="width: 100%; height: 45px; background: #c8c8c8; border: 1px solid #bbb; border-radius: 10px; padding: 0 15px;">
+                        <div style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; font-size: 10px; color: #666;">
+                            <i class="fa-solid fa-chevron-up"></i>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500;">Status</label>
+                    <div class="custom-select" id="selectStatus" style="height: 45px; background: #c8c8c8; border: 1px solid #bbb; border-radius: 10px;">
+                        <div class="select-trigger" style="display: flex; justify-content: space-between; align-items: center; height: 100%; padding: 0 15px;">
+                            <span>Select</span> <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" style="width: 50%; margin-bottom: 30px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Due Date</label>
+                <div class="custom-date-picker" id="datePicker1">
+                    <div class="input-icon-wrap" style="height: 45px; background: #e0e0e0; border: 1px solid #ccc; border-radius: 10px; display: flex; align-items: center; padding: 0 15px;">
+                        <i class="fa-regular fa-calendar left-icon" style="margin-right: 10px; color: #666;"></i>
+                        <input type="text" placeholder="dd/mm/yyyy" readonly style="background: transparent; border: none; flex-grow: 1; outline: none;">
+                        <i class="fa-solid fa-chevron-down right-icon" style="color: #666;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer" style="display: flex; justify-content: flex-end; align-items: center; gap: 20px; border: none; padding: 0;">
+            <button class="btn-cancel" id="cancelModal" style="background: transparent; color: #333; font-weight: 500; border: none; cursor: pointer;">Cancel</button>
+            <button class="btn-create" style="background: #ff6a00; color: white; border: none; padding: 12px 50px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 16px;">Create</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// --- GLOBAL STATE ---
+let editingRow = null;
+const prModal = document.getElementById('prModal');
+const addBtn = document.querySelector('.add-btn');
+const tableBody = document.querySelector('table tbody');
+
+// --- OPEN MODAL FOR NEW PAYMENT ---
+addBtn.onclick = () => {
+    editingRow = null; // Reset edit state
+    document.querySelector('.modal-header h2').innerText = "Add New Payment";
+    document.querySelector('.btn-create').innerText = "Create";
+    
+    // Clear inputs
+    document.getElementById('modalPONum').value = "";
+    document.getElementById('modalSupplier').value = "";
+    document.getElementById('modalAmount').value = "";
+    document.querySelector('#selectMode span').innerText = "Select";
+    document.querySelector('#selectStatus span').innerText = "Select";
+    document.querySelector('#datePicker1 input').value = "";
+    
+    prModal.style.display = 'flex';
+};
+
+// --- EDIT ICON LOGIC (Event Delegation) ---
+tableBody.onclick = function(e) {
+    if (e.target.classList.contains('fa-pen-to-square')) {
+        editingRow = e.target.closest('tr');
+        const cells = editingRow.getElementsByTagName('td');
+
+        // Populate Modal Fields from Table
+        document.getElementById('modalPONum').value = cells[0].innerText;
+        document.getElementById('modalSupplier').value = cells[1].innerText;
+        document.querySelector('#datePicker1 input').value = cells[2].innerText;
+        document.querySelector('#selectMode span').innerText = cells[3].innerText;
+        document.querySelector('#selectStatus span').innerText = cells[4].innerText;
+        document.getElementById('modalAmount').value = cells[5].innerText.replace(/,/g, '');
+
+        // Change UI to Edit Mode
+        document.querySelector('.modal-header h2').innerText = "Edit Payment";
+        document.querySelector('.btn-create').innerText = "Save Changes";
+        prModal.style.display = 'flex';
+    }
+};
+
+// --- CREATE / SAVE BUTTON ---
+document.querySelector('.btn-create').onclick = function() {
+    const po = document.getElementById('modalPONum').value;
+    const supplier = document.getElementById('modalSupplier').value;
+    const dueDate = document.querySelector('#datePicker1 input').value;
+    const mode = document.querySelector('#selectMode span').innerText;
+    const status = document.querySelector('#selectStatus span').innerText;
+    const amount = document.getElementById('modalAmount').value;
+
+    if (!po || !supplier) return alert("Please fill in PO Number and Supplier.");
+
+    if (editingRow) {
+        // Update existing row
+        const cells = editingRow.getElementsByTagName('td');
+        cells[0].innerText = po;
+        cells[1].innerText = supplier;
+        cells[2].innerText = dueDate;
+        cells[3].innerText = mode;
+        cells[4].innerText = status;
+        cells[4].className = (status === "Done") ? "status-done" : ""; 
+        cells[5].innerText = parseFloat(amount).toLocaleString();
+    } else {
+        // Append new row
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${po}</td>
+            <td>${supplier}</td>
+            <td>${dueDate}</td>
+            <td>${mode}</td>
+            <td class="${status === 'Done' ? 'status-done' : ''}">${status}</td>
+            <td>${parseFloat(amount).toLocaleString()}</td>
+            <td class="action-icons">
+                <i class="fa-solid fa-pen-to-square"></i>
+                <i class="fa-solid fa-trash" onclick="this.closest('tr').remove()"></i>
+            </td>
+        `;
+        tableBody.appendChild(row);
+    }
+    prModal.style.display = 'none';
+};
+</script>
+
+<script>
+document.querySelectorAll('.side-nav .menu-item').forEach(item => {
+    // 1. Initial State: Hide sub-menus on page load (Optional)
+    toggleSubMenus(item, false); 
+
+    item.style.cursor = 'pointer'; // Ensure user knows it's clickable
+
+    item.addEventListener('click', function() {
+        // Toggle the caret rotation
+        const caret = this.querySelector('.caret');
+        if (caret) {
+            caret.style.transform = caret.style.transform === 'rotate(180deg)' ? 'rotate(0deg)' : 'rotate(180deg)';
+            caret.style.transition = 'transform 0.3s ease';
+        }
+
+        // Check current state of the first sub-menu item to determine if we show or hide
+        const firstSub = this.nextElementSibling;
+        const isHidden = !firstSub || firstSub.style.display === 'none';
+        
+        toggleSubMenus(this, isHidden);
+    });
+});
+
+function toggleSubMenus(menuItem, show) {
+    let next = menuItem.nextElementSibling;
+    
+    while (next && (next.classList.contains('sub-menu') || next.classList.contains('active-tab'))) {
+        next.style.display = show ? 'block' : 'none';
+        next = next.nextElementSibling;
+    }
+}
+</script>
+
+</body>
+</html>
