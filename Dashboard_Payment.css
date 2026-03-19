@@ -199,30 +199,10 @@ body {
 
 /* Table */
 .table-wrapper {
-    width: 100%;
-    overflow-x: auto; /* Enables horizontal scroll */
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     margin-top: 20px;
-    /* Optional: custom scrollbar styling for a cleaner look */
-}
-
-.table-wrapper::-webkit-scrollbar {
-    height: 8px;
-}
-
-.table-wrapper::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
-
-.table-wrapper::-webkit-scrollbar-thumb {
-    background: #ccc;
-    border-radius: 10px;
-}
-
-.table-wrapper::-webkit-scrollbar-thumb:hover {
-    background: #FF6B00; /* Matches your theme */
+    border-radius: 15px 15px 0 0; /* Top left and Top right radius */
+    overflow: hidden; /* Important to clip the table corners */
+    border: 1px solid #EEE; /* Optional: adds a border around the container */
 }
 
 table {
@@ -306,7 +286,7 @@ th, td {
     background: #F0F0F0; width: 620px; border-radius: 25px; padding: 30px;
     box-shadow: 0 10px 40px rgba(0,0,0,0.2); position: relative;
 }
-.modal-header { display: flex; justify-content: space-between; align-items: center; }
+.modal-header { display: flex; justify-content: space-between; align-items: center;}
 .modal-footer { display: flex; justify-content: flex-end; align-items: center; margin-top: 20px; }
 .close-modal { cursor: pointer; color: #999; font-size: 1.1rem; }
 
@@ -392,4 +372,176 @@ th, td {
 
 .preview-item:hover .remove-img {
     opacity: 1;
+}
+
+.download-icon { font-size: 28px; color: #aaa; margin: 10px 0; }
+.upload-title { font-size: 12px; color: #555; margin-bottom: 10px; }
+.upload-hint { font-size: 11px; color: #666; margin: 5px 0; }
+.upload-limit { font-size: 9px; color: #aaa; margin-bottom: 15px; }
+.browse-btn { border: 1px solid #ccc; background: white; padding: 6px 20px; border-radius: 8px; cursor: pointer; font-size: 11px; color: #555; }
+
+.btn-create { background: #FF6B00; color: white; border: none; padding: 12px 45px; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 14px; }
+.btn-cancel { background: transparent; border: none; color: #555; font-weight: bold; cursor: pointer; margin-right: 20px; font-size: 14px; }
+
+/* Calendar Precision */
+.calendar-dropdown {
+    position: absolute; right: 180px; top: 220px; width: 280px; z-index: 1000; display: none;
+}
+.calendar-range-header { background: #E8E8E8; padding: 12px 15px; border-radius: 15px 15px 0 0; display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: #333; }
+.calendar-picker { background: #E8E8E8; padding: 5px 15px 15px 15px; border-radius: 0 0 15px 15px; }
+.calendar-month-nav { display: flex; justify-content: space-between; padding: 10px 0; font-size: 14px; }
+.calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; }
+.day { 
+    aspect-ratio: 1; display: flex; align-items: center; justify-content: center; 
+    font-size: 12px; cursor: pointer; border-radius: 6px; position: relative; z-index: 1;
+}
+.day.mute { color: #bbb; pointer-events: none; }
+.day.selected-edge {
+    background: #FF6B00 !important; /* Solid Orange from image */
+    color: white !important;
+    border-radius: 8px; /* Circular or slightly rounded edges for endpoints */
+}
+
+.day.in-range {
+    background: #FFB380 !important; /* Light Orange bridge from image */
+    border-radius: 0; /* Important: makes the range continuous */
+    color: #333;
+}
+
+/* Special rounding for range ends */
+.day.in-range:nth-of-type(7n) { border-top-right-radius: 0px; border-bottom-right-radius: 0px; }
+.calendar-footer { text-align: right; padding-top: 15px; font-weight: bold; font-size: 12px; color: #444; cursor: pointer; }
+
+/* Custom Select/Dropdown Styling */
+.custom-select, .custom-date-picker { position: relative; width: 100%; }
+
+.select-trigger {
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background: #E5E5E5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.options-list {
+    position: absolute;
+    top: 100%; left: 0; right: 0;
+    background: #E5E5E5;
+    border-radius: 10px;
+    margin-top: 5px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    display: none;
+    z-index: 3000;
+    overflow: hidden;
+}
+
+.options-list.scrollable { max-height: 200px; overflow-y: auto; }
+
+.options-list div {
+    padding: 10px 15px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.options-list div:hover, .options-list div.active {
+    background: #FF6B00;
+    color: white;
+}
+
+/* Mini Calendar for Modal Inputs */
+.mini-calendar {
+    position: absolute;
+    top: 100%; left: 0;
+    background: #E8E8E8;
+    border-radius: 15px;
+    padding: 10px;
+    display: none;
+    width: 250px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.custom-select.open .options-list, 
+.custom-date-picker.drop-up .mini-calendar {
+    display: block; 
+    bottom: 100%;
+    top: auto;
+    margin-bottom: 10px;
+    margin-top: 0;
+}
+.custom-select.open .select-trigger i { transform: rotate(180deg); }
+
+/* Container for the mini calendar dropdown */
+.mini-calendar {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #E8E8E8; /* Matches your gray theme */
+    border-radius: 15px;
+    padding: 12px;
+    display: none;
+    z-index: 9999;
+    width: 240px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    margin-top: 5px;
+}
+
+.mini-calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.mini-calendar-header span {
+    font-weight: bold;
+    font-size: 13px;
+    color: #444;
+}
+
+.mini-calendar-header i {
+    cursor: pointer;
+    font-size: 12px;
+    color: #666;
+    padding: 5px;
+}
+
+.mini-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+}
+
+.mini-day-name {
+    font-size: 10px;
+    color: #888;
+    text-align: center;
+    padding-bottom: 5px;
+}
+
+.mini-day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    cursor: pointer;
+    border-radius: 50%; /* Circular selection */
+    transition: 0.2s;
+}
+
+.mini-day:hover { background: #FF6B00; }
+
+.mini-day.selected {
+    background: #FF6B00 !important; /* Specific Orange from image */
+    color: white !important;
+}
+
+.mini-day.mute {
+    color: #bbb;
+    pointer-events: none;
 }

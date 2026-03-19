@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PO Tracker | TeamGlobal</title>
+    <title>PO Tracker | TGFSI</title>
     <link rel="stylesheet" href="Dashboard_POTracker.css"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -29,47 +29,20 @@
                     <span>Dashboard</span>
                     <i class="fa-solid fa-chevron-down caret"></i>
                 </div>
-                    <div class="sub-menu">
-                        <a href="Dashboard_PRTracker.html">PR tracker</a>
-                    </div>
-                    <div class="active-tab">
-                        <a href="Dashboard_POTracker.html">PO Tracker</a> 
-                        </div>
-                    <div class="sub-menu">
-                       <a href="Dashboard_Payment.html">Payment</a>
-                    </div>
-                    <div class="sub-menu">
-                        <a href="Dashboard_Savings.html">Savings</a>
-                    </div>
-                    <div class="sub-menu">
-                        <a href="Dashboard_DeliveryTracker.html">Delivery Tracker</a>
-                    </div>
-
+                <div class="sub-menu"><a href="Dashboard_PRTracker.html">PR tracker</a></div>
+                <div class="active-tab"><a href="Dashboard_POTracker.html">PO Tracker</a></div>
+                <div class="sub-menu"><a href="Dashboard_Payment.html">Payment</a></div>
+                <div class="sub-menu"><a href="Dashboard_Savings.html">Savings</a></div>
+                <div class="sub-menu"><a href="Dashboard_DeliveryTracker.html">Delivery Tracker</a></div>
                 <div class="menu-item">
                     <i class="fa-solid fa-users"></i>
                     <span>Supplier</span>
                 </div>
-                
                 <div class="menu-item">
                     <i class="fa-solid fa-box-archive"></i>
                     <span>Inventory</span>
                     <i class="fa-solid fa-chevron-down caret"></i>
                 </div>
-                    <div class="sub-menu">
-                        <a href="#">YTD</a>
-                        </div>
-                    <div class="sub-menu">
-                        <a href="#">Products</a> 
-                    </div>
-                    <div class="sub-menu">
-                        <a href="#">Stock In</a>
-                    </div>
-                    <div class="sub-menu">
-                        <a href="#">Stock Out</a>
-                    </div>
-                    <div class="sub-menu">
-                        <a href="#">Pull-Out Supplies</a>
-                    </div>
             </nav>
         </aside>
 
@@ -81,21 +54,24 @@
 
             <section class="filters-bar">
                 <div class="search-box">
-                    <input type="text" placeholder="Search by PO No., Supplier, Project, Department..">
+                    <input type="text" id="searchInput" placeholder="Search by PO No., Supplier, Project, Department..">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </div>
                 <div class="actions">
-                    <div class="date-select">
+                    <div class="date-select" id="dateRangeBtn">
                         <i class="fa-regular fa-calendar"></i>
-                        Date Range
+                        <span id="rangeBtnText">Date Range</span>
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
+                    <button id="exportExcelBtn" style="background: #1A3E3E; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                        <i class="fa-solid fa-file-excel"></i> Export
+                    </button>
                     <button class="add-btn">+ Add Purchase Order</button>
                 </div>
             </section>
 
             <div class="table-wrapper">
-                <table>
+                <table id="poTable">
                     <thead>
                         <tr>
                             <th>PO No.</th>
@@ -136,558 +112,409 @@
         </main>
     </div>
 
-<div id="calendarDropdown" class="calendar-dropdown">
-    <div class="calendar-range-header">
-        <span id="rangeDisplay">Select Dates</span>
-    </div>
-    <div class="calendar-picker">
-        <div class="calendar-month-nav">
-            <i class="fa-solid fa-chevron-left" id="prevMonth"></i>
-            <span id="currentMonthYear" style="font-weight: bold; color: #444;">January 2026</span>
-            <i class="fa-solid fa-chevron-right" id="nextMonth"></i>
+    <div id="calendarDropdown" class="calendar-dropdown" style="display:none;">
+        <div class="calendar-range-header">
+            <span id="rangeDisplay">Select Dates</span>
         </div>
-        <div class="calendar-grid" id="calendarGrid"></div>
-        <div class="calendar-footer">
-            <span id="saveCalendarBtn">Save</span>
-        </div>
-    </div>
-</div>
-    
-<div id="prModal" class="modal-overlay">
-    <div class="modal-content" style="width: 700px; border-radius: 20px; background: #f4f4f4;">
-        <div class="modal-header">
-            <h2 style="font-family: inherit; font-weight: 500; font-size: 22px;">Create New Purchase Order</h2>
-            <i class="fa-solid fa-xmark close-modal" id="closeModal"></i>
-        </div>
-        <div class="modal-body">
-            <div class="form-group" style="margin-bottom: 15px;">
-                <label>P.O Number</label>
-                <input type="text" id="modalPONum" style="background: #e8e8e8; border: 1px solid #ccc;">
+        <div class="calendar-picker">
+            <div class="calendar-month-nav">
+                <i class="fa-solid fa-chevron-left" id="prevMonth"></i>
+                <span id="currentMonthYear" style="font-weight: bold; color: #444;">January 2026</span>
+                <i class="fa-solid fa-chevron-right" id="nextMonth"></i>
             </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Supplier Name</label>
-                    <div class="custom-select" id="selectSupplier">
-                        <div class="select-trigger" style="background: #ccc; border: 1px solid #bbb;">
-                            <span>Select</span> <i class="fa-solid fa-chevron-down"></i>
-                        </div>
-                        <div class="options-list">
-                            <div>MTLBS</div>
-                            <div>ROCKWELL</div>
-                            <div>OPEMS</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Item</label>
-                    <input type="text" id="modalItem" style="background: #e8e8e8; border: 1px solid #ccc;">
-                </div>
+            <div class="calendar-grid" id="calendarGrid"></div>
+            <div class="calendar-footer">
+                <span id="saveCalendarBtn" style="cursor:pointer; color: #ff6a00; font-weight:bold;">Save</span>
             </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Person in charge</label>
-                    <div class="custom-select" id="selectPIC">
-                        <div class="select-trigger" style="background: #ccc; border: 1px solid #bbb;">
-                            <span>Select</span> <i class="fa-solid fa-chevron-down"></i>
-                        </div>
-                        <div class="options-list">
-                            <div>Mich</div>
-                            <div>Sherlyn</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Requestor</label>
-                    <input type="text" id="modalRequestor" style="background: #e8e8e8; border: 1px solid #ccc;">
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Date Needed</label>
-                    <div class="custom-date-picker" id="datePicker1">
-                        <div class="input-icon-wrap" style="background: #e8e8e8; border: 1px solid #ccc; border-radius: 10px;">
-                            <i class="fa-regular fa-calendar left-icon"></i>
-                            <input type="text" placeholder="dd/mm/yyyy" readonly style="background: transparent; border: none;">
-                            <i class="fa-solid fa-chevron-down right-icon"></i>
-                        </div>
-                        <div class="mini-calendar" id="cal1"></div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Delivered Pick-Up Date</label>
-                    <div class="custom-date-picker" id="datePicker2">
-                        <div class="input-icon-wrap" style="background: #e8e8e8; border: 1px solid #ccc; border-radius: 10px;">
-                            <i class="fa-regular fa-calendar left-icon"></i>
-                            <input type="text" placeholder="dd/mm/yyyy" readonly style="background: transparent; border: none;">
-                            <i class="fa-solid fa-chevron-down right-icon"></i>
-                        </div>
-                        <div class="mini-calendar" id="cal2"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group" style="margin-bottom: 15px;">
-                <label>Delivered At</label>
-                <input type="text" id="modalDeliveredAt" style="background: #e8e8e8; border: 1px solid #ccc;">
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Purpose/Project</label>
-                    <div class="custom-select" id="selectProject">
-                        <div class="select-trigger" style="background: #ccc; border: 1px solid #bbb;">
-                            <span>Select</span> <i class="fa-solid fa-chevron-down"></i>
-                        </div>
-                        <div class="options-list">
-                            <div>Projects Team</div>
-                            <div>Maintenance</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Status</label>
-                    <div class="custom-select" id="selectStatus">
-                        <div class="select-trigger" style="background: #ccc; border: 1px solid #bbb;">
-                            <span>Select</span> <i class="fa-solid fa-chevron-down"></i>
-                        </div>
-                        <div class="options-list">
-                            <div>Received</div>
-                            <div>Pending</div>
-                            <div>Cancelled</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal-footer" style="justify-content: flex-end; gap: 10px; border: none; padding-top: 0;">
-            <button class="btn-cancel" id="cancelModal" style="background: transparent; color: #333;">Cancel</button>
-            <button class="btn-create" style="background: #ff6a00; border-radius: 8px; padding: 10px 40px;">Create</button>
         </div>
     </div>
-</div>
 
-<script>
-// --- GLOBAL STATE ---
-const prModal = document.getElementById('prModal');
-const addPrBtn = document.querySelector('.add-btn');
-const closePr = document.getElementById('closeModal');
-const cancelPr = document.getElementById('cancelModal');
-const searchInput = document.querySelector('.search-box input');
-const tableBody = document.querySelector('table tbody');
+    <div id="prModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content" style="width: 700px; border-radius: 20px; background: #f4f4f4;">
+            <div class="modal-header">
+                <h2>Create New Purchase Order</h2>
+                <i class="fa-solid fa-xmark close-modal" id="closeModal"></i>
+            </div>
+            <div class="modal-body">
+                <div class="form-group"><label>P.O Number</label><input type="text" id="modalPONum"></div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Supplier Name</label>
+                        <div class="custom-select" id="selectSupplier">
+                            <div class="select-trigger"><span>Select</span> <i class="fa-solid fa-chevron-down"></i></div>
+                            <div class="options-list"><div>MTLBS</div><div>ROCKWELL</div><div>OPEMS</div></div>
+                        </div>
+                    </div>
+                    <div class="form-group"><label>Item</label><input type="text" id="modalItem"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Person in charge</label>
+                        <div class="custom-select" id="selectPIC">
+                            <div class="select-trigger"><span>Select</span> <i class="fa-solid fa-chevron-down"></i></div>
+                            <div class="options-list"><div>Mich</div><div>Sherlyn</div></div>
+                        </div>
+                    </div>
+                    <div class="form-group"><label>Requestor</label><input type="text" id="modalRequestor"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Date Needed</label>
+                        <div class="custom-date-picker" id="datePicker1">
+                            <div class="input-icon-wrap">
+                                <i class="fa-regular fa-calendar left-icon"></i>
+                                <input type="text" placeholder="dd/mm/yyyy" readonly>
+                                <i class="fa-solid fa-chevron-down right-icon"></i>
+                            </div>
+                            <div class="mini-calendar" id="cal1"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Delivered Pick-Up Date</label>
+                        <div class="custom-date-picker" id="datePicker2">
+                            <div class="input-icon-wrap">
+                                <i class="fa-regular fa-calendar left-icon"></i>
+                                <input type="text" placeholder="dd/mm/yyyy" readonly>
+                                <i class="fa-solid fa-chevron-down right-icon"></i>
+                            </div>
+                            <div class="mini-calendar" id="cal2"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group"><label>Delivered At</label><input type="text" id="modalDeliveredAt"></div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Purpose/Project</label>
+                        <div class="custom-select" id="selectProject">
+                            <div class="select-trigger"><span>Select</span> <i class="fa-solid fa-chevron-down"></i></div>
+                            <div class="options-list"><div>Projects Team</div><div>Maintenance</div></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <div class="custom-select" id="selectStatus">
+                            <div class="select-trigger"><span>Select</span> <i class="fa-solid fa-chevron-down"></i></div>
+                            <div class="options-list"><div>Received</div><div>Pending</div><div>Cancelled</div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" id="cancelModal">Cancel</button>
+                <button class="btn-create" id="submitBtn">Create</button>
+            </div>
+        </div>
+    </div>
 
-// Range Calendar State (For the Main Dashboard Filter)
-let currentViewDate = new Date(2026, 0, 1);
-let rangeStart = null;
-let rangeEnd = null;
+    <script>
+    // --- 1. GLOBAL STATE & SELECTORS ---
+    const prModal = document.getElementById('prModal');
+    const addPrBtn = document.querySelector('.add-btn');
+    const closePr = document.getElementById('closeModal');
+    const cancelPr = document.getElementById('cancelModal');
+    const searchInput = document.getElementById('searchInput');
+    const tableBody = document.querySelector('#poTable tbody');
+    const calendarWrap = document.getElementById('calendarDropdown');
+    const dateRangeBtn = document.getElementById('dateRangeBtn');
+    let editingRow = null;
 
-// Mini Calendar State (For the Modal Inputs)
-const calendarStates = {
-    cal1: { date: new Date(), selected: null },
-    cal2: { date: new Date(), selected: null }
-};
+    // Calendar Range State
+    let currentViewDate = new Date(2026, 0, 1);
+    let rangeStart = null;
+    let rangeEnd = null;
 
-// --- MODAL CONTROLS ---
-addPrBtn.onclick = () => prModal.style.display = 'flex';
-[closePr, cancelPr].forEach(btn => {
-    btn.onclick = (e) => {
+    // Mini Calendar State for Modal
+    const calendarStates = {
+        cal1: { date: new Date(), selected: null },
+        cal2: { date: new Date(), selected: null }
+    };
+
+    // --- 2. MODAL CONTROLS ---
+    addPrBtn.onclick = () => { 
+        editingRow = null; 
+        document.querySelector('.modal-header h2').innerText = "Create New Purchase Order";
+        document.querySelector('.btn-create').innerText = "Create";
+        // Clear inputs for new entry
+        document.querySelectorAll('.modal-body input').forEach(i => i.value = '');
+        document.querySelectorAll('.custom-select span').forEach(s => s.innerText = 'Select');
+        prModal.style.display = 'flex'; 
+    };
+    [closePr, cancelPr].forEach(btn => btn.onclick = () => prModal.style.display = 'none');
+
+    // --- 3. DASHBOARD FILTER CALENDAR ---
+    function renderRangeCalendar() {
+        const grid = document.getElementById('calendarGrid');
+        grid.innerHTML = '';
+        const year = currentViewDate.getFullYear();
+        const month = currentViewDate.getMonth();
+        const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        
+        document.getElementById('currentMonthYear').innerText = `${months[month]} ${year}`;
+        ['Su','Mo','Tu','We','Th','Fr','Sa'].forEach(d => grid.innerHTML += `<div class="day-name">${d}</div>`);
+
+        const firstDay = new Date(year, month, 1).getDay();
+        const lastDate = new Date(year, month + 1, 0).getDate();
+
+        // Filling leading empty days
+        for (let i = 0; i < firstDay; i++) {
+            const prevDate = new Date(year, month, 0).getDate() - (firstDay - i - 1);
+            grid.innerHTML += `<div class="day mute">${prevDate}</div>`;
+        }
+        for (let i = 1; i <= lastDate; i++) {
+            const d = document.createElement('div');
+            d.className = 'day';
+            d.innerText = i;
+            const thisDate = new Date(year, month, i);
+            if (rangeStart && isSameDay(thisDate, rangeStart)) d.classList.add('selected-edge');
+            if (rangeEnd && isSameDay(thisDate, rangeEnd)) d.classList.add('selected-edge');
+            if (rangeStart && rangeEnd && thisDate > rangeStart && thisDate < rangeEnd) d.classList.add('in-range');
+            
+            d.onclick = (e) => { e.stopPropagation(); handleRangeSelect(thisDate); };
+            grid.appendChild(d);
+        }
+        updateRangeHeaderText();
+    }
+
+    function handleRangeSelect(date) {
+        if (!rangeStart || (rangeStart && rangeEnd)) { rangeStart = date; rangeEnd = null; }
+        else if (date < rangeStart) { rangeEnd = rangeStart; rangeStart = date; }
+        else { rangeEnd = date; }
+        renderRangeCalendar();
+    }
+
+    function updateRangeHeaderText() {
+        const opt = { month: 'short', day: 'numeric' };
+        const display = document.getElementById('rangeDisplay');
+        if (!rangeStart) display.innerText = "Select Dates";
+        else if (!rangeEnd) display.innerText = `${rangeStart.toLocaleDateString('en-US', opt)} - ...`;
+        else display.innerText = `${rangeStart.toLocaleDateString('en-US', opt)} - ${rangeEnd.toLocaleDateString('en-US', opt)}`;
+    }
+
+    dateRangeBtn.onclick = (e) => {
         e.stopPropagation();
+        const isHidden = calendarWrap.style.display === 'none';
+        closeAllDropdowns();
+        if (isHidden) { calendarWrap.style.display = 'block'; renderRangeCalendar(); }
+    };
+
+    document.getElementById('prevMonth').onclick = (e) => { e.stopPropagation(); currentViewDate.setMonth(currentViewDate.getMonth() - 1); renderRangeCalendar(); };
+    document.getElementById('nextMonth').onclick = (e) => { e.stopPropagation(); currentViewDate.setMonth(currentViewDate.getMonth() + 1); renderRangeCalendar(); };
+
+    document.getElementById('saveCalendarBtn').onclick = () => {
+        if (rangeStart && rangeEnd) {
+            const opt = { month: 'short', day: 'numeric' };
+            document.getElementById('rangeBtnText').innerText = `${rangeStart.toLocaleDateString('en-US', opt)} - ${rangeEnd.toLocaleDateString('en-US', opt)}`;
+            filterTable();
+        }
+        calendarWrap.style.display = 'none';
+    };
+
+    // --- 4. SEARCH & FILTER ---
+    searchInput.oninput = filterTable;
+
+    function filterTable() {
+        const term = searchInput.value.toLowerCase();
+        const rows = tableBody.querySelectorAll('tr');
+        rows.forEach(row => {
+            const cells = row.cells;
+            const textMatch = Array.from(cells).some(c => c.innerText.toLowerCase().includes(term));
+            
+            let dateMatch = true;
+            if (rangeStart && rangeEnd) {
+                const rowDate = new Date(cells[4].innerText);
+                dateMatch = (rowDate >= rangeStart && rowDate <= rangeEnd);
+            }
+            row.style.display = (textMatch && dateMatch) ? "" : "none";
+        });
+    }
+
+    // --- 5. MINI CALENDAR (MODAL) ---
+    document.querySelectorAll('.custom-date-picker .input-icon-wrap').forEach(wrap => {
+        wrap.onclick = function(e) {
+            e.stopPropagation();
+            const parent = this.parentElement;
+            const calId = parent.querySelector('.mini-calendar').id;
+            const isOpen = parent.classList.contains('open');
+            closeAllDropdowns();
+            if (!isOpen) { parent.classList.add('open'); renderMiniCalendar(calId); }
+        };
+    });
+
+    function renderMiniCalendar(key) {
+        const state = calendarStates[key];
+        const container = document.getElementById(key);
+        const year = state.date.getFullYear();
+        const month = state.date.getMonth();
+        const firstDay = new Date(year, month, 1).getDay();
+        const lastDate = new Date(year, month + 1, 0).getDate();
+
+        let html = `<div class="mini-calendar-header"><i class="fa-solid fa-chevron-left" onclick="changeMiniMonth(event,'${key}',-1)"></i><span>${state.date.toLocaleString('default',{month:'long'})} ${year}</span><i class="fa-solid fa-chevron-right" onclick="changeMiniMonth(event,'${key}',1)"></i></div><div class="mini-grid">`;
+        ['S','M','T','W','T','F','S'].forEach(d => html += `<div class="mini-day-name">${d}</div>`);
+        for (let x=0; x<firstDay; x++) html += `<div class="mini-day mute"></div>`;
+        for (let i=1; i<=lastDate; i++) {
+            const isSel = isSameDay(new Date(year, month, i), state.selected) ? 'selected' : '';
+            html += `<div class="mini-day ${isSel}" onclick="selectMiniDate(event,'${key}',${i})">${i}</div>`;
+        }
+        container.innerHTML = html + `</div>`;
+    }
+
+    window.changeMiniMonth = (e, key, delta) => {
+        e.stopPropagation();
+        calendarStates[key].date.setMonth(calendarStates[key].date.getMonth() + delta);
+        renderMiniCalendar(key);
+    };
+
+    window.selectMiniDate = (e, key, day) => {
+        e.stopPropagation();
+        const state = calendarStates[key];
+        state.selected = new Date(state.date.getFullYear(), state.date.getMonth(), day);
+        const formatted = `${String(day).padStart(2,'0')}/${String(state.selected.getMonth()+1).padStart(2,'0')}/${state.selected.getFullYear()}`;
+        document.getElementById(key).parentElement.querySelector('input').value = formatted;
+        closeAllDropdowns();
+    };
+
+    // --- 6. DROPDOWN UTILS ---
+    document.querySelectorAll('.select-trigger').forEach(t => {
+        t.onclick = (e) => {
+            e.stopPropagation();
+            const p = t.parentElement;
+            const wasOpen = p.classList.contains('open');
+            closeAllDropdowns();
+            if(!wasOpen) p.classList.add('open');
+        };
+    });
+
+    document.querySelectorAll('.options-list div').forEach(opt => {
+        opt.onclick = (e) => {
+            e.stopPropagation();
+            const p = opt.closest('.custom-select');
+            p.querySelector('span').innerText = opt.innerText;
+            p.classList.remove('open');
+        };
+    });
+
+    function closeAllDropdowns() {
+        document.querySelectorAll('.custom-select, .custom-date-picker').forEach(el => el.classList.remove('open'));
+        calendarWrap.style.display = 'none';
+    }
+
+    function isSameDay(d1, d2) {
+        return d1 && d2 && d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() && d1.getDate() === d2.getDate();
+    }
+
+    window.onclick = () => closeAllDropdowns();
+
+    // --- 7. CREATE / UPDATE PO ---
+    document.getElementById('submitBtn').onclick = function() {
+        const po = document.getElementById('modalPONum').value;
+        if (!po) return alert("Enter PO Number");
+
+        const supplier = document.querySelector('#selectSupplier span').innerText;
+        const item = document.getElementById('modalItem').value;
+        const pic = document.querySelector('#selectPIC span').innerText;
+        const dateNeeded = document.querySelector('#datePicker1 input').value;
+        const requestor = document.getElementById('modalRequestor').value;
+        const deliveryDate = document.querySelector('#datePicker2 input').value;
+        const deliveredAt = document.getElementById('modalDeliveredAt').value;
+        const project = document.querySelector('#selectProject span').innerText;
+        const status = document.querySelector('#selectStatus span').innerText;
+
+        if (editingRow) {
+            const cells = editingRow.cells;
+            cells[0].innerText = po; cells[1].innerText = supplier; cells[2].innerText = item;
+            cells[3].innerText = pic; cells[5].innerText = dateNeeded; cells[6].innerText = requestor;
+            cells[7].innerText = deliveryDate; cells[8].innerText = deliveredAt; cells[9].innerText = project;
+            cells[10].innerText = status;
+            cells[10].className = (status === "Received") ? "status-done" : "";
+        } else {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${po}</td><td>${supplier}</td><td>${item}</td><td>${pic}</td>
+                <td>${new Date().toLocaleDateString()}</td><td>${dateNeeded}</td>
+                <td>${requestor}</td><td>${deliveryDate}</td><td>${deliveredAt}</td>
+                <td>${project}</td><td class="${status==='Received'?'status-done':''}">${status}</td>
+                <td class="action-icons">
+                    <i class="fa-solid fa-pen-to-square"></i> 
+                    <i class="fa-solid fa-trash" onclick="this.closest('tr').remove()"></i>
+                </td>`;
+            tableBody.appendChild(row);
+        }
         prModal.style.display = 'none';
     };
-});
 
-// --- REFINED SEARCH LOGIC ---
-function filterTable() {
-    const searchTerm = searchInput.value.toLowerCase();
-    const rows = tableBody.querySelectorAll('tr');
-
-    rows.forEach(row => {
-        const cells = row.getElementsByTagName('td');
-        if (cells.length === 0) return;
-
-        // 1. Text Filter Logic
-        const poNo = cells[0].innerText.toLowerCase();
-        const supplier = cells[1].innerText.toLowerCase();
-        const pic = cells[3].innerText.toLowerCase();
-        const project = cells[9].innerText.toLowerCase();
-        const matchesSearch = poNo.includes(searchTerm) || 
-                              supplier.includes(searchTerm) || 
-                              pic.includes(searchTerm) || 
-                              project.includes(searchTerm);
-
-        // 2. Date Filter Logic
-        let matchesDate = true;
-        if (rangeStart && rangeEnd) {
-            // Index 4 is the "Date" column in your table
-            const rowDateText = cells[4].innerText; 
-            const rowDate = new Date(rowDateText);
-            
-            // Normalize dates to midnight for accurate comparison
-            const checkDate = new Date(rowDate.getFullYear(), rowDate.getMonth(), rowDate.getDate()).getTime();
-            const start = new Date(rangeStart.getFullYear(), rangeStart.getMonth(), rangeStart.getDate()).getTime();
-            const end = new Date(rangeEnd.getFullYear(), rangeEnd.getMonth(), rangeEnd.getDate()).getTime();
-            
-            matchesDate = (checkDate >= start && checkDate <= end);
-        }
-
-        // Show row only if BOTH search and date conditions are met
-        row.style.display = (matchesSearch && matchesDate) ? "" : "none";
-    });
-}
-
-// --- MAIN DATE RANGE CALENDAR LOGIC ---
-const dateRangeBtn = document.querySelector('.date-select');
-const rangeCalendarWrap = document.getElementById('calendarDropdown');
-const rangeGrid = document.getElementById('calendarGrid');
-const rangeMonthYearLabel = document.getElementById('currentMonthYear');
-
-function renderRangeCalendar() {
-    if (!rangeGrid) return;
-    rangeGrid.innerHTML = '';
-    
-    const year = currentViewDate.getFullYear();
-    const month = currentViewDate.getMonth();
-    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    
-    rangeMonthYearLabel.innerText = `${monthNames[month]} ${year}`;
-
-    const firstDay = new Date(year, month, 1).getDay();
-    const lastDate = new Date(year, month + 1, 0).getDate();
-
-    ['Su','Mo','Tu','We','Th','Fr','Sa'].forEach(d => {
-        const div = document.createElement('div');
-        div.className = 'day-name';
-        div.innerText = d;
-        rangeGrid.appendChild(div);
+    // --- 8. SIDEBAR NAVIGATION ---
+    document.querySelectorAll('.side-nav .menu-item').forEach(item => {
+        toggleSubMenus(item, false); 
+        item.style.cursor = 'pointer';
+        item.addEventListener('click', function() {
+            const caret = this.querySelector('.caret');
+            if (caret) {
+                caret.style.transform = caret.style.transform === 'rotate(180deg)' ? 'rotate(0deg)' : 'rotate(180deg)';
+                caret.style.transition = 'transform 0.3s ease';
+            }
+            const firstSub = this.nextElementSibling;
+            const isHidden = !firstSub || firstSub.style.display === 'none';
+            toggleSubMenus(this, isHidden);
+        });
     });
 
-    for (let i = 0; i < firstDay; i++) {
-        const empty = document.createElement('div');
-        empty.className = 'day mute';
-        rangeGrid.appendChild(empty);
-    }
-
-    for (let i = 1; i <= lastDate; i++) {
-        const dayDiv = document.createElement('div');
-        dayDiv.className = 'day';
-        dayDiv.innerText = i;
-        const thisDate = new Date(year, month, i);
-
-        if (rangeStart && isSameDay(thisDate, rangeStart)) dayDiv.classList.add('selected-edge');
-        if (rangeEnd && isSameDay(thisDate, rangeEnd)) dayDiv.classList.add('selected-edge');
-        if (rangeStart && rangeEnd && thisDate > rangeStart && thisDate < rangeEnd) {
-            dayDiv.classList.add('in-range');
+    function toggleSubMenus(menuItem, show) {
+        let next = menuItem.nextElementSibling;
+        while (next && (next.classList.contains('sub-menu') || next.classList.contains('active-tab'))) {
+            next.style.display = show ? 'block' : 'none';
+            next = next.nextElementSibling;
         }
-
-        dayDiv.onclick = (e) => {
-            e.stopPropagation(); // Prevents calendar from closing
-            handleRangeSelect(thisDate);
-        };
-        rangeGrid.appendChild(dayDiv);
     }
-}
 
-function handleRangeSelect(date) {
-    if (!rangeStart || (rangeStart && rangeEnd)) {
-        rangeStart = date;
-        rangeEnd = null;
-    } else if (date < rangeStart) {
-        rangeEnd = rangeStart;
-        rangeStart = date;
-    } else {
-        rangeEnd = date;
-    }
-    renderRangeCalendar();
-}
+    // --- 9. EDIT PO LOGIC (EVENT DELEGATION) ---
+    tableBody.addEventListener('click', function(e) {
+        if (e.target.classList.contains('fa-pen-to-square')) {
+            editingRow = e.target.closest('tr');
+            const cells = editingRow.cells;
 
-dateRangeBtn.onclick = (e) => {
-    e.stopPropagation();
-    const isHidden = (rangeCalendarWrap.style.display === 'none' || rangeCalendarWrap.style.display === '');
-    closeAllDropdowns(); // Close other things first
-    
-    if (isHidden) {
-        rangeCalendarWrap.style.display = 'block';
-        renderRangeCalendar();
-    } else {
-        rangeCalendarWrap.style.display = 'none';
-    }
-};
+            document.getElementById('modalPONum').value = cells[0].innerText;
+            document.getElementById('modalItem').value = cells[2].innerText;
+            document.getElementById('modalRequestor').value = cells[6].innerText;
+            document.getElementById('modalDeliveredAt').value = cells[8].innerText;
 
-document.getElementById('prevMonth').onclick = (e) => {
-    e.stopPropagation();
-    currentViewDate.setMonth(currentViewDate.getMonth() - 1);
-    renderRangeCalendar();
-};
+            document.querySelector('#selectSupplier span').innerText = cells[1].innerText;
+            document.querySelector('#selectPIC span').innerText = cells[3].innerText;
+            document.querySelector('#selectProject span').innerText = cells[9].innerText;
+            document.querySelector('#selectStatus span').innerText = cells[10].innerText;
 
-document.getElementById('nextMonth').onclick = (e) => {
-    e.stopPropagation();
-    currentViewDate.setMonth(currentViewDate.getMonth() + 1);
-    renderRangeCalendar();
-};
+            document.querySelector('#datePicker1 input').value = cells[5].innerText;
+            document.querySelector('#datePicker2 input').value = cells[7].innerText;
 
-document.getElementById('saveCalendarBtn').onclick = (e) => {
-    e.stopPropagation();
-    if (rangeStart && rangeEnd) {
-        const options = { month: 'short', day: 'numeric' };
-        // Update the button text to show selected range
-        dateRangeBtn.innerHTML = `<i class="fa-regular fa-calendar"></i> ${rangeStart.toLocaleDateString('en-US', options)} - ${rangeEnd.toLocaleDateString('en-US', options)} <i class="fa-solid fa-chevron-down"></i>`;
-        
-        // Run the filter
-        filterTable();
-    }
-    rangeCalendarWrap.style.display = 'none';
-};
-
-// --- MINI CALENDAR (MODAL) LOGIC ---
-document.querySelectorAll('.custom-date-picker .input-icon-wrap').forEach(wrap => {
-    wrap.onclick = function(e) {
-        e.stopPropagation();
-        const parent = this.parentElement;
-        const calId = parent.querySelector('.mini-calendar').id;
-        const wasOpen = parent.classList.contains('open');
-        closeAllDropdowns();
-        if (!wasOpen) {
-            parent.classList.add('open');
-            renderMiniCalendar(calId);
+            document.querySelector('.modal-header h2').innerText = "Edit Purchase Order";
+            document.querySelector('.btn-create').innerText = "Save Changes";
+            prModal.style.display = 'flex';
         }
-    };
-});
-
-function renderMiniCalendar(key) {
-    const state = calendarStates[key];
-    const container = document.getElementById(key);
-    const year = state.date.getFullYear();
-    const month = state.date.getMonth();
-    
-    const firstDay = new Date(year, month, 1).getDay();
-    const lastDate = new Date(year, month + 1, 0).getDate();
-
-    let html = `<div class="mini-calendar-header"><i class="fa-solid fa-chevron-left" onclick="changeMiniMonth(event, '${key}', -1)"></i><span>${state.date.toLocaleString('default', { month: 'long' })} ${year}</span><i class="fa-solid fa-chevron-right" onclick="changeMiniMonth(event, '${key}', 1)"></i></div><div class="mini-grid">`;
-    html += ['Su','Mo','Tu','We','Th','Fr','Sa'].map(d => `<div class="mini-day-name">${d}</div>`).join('');
-
-    for (let x = 0; x < firstDay; x++) html += `<div class="mini-day mute"></div>`;
-    for (let i = 1; i <= lastDate; i++) {
-        const isSelected = isSameDay(new Date(year, month, i), state.selected) ? 'selected' : '';
-        html += `<div class="mini-day ${isSelected}" onclick="selectMiniDate(event, '${key}', ${i})">${i}</div>`;
-    }
-    container.innerHTML = html + `</div>`;
-}
-
-function changeMiniMonth(e, key, delta) {
-    e.stopPropagation();
-    calendarStates[key].date.setMonth(calendarStates[key].date.getMonth() + delta);
-    renderMiniCalendar(key);
-}
-
-function selectMiniDate(e, key, day) {
-    e.stopPropagation();
-    const state = calendarStates[key];
-    state.selected = new Date(state.date.getFullYear(), state.date.getMonth(), day);
-    const formatted = `${String(day).padStart(2, '0')}/${String(state.selected.getMonth() + 1).padStart(2, '0')}/${state.selected.getFullYear()}`;
-    document.getElementById(key).parentElement.querySelector('input').value = formatted;
-    closeAllDropdowns();
-}
-
-// --- DROPDOWNS ---
-document.querySelectorAll('.select-trigger').forEach(trigger => {
-    trigger.onclick = function(e) {
-        e.stopPropagation();
-        const parent = this.parentElement;
-        const wasOpen = parent.classList.contains('open');
-        closeAllDropdowns();
-        if (!wasOpen) parent.classList.add('open');
-    };
-});
-
-document.querySelectorAll('.options-list div').forEach(option => {
-    option.onclick = function(e) {
-        e.stopPropagation();
-        const parent = this.closest('.custom-select');
-        parent.querySelector('span').innerText = this.innerText;
-        parent.classList.remove('open');
-    };
-});
-
-// --- UTILS ---
-function closeAllDropdowns() {
-    document.querySelectorAll('.custom-select, .custom-date-picker').forEach(el => el.classList.remove('open'));
-    rangeCalendarWrap.style.display = 'none';
-}
-
-function isSameDay(d1, d2) {
-    return d1 && d2 && d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() && d1.getDate() === d2.getDate();
-}
-
-window.onclick = () => closeAllDropdowns();
-
-// --- CREATE / SAVE PO ---
-document.querySelector('.btn-create').onclick = function() {
-    const po = document.getElementById('modalPONum').value;
-    if (!po) return alert("Enter PO Number");
-
-    const supplier = document.querySelector('#selectSupplier span').innerText;
-    const item = document.getElementById('modalItem').value;
-    const pic = document.querySelector('#selectPIC span').innerText;
-    const dateNeeded = document.querySelector('#datePicker1 input').value;
-    const requestor = document.getElementById('modalRequestor').value;
-    const deliveryDate = document.querySelector('#datePicker2 input').value;
-    const deliveredAt = document.getElementById('modalDeliveredAt').value;
-    const project = document.querySelector('#selectProject span').innerText;
-    const status = document.querySelector('#selectStatus span').innerText;
-
-    if (editingRow) {
-        // UPDATE EXISTING ROW
-        const cells = editingRow.getElementsByTagName('td');
-        cells[0].innerText = po;
-        cells[1].innerText = supplier;
-        cells[2].innerText = item;
-        cells[3].innerText = pic;
-        // cells[4] is the "Date" (usually creation date, we leave it)
-        cells[5].innerText = dateNeeded;
-        cells[6].innerText = requestor;
-        cells[7].innerText = deliveryDate;
-        cells[8].innerText = deliveredAt;
-        cells[9].innerText = project;
-        cells[10].innerText = status;
-        cells[10].className = (status === "Received") ? "status-done" : ""; // Update class for color
-    } else {
-        // CREATE NEW ROW (Your original logic)
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${po}</td>
-            <td>${supplier}</td>
-            <td>${item}</td>
-            <td>${pic}</td>
-            <td>${new Date().toLocaleDateString()}</td>
-            <td>${dateNeeded}</td>
-            <td>${requestor}</td>
-            <td>${deliveryDate}</td>
-            <td>${deliveredAt}</td>
-            <td>${project}</td>
-            <td class="${status === 'Received' ? 'status-done' : ''}">${status}</td>
-            <td class="action-icons">
-                <i class="fa-solid fa-pen-to-square"></i> 
-                <i class="fa-solid fa-trash" onclick="this.closest('tr').remove()"></i>
-            </td>
-        `;
-        tableBody.appendChild(row);
-    }
-    
-    prModal.style.display = 'none';
-    editingRow = null; // Reset state
-};
-
-const slider = document.querySelector('.table-wrapper');
-let isDown = false;
-let startX;
-let scrollLeft;
-
-slider.addEventListener('mousedown', (e) => {
-    isDown = true;
-    slider.classList.add('active');
-    startX = e.pageX - slider.offsetLeft;
-    scrollLeft = slider.scrollLeft;
-    slider.style.cursor = 'grabbing';
-});
-
-slider.addEventListener('mouseleave', () => {
-    isDown = false;
-    slider.style.cursor = 'default';
-});
-
-slider.addEventListener('mouseup', () => {
-    isDown = false;
-    slider.style.cursor = 'grab';
-});
-
-slider.addEventListener('mousemove', (e) => {
-    if (!isDown) return;
-    e.preventDefault();
-    const x = e.pageX - slider.offsetLeft;
-    const walk = (x - startX) * 2; // The number 2 determines scroll speed
-    slider.scrollLeft = scrollLeft - walk;
-});
-
-// Set initial cursor
-slider.style.cursor = 'grab';
-
-</script>
-
-<script>
-document.querySelectorAll('.side-nav .menu-item').forEach(item => {
-    // 1. Initial State: Hide sub-menus on page load (Optional)
-    toggleSubMenus(item, false); 
-
-    item.style.cursor = 'pointer'; // Ensure user knows it's clickable
-
-    item.addEventListener('click', function() {
-        // Toggle the caret rotation
-        const caret = this.querySelector('.caret');
-        if (caret) {
-            caret.style.transform = caret.style.transform === 'rotate(180deg)' ? 'rotate(0deg)' : 'rotate(180deg)';
-            caret.style.transition = 'transform 0.3s ease';
-        }
-
-        // Check current state of the first sub-menu item to determine if we show or hide
-        const firstSub = this.nextElementSibling;
-        const isHidden = !firstSub || firstSub.style.display === 'none';
-        
-        toggleSubMenus(this, isHidden);
     });
-});
 
-function toggleSubMenus(menuItem, show) {
-    let next = menuItem.nextElementSibling;
-    
-    while (next && (next.classList.contains('sub-menu') || next.classList.contains('active-tab'))) {
-        next.style.display = show ? 'block' : 'none';
-        next = next.nextElementSibling;
-    }
-}
-
-// --- EDIT PO LOGIC ---
-let editingRow = null; // Keeps track of which row we are editing
-
-tableBody.onclick = function(e) {
-    // Check if the clicked element is the edit icon
-    if (e.target.classList.contains('fa-pen-to-square')) {
-        editingRow = e.target.closest('tr');
-        const cells = editingRow.getElementsByTagName('td');
-
-        // 1. Fill Text Inputs
-        document.getElementById('modalPONum').value = cells[0].innerText;
-        document.getElementById('modalItem').value = cells[2].innerText;
-        document.getElementById('modalRequestor').value = cells[6].innerText;
-        document.getElementById('modalDeliveredAt').value = cells[8].innerText;
-
-        // 2. Fill Custom Selects (Updating the span text)
-        document.querySelector('#selectSupplier span').innerText = cells[1].innerText;
-        document.querySelector('#selectPIC span').innerText = cells[3].innerText;
-        document.querySelector('#selectProject span').innerText = cells[9].innerText;
-        document.querySelector('#selectStatus span').innerText = cells[10].innerText;
-
-        // 3. Fill Date Inputs
-        document.querySelector('#datePicker1 input').value = cells[5].innerText;
-        document.querySelector('#datePicker2 input').value = cells[7].innerText;
-
-        // 4. Change Modal UI
-        document.querySelector('.modal-header h2').innerText = "Edit Purchase Order";
-        document.querySelector('.btn-create').innerText = "Save Changes";
-        
-        prModal.style.display = 'flex';
-    }
-};
-
-// Reset Modal when clicking "Add" button
-addPrBtn.addEventListener('click', () => {
-    editingRow = null;
-    document.querySelector('.modal-header h2').innerText = "Create New Purchase Order";
-    document.querySelector('.btn-create').innerText = "Create";
-    // Optional: Clear inputs here if desired
-});
-</script>
+    // --- 10. EXPORT LOGIC ---
+    document.getElementById('exportExcelBtn').onclick = function() {
+        let csv = [];
+        const rows = document.querySelectorAll("table tr");
+        for (let i = 0; i < rows.length; i++) {
+            if (rows[i].style.display !== "none") {
+                let row = [];
+                const cols = rows[i].querySelectorAll("td, th");
+                for (let j = 0; j < cols.length - 1; j++) {
+                    let data = cols[j].innerText.replace(/,/g, '').replace(/₱/g, '');
+                    row.push('"' + data + '"');
+                }
+                csv.push(row.join(","));
+            }
+        }
+        const csvFile = new Blob([csv.join("\n")], { type: "text/csv" });
+        const downloadLink = document.createElement("a");
+        downloadLink.download = `PO_Report_${new Date().toLocaleDateString()}.csv`;
+        downloadLink.href = window.URL.createObjectURL(csvFile);
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    };
+    </script>
 
 </body>
 </html>

@@ -143,7 +143,7 @@ body {
 
 .search-box {
     position: relative;
-    width: 60%;
+    width: 50%;
 }
 
 .search-box input {
@@ -290,7 +290,7 @@ th, td {
 .modal-footer { display: flex; justify-content: flex-end; align-items: center; margin-top: 20px; }
 .close-modal { cursor: pointer; color: #999; font-size: 1.1rem; }
 
-.form-row { display: flex; gap: 20px; margin-bottom: 12px; }
+.form-row { display: flex; gap: 20px;}
 .split-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 5px; }
 .form-group { flex: 1; display: flex; flex-direction: column; gap: 5px; }
 .form-group label { font-size: 13px; font-weight: 500; color: #444; margin-left: 2px; }
@@ -385,8 +385,16 @@ th, td {
 
 /* Calendar Precision */
 .calendar-dropdown {
-    position: absolute; right: 180px; top: 220px; width: 280px; z-index: 1000; display: none;
+    position: absolute; right: 360px; top: 220px; width: 280px; z-index: 1000; display: none;
+    background: #E8E8E8; /* Matches your gray theme */
+    border-radius: 15px;
+    padding: 12px;
+    display: none;
+    width: 240px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    margin-top: 50px;
 }
+
 .calendar-range-header { background: #E8E8E8; padding: 12px 15px; border-radius: 15px 15px 0 0; display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: #333; }
 .calendar-picker { background: #E8E8E8; padding: 5px 15px 15px 15px; border-radius: 0 0 15px 15px; }
 .calendar-month-nav { display: flex; justify-content: space-between; padding: 10px 0; font-size: 14px; }
@@ -461,13 +469,18 @@ th, td {
     border-radius: 15px;
     padding: 10px;
     display: none;
-    z-index: 3000;
     width: 250px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 
 .custom-select.open .options-list, 
-.custom-date-picker.open .mini-calendar { display: block; }
+.custom-date-picker.open .mini-calendar .calendar-dropdown  { 
+    display: block; 
+    bottom: 100%;
+    top: auto;
+    margin-bottom: 10px;
+    margin-top: 0;
+}
 
 .custom-select.open .select-trigger i { transform: rotate(180deg); }
 
@@ -480,10 +493,10 @@ th, td {
     border-radius: 15px;
     padding: 12px;
     display: none;
-    z-index: 3000;
     width: 240px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.1);
     margin-top: 5px;
+    z-index: 9999;
 }
 
 .mini-calendar-header {
@@ -530,7 +543,7 @@ th, td {
     transition: 0.2s;
 }
 
-.mini-day:hover { background: #ddd; }
+.mini-day:hover { background: #FF6B00; }
 
 .mini-day.selected {
     background: #FF6B00 !important; /* Specific Orange from image */

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PR Tracker | TeamGlobal</title>
+    <title>Payment Tracker | TGFSI</title>
     <link rel="stylesheet" href="Dashboard_Payment.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -123,7 +123,7 @@
 
 <div id="prModal" class="modal-overlay">
     <div class="modal-content" style="width: 700px; border-radius: 30px; background: #f2f1ef; padding: 30px;">
-        <div class="modal-header" style="border: none; margin-bottom: 20px;">
+        <div class="modal-header" style="border: none;">
             <h2 style="font-family: inherit; font-weight: 500; font-size: 24px; color: #000;">Add New Payment</h2>
             <i class="fa-solid fa-xmark close-modal" id="closeModal" style="font-size: 20px; color: #666;"></i>
         </div>
@@ -143,8 +143,13 @@
                     <label style="display: block; margin-bottom: 8px; font-weight: 500;">Mode of payment</label>
                     <div class="custom-select" id="selectMode" style="height: 45px; background: #c8c8c8; border: 1px solid #bbb; border-radius: 10px;">
                         <div class="select-trigger" style="display: flex; justify-content: space-between; align-items: center; height: 100%; padding: 0 15px;">
-                            <span>Select</span> <i class="fa-solid fa-chevron-down"></i>
-                        </div>
+                            <span>Select</span> <i class="fa-solid fa-chevron-down"></i></div>
+                        <div class="options-list">
+                            <div>Check Payment</div>
+                            <div>Cash</div>
+                            <div>Card</div>
+                            <div>Installment</div>
+                        </div>                            
                     </div>
                 </div>
             </div>
@@ -155,16 +160,23 @@
                     <div style="position: relative;">
                         <input type="number" id="modalAmount" style="width: 100%; height: 45px; background: #c8c8c8; border: 1px solid #bbb; border-radius: 10px; padding: 0 15px;">
                         <div style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; font-size: 10px; color: #666;">
-                            <i class="fa-solid fa-chevron-up"></i>
-                            <i class="fa-solid fa-chevron-down"></i>
                         </div>
                     </div>
                 </div>
+                
                 <div class="form-group" style="flex: 1;">
                     <label style="display: block; margin-bottom: 8px; font-weight: 500;">Status</label>
                     <div class="custom-select" id="selectStatus" style="height: 45px; background: #c8c8c8; border: 1px solid #bbb; border-radius: 10px;">
                         <div class="select-trigger" style="display: flex; justify-content: space-between; align-items: center; height: 100%; padding: 0 15px;">
-                            <span>Select</span> <i class="fa-solid fa-chevron-down"></i>
+                            <span>Select</span> <i class="fa-solid fa-chevron-down"></i></div>
+                        <div class="options-list">
+                            <div>For Deposit</div>
+                            <div>For Pick-Up</div>
+                            <div>50% Down Payment</div>
+                            <div>60% Down Payment</div>
+                            <div>Cancelled</div>
+                            <div>Credit Card</div>
+                            <div>Hold</div>
                         </div>
                     </div>
                 </div>
@@ -178,6 +190,7 @@
                         <input type="text" placeholder="dd/mm/yyyy" readonly style="background: transparent; border: none; flex-grow: 1; outline: none;">
                         <i class="fa-solid fa-chevron-down right-icon" style="color: #666;"></i>
                     </div>
+                    <div class="mini-calendar" id="cal1"></div>
                 </div>
             </div>
         </div>
@@ -274,6 +287,228 @@ document.querySelector('.btn-create').onclick = function() {
     }
     prModal.style.display = 'none';
 };
+
+// --- CUSTOM DROPDOWN FUNCTIONALITY ---
+document.querySelectorAll('.custom-select').forEach(select => {
+    const trigger = select.querySelector('.select-trigger');
+    const optionsList = select.querySelector('.options-list');
+    const options = select.querySelectorAll('.options-list div');
+    const label = trigger.querySelector('span');
+
+    // 1. Toggle dropdown visibility
+    trigger.addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevents immediate closing
+        
+        // Close other open dropdowns first
+        document.querySelectorAll('.options-list').forEach(list => {
+            if (list !== optionsList) list.style.display = 'none';
+        });
+
+        const isVisible = optionsList.style.display === 'block';
+        optionsList.style.display = isVisible ? 'none' : 'block';
+    });
+
+    // 2. Handle option selection
+    options.forEach(option => {
+        option.addEventListener('click', () => {
+            // Update the text
+            label.innerText = option.innerText;
+            
+            // Update active class
+            options.forEach(opt => opt.classList.remove('active'));
+            option.classList.add('active');
+            
+            // Close the list
+            optionsList.style.display = 'none';
+        });
+    });
+});
+
+// --- MODAL CLOSE BUTTONS ---
+document.getElementById('closeModal').onclick = () => prModal.style.display = 'none';
+document.getElementById('cancelModal').onclick = () => prModal.style.display = 'none';
+
+// --- CLICK OUTSIDE TO CLOSE ---
+window.addEventListener('click', (e) => {
+    // Close dropdowns if clicking outside
+    if (!e.target.closest('.custom-select')) {
+        document.querySelectorAll('.options-list').forEach(list => {
+            list.style.display = 'none';
+        });
+    }
+    // Close modal if clicking overlay
+    if (e.target === prModal) {
+        prModal.style.display = 'none';
+    }
+});
+
+// Toggle Function for Custom Dropdowns
+document.querySelectorAll('.select-trigger').forEach(trigger => {
+    trigger.onclick = function(e) {
+        e.stopPropagation();
+        const parent = this.parentElement;
+        closeAllDropdowns();
+        parent.classList.toggle('open');
+    };
+});
+
+// Select Option Logic
+document.querySelectorAll('.options-list div').forEach(option => {
+    option.onclick = function() {
+        const text = this.innerText;
+        const parent = this.closest('.custom-select');
+        parent.querySelector('span').innerText = text;
+        parent.classList.remove('open');
+        
+        // Update active class
+        parent.querySelectorAll('div').forEach(d => d.classList.remove('active'));
+        this.classList.add('active');
+    };
+});
+
+// Calendar Input Toggle
+document.querySelectorAll('.custom-date-picker .input-icon-wrap').forEach(wrap => {
+    wrap.onclick = function(e) {
+        e.stopPropagation();
+        const parent = this.parentElement;
+        closeAllDropdowns();
+        parent.classList.add('open');
+        // Trigger mini calendar render (Reuse your existing renderDynamicCalendar logic here)
+        renderMiniCalendar(parent.querySelector('.mini-calendar'), parent.querySelector('input'));
+    };
+});
+
+function closeAllDropdowns() {
+    document.querySelectorAll('.custom-select, .custom-date-picker').forEach(el => el.classList.remove('open'));
+}
+
+window.onclick = closeAllDropdowns;
+
+// Simplified Mini Calendar Render
+function renderMiniCalendar(container, targetInput) {
+    container.innerHTML = `
+        <div class="calendar-month-nav">
+            <i class="fa-solid fa-chevron-left"></i>
+            <span style="font-weight: bold; font-size:12px;">January 2026</span>
+            <i class="fa-solid fa-chevron-right"></i>
+        </div>
+        <div class="calendar-grid" style="grid-template-columns: repeat(7, 1fr); font-size:10px;">
+            ${/* Simplified loop for demo - use your existing grid logic here */ ''}
+            <div class="day" onclick="selectDate(this, '${targetInput.placeholder}')">1</div>
+            </div>
+    `;
+}
+
+// State for each mini calendar
+const calendarStates = {
+    cal1: { date: new Date(), inputId: 'dateInput1' },
+    cal2: { date: new Date(), inputId: 'dateInput2' }
+};
+
+function initMiniCalendars() {
+    Object.keys(calendarStates).forEach(key => {
+        renderMiniCalendar(key);
+    });
+}
+
+function renderMiniCalendar(key) {
+    const state = calendarStates[key];
+    const container = document.getElementById(key);
+    const year = state.date.getFullYear();
+    const month = state.date.getMonth();
+    
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    
+    // Leap year logic handled by Date(year, month + 1, 0)
+    const firstDay = new Date(year, month, 1).getDay();
+    const lastDate = new Date(year, month + 1, 0).getDate();
+    const prevLastDate = new Date(year, month, 0).getDate();
+
+    let html = `
+        <div class="mini-calendar-header">
+            <i class="fa-solid fa-chevron-left" onclick="changeMiniMonth('${key}', -1)"></i>
+            <span>${monthNames[month]} ${year}</span>
+            <i class="fa-solid fa-chevron-right" onclick="changeMiniMonth('${key}', 1)"></i>
+        </div>
+        <div class="mini-grid">
+            ${['Su','Mo','Tu','We','Th','Fr','Sa'].map(d => `<div class="mini-day-name">${d}</div>`).join('')}
+    `;
+
+    // Muted days from prev month
+    for (let x = firstDay; x > 0; x--) {
+        html += `<div class="mini-day mute">${prevLastDate - x + 1}</div>`;
+    }
+
+    // Actual days
+    for (let i = 1; i <= lastDate; i++) {
+        const isSelected = isSameDay(new Date(year, month, i), state.selected) ? 'selected' : '';
+        html += `<div class="mini-day ${isSelected}" onclick="selectMiniDate('${key}', ${i})">${i}</div>`;
+    }
+
+    html += `</div>`;
+    container.innerHTML = html;
+}
+
+function changeMiniMonth(key, delta) {
+    event.stopPropagation();
+    calendarStates[key].date.setMonth(calendarStates[key].date.getMonth() + delta);
+    renderMiniCalendar(key);
+}
+
+function selectMiniDate(key, day) {
+    event.stopPropagation();
+    const state = calendarStates[key];
+    const selectedDate = new Date(state.date.getFullYear(), state.date.getMonth(), day);
+    state.selected = selectedDate;
+    
+    // Format: dd/mm/yyyy
+    const formatted = `${String(day).padStart(2, '0')}/${String(selectedDate.getMonth() + 1).padStart(2, '0')}/${selectedDate.getFullYear()}`;
+    
+    // Find input and update
+    const wrapper = document.getElementById(key).parentElement;
+    wrapper.querySelector('input').value = formatted;
+    
+    renderMiniCalendar(key);
+    closeAllDropdowns();
+}
+
+function isSameDay(d1, d2) {
+    return d1 && d2 && d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() && d1.getDate() === d2.getDate();
+}
+
+initMiniCalendars();
+
+// Updated Toggle for Custom Date Picker with Smart Positioning
+document.querySelectorAll('.custom-date-picker .input-icon-wrap').forEach(wrap => {
+    wrap.onclick = function(e) {
+        e.stopPropagation();
+        const parent = this.parentElement;
+        const calendar = parent.querySelector('.mini-calendar');
+        
+        // Close other dropdowns first
+        closeAllDropdowns();
+
+        // --- Smart Positioning Logic ---
+        const rect = this.getBoundingClientRect();
+        const spaceBelow = window.innerHeight - rect.bottom;
+        const calendarHeight = 280; // Estimated height of your mini calendar
+
+        if (spaceBelow < calendarHeight) {
+            parent.classList.add('drop-up');
+        } else {
+            parent.classList.remove('drop-up');
+        }
+        // -------------------------------
+
+        parent.classList.add('open');
+        
+        // Trigger the render for the specific calendar ID (e.g., 'cal1')
+        const calId = calendar.getAttribute('id');
+        if (calId) {
+            renderMiniCalendar(calId);
+        }
+    };
+});
 </script>
 
 <script>

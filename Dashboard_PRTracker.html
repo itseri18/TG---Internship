@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PR Tracker | TeamGlobal</title>
+    <title>PR Tracker | TGFSI</title>
     <link rel="stylesheet" href="Dashboard_PRTracker.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -90,6 +90,9 @@
                         Date Range
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
+                    <button id="exportExcelBtn" style="background: #1A3E3E; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                        <i class="fa-solid fa-file-excel"></i> Export
+                    </button>
                     <button class="add-btn">+ Add Purchase Order</button>
                 </div>
             </section>
@@ -813,6 +816,41 @@ function toggleSubMenus(menuItem, show) {
         next = next.nextElementSibling;
     }
 }
+
+//=============================================////=============================================//
+//=============================================////=============================================//
+
+document.getElementById('exportExcelBtn').onclick = function() {
+    let csv = [];
+    const rows = document.querySelectorAll("table tr");
+    
+    for (let i = 0; i < rows.length; i++) {
+        // Only export rows that are visible (matches your filters)
+        if (rows[i].style.display !== "none") {
+            let row = [];
+            const cols = rows[i].querySelectorAll("td, th");
+            
+            for (let j = 0; j < cols.length - 1; j++) { // Length - 1 to skip "Actions" column
+                // Clean the text: remove commas (which break CSVs) and Peso signs for better Excel math
+                let data = cols[j].innerText.replace(/,/g, '').replace(/₱/g, '');
+                row.push('"' + data + '"');
+            }
+            csv.push(row.join(","));
+        }
+    }
+
+    // Create the download link
+    const csvFile = new Blob([csv.join("\n")], { type: "text/csv" });
+    const downloadLink = document.createElement("a");
+    const fileName = `Savings_Report_${new Date().toLocaleDateString()}.csv`;
+
+    downloadLink.download = fileName;
+    downloadLink.href = window.URL.createObjectURL(csvFile);
+    downloadLink.style.display = "none";
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+};
 </script>
 
 </body>
