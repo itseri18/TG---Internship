@@ -143,7 +143,7 @@ body {
 
 .search-box {
     position: relative;
-    width: 60%;
+    width: 50%;
 }
 
 .search-box input {
@@ -200,20 +200,24 @@ body {
 /* Table */
 .table-wrapper {
     margin-top: 20px;
-    border-radius: 15px 15px 0 0; /* Top left and Top right radius */
-    overflow: hidden; /* Important to clip the table corners */
-    border: 1px solid #EEE; /* Optional: adds a border around the container */
+    border-radius: 15px 15px 0 0;
+    overflow: hidden;
+    border: 1px solid #EEE;
+    width: 100%;
 }
 
 table {
     width: 100%;
-    border-collapse: separate; /* Changed from collapse to allow radius */
+    border-collapse: separate;
     border-spacing: 0;
+    table-layout: auto;
 }
 
 thead tr {
     background: var(--teal);
     color: white;
+
+    
 }
 
 tbody tr {
@@ -233,17 +237,22 @@ th:last-child {
 }
 
 th, td {
-    padding: 15px;
+    padding: 12px 15px;
     text-align: left;
     font-size: 11.5px;
     border-bottom: 1px solid #EEE;
+    white-space: nowrap;
 }
 
-.status-done {
-    color: green;
-    font-weight: bold;
-}
 
+/* Ensure the Actions column and Status indicator are handled together */
+.action-icons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: none; /* Prevents double lines in flex container */
+    display: inline-block;
+}
 .action-icons i {
     margin-right: 15px;
     cursor: pointer;
@@ -290,7 +299,7 @@ th, td {
 .modal-footer { display: flex; justify-content: flex-end; align-items: center; margin-top: 20px; }
 .close-modal { cursor: pointer; color: #999; font-size: 1.1rem; }
 
-.form-row { display: flex; gap: 20px; margin-bottom: 12px; }
+.form-row { display: flex; gap: 20px; margin-top: 5px; }
 .split-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 5px; }
 .form-group { flex: 1; display: flex; flex-direction: column; gap: 5px; }
 .form-group label { font-size: 13px; font-weight: 500; color: #444; margin-left: 2px; }
@@ -309,7 +318,6 @@ th, td {
 .upload-box {
     border: 1.5px dashed #aaa;
     border-radius: 20px;
-    padding: 20px;
     text-align: center;
     background: #f9f9f9;
     min-height: 200px;
@@ -318,6 +326,7 @@ th, td {
     align-items: center;
     justify-content: center;
     transition: background 0.3s ease;
+    
 }
 
 .upload-box.drag-over {
@@ -385,8 +394,16 @@ th, td {
 
 /* Calendar Precision */
 .calendar-dropdown {
-    position: absolute; right: 180px; top: 220px; width: 280px; z-index: 1000; display: none;
+    position: absolute; right: 360px; top: 220px; width: 280px; z-index: 1000; display: none;
+    background: #E8E8E8; /* Matches your gray theme */
+    border-radius: 15px;
+    padding: 12px;
+    display: none;
+    width: 240px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    margin-top: 50px;
 }
+
 .calendar-range-header { background: #E8E8E8; padding: 12px 15px; border-radius: 15px 15px 0 0; display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: #333; }
 .calendar-picker { background: #E8E8E8; padding: 5px 15px 15px 15px; border-radius: 0 0 15px 15px; }
 .calendar-month-nav { display: flex; justify-content: space-between; padding: 10px 0; font-size: 14px; }
@@ -412,9 +429,15 @@ th, td {
 .day.in-range:nth-of-type(7n) { border-top-right-radius: 0px; border-bottom-right-radius: 0px; }
 .calendar-footer { text-align: right; padding-top: 15px; font-weight: bold; font-size: 12px; color: #444; cursor: pointer; }
 
-/* Custom Select/Dropdown Styling */
-.custom-select, .custom-date-picker { position: relative; width: 100%; }
+/* --- Dropdown & Date Picker Logic --- */
 
+/* 1. Container must be relative so the menu stays attached to it */
+.custom-select, .custom-date-picker { 
+    position: relative; 
+    width: 100%; 
+}
+
+/* 2. The trigger (the box you click) */
 .select-trigger {
     padding: 10px 12px;
     border: 1px solid #ccc;
@@ -425,55 +448,53 @@ th, td {
     align-items: center;
     cursor: pointer;
     font-size: 13px;
+    transition: border-color 0.3s;
 }
 
-.options-list {
+/* 3. The Hidden Menu (Common for both Select and Calendar) */
+.options-list, .mini-calendar {
     position: absolute;
-    top: 100%; left: 0; right: 0;
-    background: #E5E5E5;
-    border-radius: 10px;
-    margin-top: 5px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    display: none;
-    z-index: 3000;
-    overflow: hidden;
+    left: 0;
+    right: 0;
+    background: #E8E8E8; /* Your theme gray */
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    display: none; /* Hidden by default */
+    z-index: 9999; /* Ensure it stays above modal elements */
 }
 
-.options-list.scrollable { max-height: 200px; overflow-y: auto; }
+/* 4. Show logic - When JS adds the .open class */
+.custom-select.open .options-list,
+.custom-date-picker.open .mini-calendar {
+    display: block !important;
+}
+
+/* 5. Dropdown Items Styling */
+.options-list {
+    overflow: hidden;
+    padding: 5px 0;
+}
 
 .options-list div {
     padding: 10px 15px;
     font-size: 13px;
     cursor: pointer;
+    color: #444;
     transition: 0.2s;
 }
 
-.options-list div:hover, .options-list div.active {
-    background: #FF6B00;
+.options-list div:hover, 
+.options-list div.active {
+    background: var(--orange);
     color: white;
 }
 
-/* Mini Calendar for Modal Inputs */
-.mini-calendar {
-    position: absolute;
-    top: 100%; left: 0;
-    background: #E8E8E8;
-    border-radius: 15px;
-    padding: 10px;
-    display: none;
-    width: 250px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+/* 6. Rotate Chevron on Open */
+.custom-select.open .select-trigger i,
+.custom-date-picker.open .right-icon {
+    transform: rotate(180deg);
+    transition: transform 0.3s ease;
 }
-
-.custom-select.open .options-list, 
-.custom-date-picker.drop-up .mini-calendar {
-    display: block; 
-    bottom: 100%;
-    top: auto;
-    margin-bottom: 10px;
-    margin-top: 0;
-}
-.custom-select.open .select-trigger i { transform: rotate(180deg); }
 
 /* Container for the mini calendar dropdown */
 .mini-calendar {
@@ -484,10 +505,10 @@ th, td {
     border-radius: 15px;
     padding: 12px;
     display: none;
-    z-index: 9999;
     width: 240px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.1);
     margin-top: 5px;
+    z-index: 9999;
 }
 
 .mini-calendar-header {
@@ -545,64 +566,3 @@ th, td {
     color: #bbb;
     pointer-events: none;
 }
-
-/* Container for the dropdown */
-.custom-select, .custom-date-picker {
-    position: relative;
-    width: 100%;
-}
-
-/* The actual list that pops up */
-.options-list, .mini-calendar {
-    display: none; /* Hidden by default */
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    z-index: 1000;
-    margin-top: 5px;
-}
-
-/* Show when parent has .open class */
-.custom-select.open .options-list,
-.custom-date-picker.open .mini-calendar {
-    display: block;
-}
-
-/* Individual Option Styling */
-.options-list div {
-    padding: 10px 15px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background 0.2s;
-}
-
-.options-list div:hover {
-    background: #f5f5f5;
-}
-
-.options-list div.active {
-    background: #e8f0fe;
-    color: #1A3E3E;
-    font-weight: bold;
-}
-
-/* Mini Calendar Specific Tweaks */
-.mini-calendar {
-    padding: 10px;
-    width: 250px; /* Fixed width for the pop-out calendar */
-}
-
-.mini-day {
-    padding: 5px;
-    text-align: center;
-    cursor: pointer;
-    border-radius: 4px;
-}
-
-.mini-day:hover { background: #eee; }
-.mini-day.selected { background: #1A3E3E; color: white; }
