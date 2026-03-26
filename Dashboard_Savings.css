@@ -74,6 +74,25 @@ body {
     color: #AAA;
     cursor: pointer;
     transition: background 0.3s ease, color 0.3s ease;
+    text-decoration: none;
+}
+
+/* Update this section to target links specifically */
+.menu-item, .menu-item a {
+    text-decoration: none; /* Removes underline */
+    color: #fffefe;        /* Forces white color, overriding purple */
+}
+
+/* Ensure sub-menu links don't turn purple either */
+.sub-menu a {
+    color: #AAA;
+    text-decoration: none; /* Removes underline */
+    font-size: 14px;
+}
+
+/* This ensures that even if a link has been clicked, it stays white */
+.side-nav a:visited {
+    color: inherit;
 }
 
 .menu-item:hover {

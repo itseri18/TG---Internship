@@ -13,12 +13,25 @@ body {
 }
 
 /* Header Styling */
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden; 
+}
+
 .main-header {
-    height: 70px;
+    height: 70px; /* Adjust based on your design */
+    width: 98%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    background: #fff; /* Ensure it's not transparent */
     display: flex;
+    align-items: center;
+    padding: 0 20px;
     justify-content: space-between;
     align-items: center;
-    padding: 0 30px;
     border-bottom: 1px solid #EEE;
 }
 
@@ -34,12 +47,12 @@ body {
     gap: 20px;
     color: var(--orange);
     font-size: 24px;
+
 }
 
 .header-left {
     display: flex;
     size-adjust: inherit;
-    
 }
 
 .nav-item i { width: 25px; font-size: 18px; }
@@ -49,16 +62,21 @@ body {
 /* Layout Container */
 .app-container {
     display: flex;
-    height: calc(100vh - 70px);
+    padding-top: 70px; /* Match the header height */
+    height: 100vh;
+    box-sizing: border-box;
 }
 
 /* Sidebar Styling */
 .sidebar {
-    width: 250px;
     background-color: var(--dark);
     color: white;
     border-top-right-radius: 30px;
     padding-top: 20px;
+    width: 250px; /* Fixed width */
+    min-width: 250px;
+    height: calc(100vh - 70px);
+    overflow-y: auto;
 }
 
 .side-nav {
@@ -75,6 +93,25 @@ body {
     cursor: pointer;
     transition: background 0.3s ease, color 0.3s ease;
 }
+
+/* Update this section to target links specifically */
+.menu-item, .menu-item a {
+    text-decoration: none; /* Removes underline */
+    color: #fffefe;        /* Forces white color, overriding purple */
+}
+
+/* Ensure sub-menu links don't turn purple either */
+.sub-menu a {
+    color: #AAA;
+    text-decoration: none; /* Removes underline */
+    font-size: 14px;
+}
+
+/* This ensures that even if a link has been clicked, it stays white */
+.side-nav a:visited {
+    color: inherit;
+}
+
 
 .menu-item:hover {
     background-color: rgba(255, 255, 255, 0.05); /* Very subtle highlight */
@@ -131,8 +168,10 @@ body {
 
 /* Content Area */
 .content-area {
-    flex: 1;
-    padding: 30px 50px;
+    flex-grow: 1;
+    overflow: auto; /* Allows vertical and horizontal scrolling */
+    height: calc(100vh - 70px);
+    padding: 20px;
 }
 
 .filters-bar {
@@ -201,16 +240,17 @@ body {
 .table-wrapper {
     margin-top: 20px;
     border-radius: 15px 15px 0 0;
-    overflow: hidden;
     border: 1px solid #EEE;
     width: 100%;
+    overflow-x: auto; /* Specifically for left-to-right table scrolling */
 }
 
 table {
-    width: 100%;
-    border-collapse: separate;
     border-spacing: 0;
     table-layout: auto;
+    width: 100%;
+    min-width: 1200px; /* Forces horizontal scroll if the window is narrow */
+    border-collapse: collapse;
 }
 
 thead tr {

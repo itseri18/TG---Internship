@@ -13,12 +13,25 @@ body {
 }
 
 /* Header Styling */
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden; 
+}
+
 .main-header {
-    height: 70px;
+    height: 70px; /* Adjust based on your design */
+    width: 98%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    background: #fff; /* Ensure it's not transparent */
     display: flex;
+    align-items: center;
+    padding: 0 20px;
     justify-content: space-between;
     align-items: center;
-    padding: 0 30px;
     border-bottom: 1px solid #EEE;
 }
 
@@ -49,7 +62,9 @@ body {
 /* Layout Container */
 .app-container {
     display: flex;
-    height: calc(100vh - 70px);
+    padding-top: 70px; /* Match the header height */
+    height: 100vh;
+    box-sizing: border-box;
 }
 
 /* Sidebar Styling */
@@ -59,6 +74,9 @@ body {
     color: white;
     border-top-right-radius: 30px;
     padding-top: 20px;
+    min-width: 250px;
+    height: calc(100vh - 70px);
+    overflow-y: auto;
 }
 
 .side-nav {
@@ -74,6 +92,24 @@ body {
     color: #AAA;
     cursor: pointer;
     transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Update this section to target links specifically */
+.menu-item, .menu-item a {
+    text-decoration: none; /* Removes underline */
+    color: #fffefe;        /* Forces white color, overriding purple */
+}
+
+/* Ensure sub-menu links don't turn purple either */
+.sub-menu a {
+    color: #AAA;
+    text-decoration: none; /* Removes underline */
+    font-size: 14px;
+}
+
+/* This ensures that even if a link has been clicked, it stays white */
+.side-nav a:visited {
+    color: inherit;
 }
 
 .menu-item:hover {
@@ -131,8 +167,10 @@ body {
 
 /* Content Area */
 .content-area {
-    flex: 1;
-    padding: 30px 50px;
+    flex-grow: 1;
+    overflow: auto; /* Allows vertical and horizontal scrolling */
+    height: calc(100vh - 70px);
+    padding: 20px;
 }
 
 .filters-bar {
@@ -199,16 +237,18 @@ body {
 
 /* Table */
 .table-wrapper {
+    width: 100%;
+    overflow-x: auto;
     margin-top: 20px;
     border-radius: 15px 15px 0 0; /* Top left and Top right radius */
-    overflow: hidden; /* Important to clip the table corners */
     border: 1px solid #EEE; /* Optional: adds a border around the container */
 }
 
 table {
-    width: 100%;
-    border-collapse: separate; /* Changed from collapse to allow radius */
     border-spacing: 0;
+    width: 100%;
+    min-width: 1200px; /* Forces horizontal scroll if the window is narrow */
+    border-collapse: collapse;
 }
 
 thead tr {
