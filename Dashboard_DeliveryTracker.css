@@ -67,6 +67,53 @@ html, body {
     box-sizing: border-box;
 }
 
+/* Dropdown Styling */
+.dropdown-container {
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+/* The Menu itself */
+.dropdown-menu {
+    display: none; /* Hidden by default */
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    z-index: 1000;
+    margin-top: 10px;
+    padding: 8px 0;
+}
+
+/* Show class toggled by JS */
+.dropdown-menu.show {
+    display: block;
+}
+
+/* Items inside the menu */
+.dropdown-item {
+    padding: 10px 15px;
+    text-decoration: none;
+    display: block;
+    color: #333;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.dropdown-item:hover {
+    background-color: #f5f5f5;
+}
+
+.dropdown-item i {
+    margin-right: 8px;
+    width: 16px;
+}
+
 /* Sidebar Styling */
 .sidebar {
     background-color: var(--dark);

@@ -14,9 +14,20 @@
             <img src="Assets/logo.png" alt="" class="header-logo">
         </div>
         <div class="header-right">
-            <i class="fa-solid fa-bell notification-icon"></i>
-            <div class="profile-icon">
+            <div class="dropdown-container" id="notifDropdown">
+                <i class="fa-solid fa-bell notification-icon"></i>
+                <div class="dropdown-menu">
+                    <div class="dropdown-item">No new notifications</div>
+                </div>
+            </div>
+
+            <div class="profile-icon dropdown-container" id="profileDropdown">
                 <i class="fa-solid fa-circle-user"></i>
+                <div class="dropdown-menu">
+                    <a href="Profile.html" class="dropdown-item"><i class="fa-solid fa-user"></i> Profile</a>
+                    <a href="Calendar.html" class="dropdown-item"><i class="fas fa-calendar-alt"></i> Calendar</a>
+                    <a href="index.html" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Log-out</a>
+                </div>
             </div>
         </div>
     </header>
@@ -962,6 +973,52 @@ document.getElementById('exportExcelBtn').onclick = function() {
     downloadLink.click();
     document.body.removeChild(downloadLink);
 };
+
+
+//=============================================////=============================================//
+//=============================================////=============================================//
+
+// --- Header Dropdown Logic ---
+const profileBtn = document.getElementById('profileDropdown');
+const notifBtn = document.getElementById('notifDropdown');
+
+// Use a shared function to close all open menus
+function closeAllMenus() {
+    document.querySelectorAll('.dropdown-menu').forEach(menu => {
+        menu.classList.remove('show');
+    });
+}
+
+// Profile Click Handler
+profileBtn.addEventListener('click', function(e) {
+    e.stopPropagation(); // Stops the window click from instantly closing it
+    const menu = this.querySelector('.dropdown-menu');
+    const isAlreadyOpen = menu.classList.contains('show');
+    
+    closeAllMenus(); // Close notifications if it's open
+    
+    if (!isAlreadyOpen) {
+        menu.classList.add('show');
+    }
+});
+
+// Notification Click Handler
+notifBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    const menu = this.querySelector('.dropdown-menu');
+    const isAlreadyOpen = menu.classList.contains('show');
+    
+    closeAllMenus(); // Close profile if it's open
+    
+    if (!isAlreadyOpen) {
+        menu.classList.add('show');
+    }
+});
+
+// Close when clicking anywhere else
+window.addEventListener('click', function() {
+    closeAllMenus();
+});
 </script>
 
 

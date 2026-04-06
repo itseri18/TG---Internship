@@ -233,3 +233,9 @@ html, body {
     color: var(--text-primary);
     overflow-x: hidden; /* Prevent horizontal scrolling */
 }
+
+.download-link i:hover {
+    color: #FF6B00; /* Turns your signature orange on hover */
+    transform: scale(1.2);
+    transition: 0.2s;
+}

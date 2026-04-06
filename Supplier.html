@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delivery Tracker | TGFSI</title>
+    <title>Supplier | TGFSI</title>
     <link rel="stylesheet" href="Supplier.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -14,9 +14,20 @@
             <img src="Assets/logo.png" alt="" class="header-logo">
         </div>
         <div class="header-right">
-            <i class="fa-solid fa-bell notification-icon"></i>
-            <div class="profile-icon">
+            <div class="dropdown-container" id="notifDropdown">
+                <i class="fa-solid fa-bell notification-icon"></i>
+                <div class="dropdown-menu">
+                    <div class="dropdown-item">No new notifications</div>
+                </div>
+            </div>
+
+            <div class="profile-icon dropdown-container" id="profileDropdown">
                 <i class="fa-solid fa-circle-user"></i>
+                <div class="dropdown-menu">
+                    <a href="Profile.html" class="dropdown-item"><i class="fa-solid fa-user"></i> Profile</a>
+                    <a href="Calendar.html" class="dropdown-item"><i class="fas fa-calendar-alt"></i> Calendar</a>
+                    <a href="index.html" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Log-out</a>
+                </div>
             </div>
         </div>
     </header>
@@ -25,25 +36,15 @@
         <aside class="sidebar">
             <nav class="side-nav">
                 <div class="menu-item">
-                    <i class="fa-solid fa-table-cells-large"></i> 
+                    <i class="fa-solid fa-table-cells-large"></i>
                     <span>Dashboard</span>
                     <i class="fa-solid fa-chevron-down caret"></i>
                 </div>
-                    <div class="sub-menu">
-                        <a href="Dashboard_PRTracker.html">PR tracker</a>
-                        </div>
-                    <div class="sub-menu">
-                        <a href="Dashboard_POTracker.html">PO Tracker</a> 
-                    </div>
-                    <div class="sub-menu">
-                        <a href="Dashboard_Payment.html">Payment</a>
-                    </div>
-                    <div class="sub-menu">
-                        <a href="Dashboard_Savings.html">Savings</a>
-                    </div>
-                    <div class="sub-menu">
-                        <a href="Dashboard_DeliveryTracker.html">Delivery Tracker</a>
-                    </div>
+                <div class="sub-menu"><a href="Dashboard_PRTracker.html">PR tracker</a></div>
+                <div class="sub-menu"><a href="Dashboard_POTracker.html">PO Tracker</a></div>
+                <div class="sub-menu"><a href="Dashboard_Payment.html">Payment</a></div>
+                <div class="sub-menu"><a href="Dashboard_Savings.html">Savings</a></div>
+                <div class="sub-menu"><a href="Dashboard_DeliveryTracker.html">Delivery Tracker</a></div>
 
                 <div class="active-menu-item">
                     <i class="fa-solid fa-users"></i>
@@ -55,21 +56,11 @@
                     <span>Inventory</span>
                     <i class="fa-solid fa-chevron-down caret"></i>
                 </div>
-                    <div class="sub-menu">
-                        <a href="#">YTD</a>
-                        </div>
-                    <div class="sub-menu">
-                        <a href="#">Products</a> 
-                    </div>
-                    <div class="sub-menu">
-                        <a href="#">Stock In</a>
-                    </div>
-                    <div class="sub-menu">
-                        <a href="#">Stock Out</a>
-                    </div>
-                    <div class="sub-menu">
-                        <a href="#">Pull-Out Supplies</a>
-                    </div>
+                <div class="sub-menu"><a href="#">YTD</a></div>
+                <div class="sub-menu"><a href="#">Products</a></div>
+                <div class="sub-menu"><a href="#">Stock In</a></div>
+                <div class="sub-menu"><a href="#">Stock Out</a></div>
+                <div class="sub-menu"><a href="#">Pull-Out Supplies</a></div>
             </nav>
         </aside>
 
@@ -81,13 +72,13 @@
 
             <section class="filters-bar">
                 <div class="search-box">
-                    <input type="text" placeholder="Search">
+                    <input type="text" id="mainSearch" placeholder="Search">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </div>
             </section>
 
             <section class="filters-bar">
-                <h2 id="categoryHeading">Supplier for All Categories</h2> 
+                <h2 id="categoryHeading">Supplier for All Categories</h2>
                 <div class="actions">
                         <div class="custom-select" id="selectDept">
                             <div class="select-trigger" style="width: 200px;">
@@ -108,7 +99,7 @@
             </section>
 
             <div class="table-wrapper">
-                <table>
+                <table id="supplierTable">
                     <thead>
                         <tr>
                             <th>Company Name</th>
@@ -126,12 +117,12 @@
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="supplierTableBody">
                         <tr>
                             <td>Abenson Ventures Inc.</td>
                             <td>
-                                <div class="download-link" data-file="2026-22.jpg" style="cursor: pointer; color: #1A3E3E; display: flex; align-items: center; gap: 5px;">
-                                    <i class="fa-solid fa-file-image"></i> 
+                                <div class="download-link" style="color: #1A3E3E; display: flex; align-items: center; gap: 5px;">
+                                    <i class="fa-solid fa-file-image"></i>
                                     <span>2026-22.jpg</span>
                                 </div>
                             </td>
@@ -178,71 +169,71 @@
                 </div>
                 <div class="form-group" style="flex: 1; margin-bottom: 10px;">
                     <label>Contact Person</label>
-                    <input type="text">
+                    <input type="text" id="inContactPerson">
                 </div>
             </div>
 
             <div class="form-group" style="margin-bottom: 10px;">
                 <label>Company Name</label>
-                <input type="text">
+                <input type="text" id="inCompanyName">
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                 <div>
                     <div class="form-group" style="margin-bottom: 10px;">
                         <label>Contact Details</label>
-                        <input type="text">
+                        <input type="text" id="inContactDetails">
                     </div>
                     <div class="form-group" style="margin-bottom: 10px;">
                         <label>Bank Details</label>
-                        <input type="text">
+                        <input type="text" id="inBankDetails">
                     </div>
                     <div class="form-group"  style="margin-bottom: 10px;">
                         <label>Email</label>
-                        <input type="email">
+                        <input type="email" id="inEmail">
                     </div>
                 </div>
 
                 <div>
                     <div class="form-group" style="margin-bottom: 10px;">
                         <label>TIN Number</label>
-                        <input type="text">
+                        <input type="text" id="inTin">
                     </div>
                     <div class="form-group" style="margin-bottom: 10px;">
                         <label>Bank Number</label>
-                        <input type="text">
+                        <input type="text" id="inBankNum">
                     </div>
                     <div class="form-group" style="margin-bottom: 10px; width: 300px;">
                         <label>Address</label>
-                        <input type="text">
+                        <input type="text" id="inAddress">
                      </div>
                 </div>
             </div>
-                    <div class="col-upload" style="margin-bottom: 10px;">
-                        <div class="upload-box" id="dropZoneDR" style="margin-top: 10px;">
-                            <p class="upload-title" style="font-size: 12px; margin-bottom: 8px; color: #444;">Upload Delivery Receipt Files</p>
-                            <i class="fa-solid fa-download download-icon" style="color: #888; margin-bottom: 10px;"></i>
-                            <p class="upload-hint" style="font-size: 11px; color: #666; margin: 5px 0;">Choose a File or Drag & Drop it here.</p>
-                            <p class="upload-limit" style="font-size: 9px; color: #aaa; margin-bottom: 10px;">JPEG, PNG, XLSX, PDF, up to 10MB</p>
 
-                            <input type="file" id="fileInputDR" multiple accept="image/*,.pdf,.xlsx" style="display: none;">
-                            <button class="browse-btn" onclick="document.getElementById('fileInputDR').click()">Browse File</button>
-                            
-                            <div id="previewContainerDR" class="preview-container" style="margin-bottom: 10px;"></div>
+            <div class="col-upload">
+                <div class="upload-box" id="dropZone">
+                    <p class="upload-title">Upload PR Request files</p>
+                    <i class="fa-solid fa-download download-icon"></i>
+                    <p class="upload-hint">Choose a File or Drag & Drop it here.</p>
+                    <p style="font-size: 0.85rem; color: #aaa; margin-bottom: 20px;">JPEG, PNG, XLSX, PDF, up to 10MB</p>
+                    
+                    <input type="file" id="fileInputDR" accept="image/*,.pdf,.xlsx" style="display: none;">
+                    <button type="button" class="browse-btn" onclick="document.getElementById('fileInputDR').click()">Browse File</button>
+                    
+                    <div id="previewContainerDR" class="preview-container">
                         </div>
-                    </div>
+                </div>
+            </div>
 
             <div class="form-row" style="margin-bottom: 10px;">
                 <div class="form-group">
                     <label>Line of Business</label>
-                    <input type="text">
+                    <input type="text" id="inLOB">
                 </div>
                 <div class="form-group" style="margin-bottom: 10px;">
                     <label>Accreditation Status</label>
                     <div class="custom-select modal-select" id="modalStatus">
-                        <div class="select-trigger">
-                            <span></span> <i class="fa-solid fa-chevron-down"></i>
-                        </div>
+                        <div class="select-trigger"><span>Pending</span> <i class="fa-solid fa-chevron-down"></i></div>
                         <div class="options-list">
                             <div>Accredited</div>
                             <div>Not Accredited</div>
@@ -253,9 +244,7 @@
                 <div class="form-group" style="margin-bottom: 10px;">
                     <label>Active/Inactive</label>
                     <div class="custom-select modal-select" id="modalActive">
-                        <div class="select-trigger">
-                            <span></span> <i class="fa-solid fa-chevron-down"></i>
-                        </div>
+                        <div class="select-trigger"><span>TRUE</span> <i class="fa-solid fa-chevron-down"></i></div>
                         <div class="options-list">
                             <div>TRUE</div>
                             <div>FALSE</div>
@@ -274,515 +263,171 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.querySelector('.search-box input');
-    const categoryFilter = document.querySelector('#selectDept');
-    const categoryHeading = document.querySelector('#categoryHeading');
-    const tableRows = () => document.querySelectorAll('table tbody tr');
+    const searchInput = document.getElementById('mainSearch');
+    const categoryFilter = document.getElementById('selectDept');
+    const categoryHeading = document.getElementById('categoryHeading');
+    const tableBody = document.getElementById('supplierTableBody');
+    const modal = document.getElementById('prModal');
+    const addBtn = document.querySelector('.add-btn');
+    const submitBtn = document.getElementById('submitBtn');
+    const fileInput = document.getElementById('fileInputDR');
+    const previewContainer = document.getElementById('previewContainerDR');
 
-    // --- 1. THE MAIN FILTER FUNCTION ---
+    let currentFileName = "No file";
+
+    // --- 1. FILTERING ---
     function filterTable() {
         const searchTerm = searchInput.value.toLowerCase();
         const categoryLabel = categoryFilter.querySelector('.select-trigger span').innerText;
         const categoryTerm = categoryLabel.toLowerCase();
 
-        // Update the H2 Heading automatically
-        if (categoryLabel === "Select Category" || categoryLabel === "All Categories") {
-            categoryHeading.innerText = "Supplier for All Categories";
-        } else {
-            categoryHeading.innerText = "Supplier for " + categoryLabel;
-        }
+        categoryHeading.innerText = (categoryLabel === "Select Category" || categoryLabel === "All Categories") 
+            ? "Supplier for All Categories" : "Supplier for " + categoryLabel;
 
-        tableRows().forEach(row => {
+        Array.from(tableBody.rows).forEach(row => {
             const rowText = row.innerText.toLowerCase();
-            // Index 11 is "Line of Business". Adjust if your columns change!
-            const rowCategory = row.cells[11].innerText.toLowerCase(); 
-
+            const rowCategory = row.cells[11].innerText.toLowerCase();
             const matchesSearch = rowText.includes(searchTerm);
-            
-            // Logic: Show if "All Categories" is selected OR if the row category matches the filter
-            const isAll = (categoryTerm === 'select category' || categoryTerm === 'all categories');
-            const matchesCategory = isAll || rowCategory.includes(categoryTerm);
-
+            const matchesCategory = (categoryTerm === 'select category' || categoryTerm === 'all categories' || rowCategory.includes(categoryTerm));
             row.style.display = (matchesSearch && matchesCategory) ? "" : "none";
         });
     }
 
-    // --- 2. DROPDOWN TOGGLE & SELECTION ---
-    // --- UNIVERSAL DROPDOWN LOGIC ---
+    searchInput.addEventListener('input', filterTable);
+
+    // --- 2. DROPDOWNS ---
     document.querySelectorAll('.custom-select').forEach(select => {
         const trigger = select.querySelector('.select-trigger');
-        const options = select.querySelectorAll('.options-list div');
-        const label = select.querySelector('.select-trigger span');
-
-        trigger.addEventListener('click', (e) => {
+        trigger.onclick = (e) => {
             e.stopPropagation();
-            // Close all other dropdowns
-            document.querySelectorAll('.custom-select').forEach(s => {
-                if (s !== select) s.classList.remove('active');
-            });
+            document.querySelectorAll('.custom-select').forEach(s => { if(s !== select) s.classList.remove('active'); });
             select.classList.toggle('active');
-        });
-
-        options.forEach(option => {
-            option.addEventListener('click', () => {
-                label.innerText = option.innerText;
+        };
+        select.querySelectorAll('.options-list div').forEach(opt => {
+            opt.onclick = () => {
+                select.querySelector('span').innerText = opt.innerText;
                 select.classList.remove('active');
-                
-                // Only trigger table filtering if it's the main Category filter
-                if (select.id === 'selectDept') {
-                    filterTable();
-                }
-            });
+                if (select.id === 'selectDept') filterTable();
+            };
         });
     });
 
-    // --- MODAL RESET LOGIC ---
-    const modal = document.getElementById('prModal');
-    const addBtn = document.querySelector('.add-btn');
+    window.onclick = () => document.querySelectorAll('.custom-select').forEach(s => s.classList.remove('active'));
 
+    // --- 3. FILE UPLOAD ---
+    fileInput.onchange = () => {
+        if(fileInput.files[0]) {
+            const file = fileInput.files[0];
+            currentFileName = file.name;
+            
+            // Clear previous and add the file card UI
+            previewContainer.innerHTML = `
+                <div class="file-card">
+                    <i class="fa-solid fa-file-lines"></i>
+                    <div class="delete-file" onclick="clearFile()">
+                        <i class="fa-solid fa-xmark"></i>
+                    </div>
+                </div>
+            `;
+        }
+    };
+    window.clearFile = function() {
+        fileInput.value = "";
+        currentFileName = "No file";
+        previewContainer.innerHTML = "";
+    };
+
+    // --- 4. ADD & EDIT ---
     addBtn.onclick = () => {
-        // Clear all inputs in the modal
-        modal.querySelectorAll('input').forEach(input => input.value = '');
-        
-        // Reset all modal dropdown labels
-        modal.querySelectorAll('.modal-select .select-trigger span').forEach(span => {
-            if (span.parentElement.parentElement.id === "modalCategory") span.innerText = "Select Category";
-            if (span.parentElement.parentElement.id === "modalStatus") span.innerText = "";
-            if (span.parentElement.parentElement.id === "modalActive") span.innerText = "";
-        });
-
+        modal.currentRow = null;
+        submitBtn.innerText = "Create";
+        modal.querySelector('h2').innerText = "Add New Supplier";
+        modal.querySelectorAll('input').forEach(i => i.value = '');
+        previewContainer.innerText = "";
         modal.style.display = 'flex';
     };
 
-    // Close on X or Cancel
-    const closeBtn = document.getElementById('closeModal');
-    const cancelBtn = document.getElementById('cancelModal');
-    [closeBtn, cancelBtn].forEach(btn => {
-        if(btn) btn.onclick = () => modal.style.display = 'none';
+    tableBody.addEventListener('click', (e) => {
+        if (e.target.classList.contains('fa-pen-to-square')) {
+            const row = e.target.closest('tr');
+            modal.currentRow = row;
+            submitBtn.innerText = "Save Changes";
+            modal.querySelector('h2').innerText = "Edit Supplier";
+
+            document.getElementById('inCompanyName').value = row.cells[0].innerText;
+            document.getElementById('inContactPerson').value = row.cells[2].innerText;
+            document.getElementById('inContactDetails').value = row.cells[3].innerText;
+            document.getElementById('inBankDetails').value = row.cells[4].innerText;
+            document.getElementById('inBankNum').value = row.cells[5].innerText;
+            document.getElementById('inTin').value = row.cells[6].innerText;
+            document.getElementById('inEmail').value = row.cells[7].innerText;
+            document.getElementById('inAddress').value = row.cells[8].innerText;
+            document.getElementById('inLOB').value = row.cells[11].innerText;
+            
+            document.querySelector('#modalStatus span').innerText = row.cells[9].innerText;
+            document.querySelector('#modalActive span').innerText = row.cells[10].innerText;
+            document.querySelector('#modalCategory span').innerText = row.cells[11].innerText;
+
+            modal.style.display = 'flex';
+        }
+        if (e.target.classList.contains('fa-trash')) {
+            if(confirm("Delete this supplier?")) e.target.closest('tr').remove();
+        }
     });
 
-//===========================================================================================//
-//===========================================================================================//
+    // --- 5. SUBMIT ---
+    submitBtn.onclick = () => {
+        const company = document.getElementById('inCompanyName').value;
+        if(!company) return alert("Company Name is required");
 
-document.getElementById('submitBtn').onclick = function() {
-    // 1. Collect data from standard inputs
-    const inputs = document.querySelectorAll('#prModal input');
-    const company = inputs[1].value;        // Company Name
-    const contactPerson = inputs[0].value;  // Contact Person
-    const contactDetails = inputs[2].value; // Contact Details
-    const bankDetails = inputs[3].value;    // Bank Details
-    const email = inputs[4].value;          // Email
-    const tin = inputs[5].value;            // TIN
-    const bankNum = inputs[6].value;        // Bank Number
-    const address = inputs[7].value;        // Address
-    const lineOfBus = inputs[8].value;      // Line of Business
-
-    // 2. Collect data from Modal Custom Dropdowns
-    const category = document.querySelector('#modalCategory .select-trigger span').innerText;
-    const status = document.querySelector('#modalStatus .select-trigger span').innerText;
-    const active = document.querySelector('#modalActive .select-trigger span').innerText;
-
-    // Validation: Ensure Company Name isn't empty
-    if (!company) {
-        alert("Please enter a Company Name.");
-        return;
-    }
-
-    // 3. Create the New Row HTML
-    const tbody = document.querySelector('table tbody');
-    const newRow = document.createElement('tr');
-
-    newRow.innerHTML = `
-        <td>${company}</td>
-        <td>
-            <div class="download-link" data-file="New_Upload.pdf" style="cursor: pointer; color: #1A3E3E; display: flex; align-items: center; gap: 5px;">
-                <i class="fa-solid fa-file-circle-plus"></i> 
-                <span>New_Upload.pdf</span>
-            </div>
-        </td>
-        <td>${contactPerson}</td>
-        <td>${contactDetails}</td>
-        <td>${bankDetails}</td>
-        <td>${bankNum}</td>
-        <td>${tin}</td>
-        <td>${email}</td>
-        <td>${address}</td>
-        <td>${status}</td>
-        <td>${active}</td>
-        <td>${category}</td>
-        <td class="action-icons">
-            <i class="fa-solid fa-pen-to-square"></i>
-            <i class="fa-solid fa-trash" onclick="this.closest('tr').remove()"></i>
-        </td>
-    `;
-
-    // 4. Add to table and cleanup
-    tbody.appendChild(newRow);
-    
-    // Close modal
-    document.getElementById('prModal').style.display = 'none';
-
-    // 5. CRITICAL: Re-run the filter logic
-    // This ensures the new row obeys the current Category/Search filters
-    filterTable();
-
-    // Optional: Success message
-    console.log("Supplier Added Successfully!");
-
-//=============================================////=============================================//
-//=============================================////=============================================//
-
-// Add an ID to your file input in the HTML first:
-// <input type="file" id="fileInput" style="display:none">
-document.getElementById('submitBtn').onclick = function() {
-    const fileInput = document.getElementById('fileInput');
-    const selectedFile = fileInput.files[0];
-    
-    let fileDisplayName = "No_File.pdf";
-    let fileBlobUrl = "#";
-
-    if (selectedFile) {
-        fileDisplayName = selectedFile.name;
-        fileBlobUrl = URL.createObjectURL(selectedFile); // Creates the downloadable link
-    }
-
-    // ... (Your other data collection: company, contact, etc.) ...
-
-    const tbody = document.querySelector('table tbody');
-    const newRow = document.createElement('tr');
-
-    newRow.innerHTML = `
-        <td>${company}</td>
-        <td>
-            <div class="download-link" data-url="${fileURL}" data-name="${fileName}" style="cursor: pointer; color: #1A3E3E; display: flex; align-items: center; gap: 5px;">
-                <i class="fa-solid fa-file-image"></i> 
-                <span>${fileName}</span>
-            </div>
-        </td>
-        <td>${contactPerson}</td>
+        const rowHTML = `
+            <td>${company}</td>
+            <td><div class="download-link"><i class="fa-solid fa-file"></i> <span>${currentFileName}</span></div></td>
+            <td>${document.getElementById('inContactPerson').value}</td>
+            <td>${document.getElementById('inContactDetails').value}</td>
+            <td>${document.getElementById('inBankDetails').value}</td>
+            <td>${document.getElementById('inBankNum').value}</td>
+            <td>${document.getElementById('inTin').value}</td>
+            <td>${document.getElementById('inEmail').value}</td>
+            <td>${document.getElementById('inAddress').value}</td>
+            <td>${document.querySelector('#modalStatus span').innerText}</td>
+            <td>${document.querySelector('#modalActive span').innerText}</td>
+            <td>${document.getElementById('inLOB').value}</td>
+            <td class="action-icons"><i class="fa-solid fa-pen-to-square"></i> <i class="fa-solid fa-trash"></i></td>
         `;
 
-    tbody.appendChild(newRow);
-    document.getElementById('prModal').style.display = 'none';
-    filterTable();
-};
-
-};
-
-// Download Logic for Vendor Accreditation Form (or any file in the table)
-document.querySelector('table').addEventListener('click', function(e) {
-    const downloadTarget = e.target.closest('.download-link');
-    
-    if (downloadTarget) {
-        const fileURL = downloadTarget.getAttribute('data-url');
-        const fileName = downloadTarget.getAttribute('data-name');
-
-        if (fileURL === "#") {
-            alert("No file was uploaded for this supplier.");
-            return;
+        if(modal.currentRow) modal.currentRow.innerHTML = rowHTML;
+        else {
+            const tr = document.createElement('tr');
+            tr.innerHTML = rowHTML;
+            tableBody.appendChild(tr);
         }
-
-        const link = document.createElement('a');
-        link.href = fileURL;
-        link.download = fileName; // Uses the original name (e.g., "my_contract.jpg")
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-    const browseBtn = document.getElementById('browseBtn');
-    const fileInput = document.getElementById('fileInput');
-    const fileNameDisplay = document.getElementById('fileNameDisplay');
-
-    // 1. Trigger hidden input when "Browse File" is clicked
-    if (browseBtn && fileInput) {
-        browseBtn.onclick = function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            fileInput.click();
-        };
-    }
-
-    // 2. Update the UI when a file is selected
-    fileInput.onchange = function() {
-        if (this.files && this.files.length > 0) {
-            const selectedFile = this.files[0];
-            // Change the text to show the filename
-            fileNameDisplay.innerHTML = `<strong>Selected:</strong> ${selectedFile.name}`;
-            fileNameDisplay.style.color = "#FF6600"; // Give it a highlight color
-        }
+        modal.style.display = 'none';
     };
-});
 
-});
+    // --- 6. MODAL CLOSING LOGIC ---
 
-//=============================================////=============================================//
-//=============================================////=============================================//
-
-// Updated Toggle for Custom Date Picker with Smart Positioning
-document.querySelectorAll('custom-date-picker input-icon-wrap').forEach(wrap => {
-    wrap.onclick = function(e) {
-        e.stopPropagation();
-        const parent = this.parentElement;
-        const calendar = parent.querySelector('mini-calendar');
-        
-        // Close other dropdowns first
-        closeAllDropdowns();
-
-        // --- Smart Positioning Logic ---
-        const rect = this.getBoundingClientRect();
-        const spaceBelow = window.innerHeight - rect.bottom;
-        const calendarHeight = 280; // Estimated height of your mini calendar
-
-        if (spaceBelow < calendarHeight) {
-            parent.classList.add('drop-up');
-        } else {
-            parent.classList.remove('drop-up');
-        }
-        // -------------------------------
-
-        parent.classList.add('open');
-        
-        // Trigger the render for the specific calendar ID (e.g., 'cal1')
-        const calId = calendar.getAttribute('id');
-        if (calId) {
-            renderMiniCalendar(calId);
-        }
+    // Close using the 'X' icon
+    document.getElementById('closeModal').onclick = () => {
+        modal.style.display = 'none';
     };
-});
-//===========================================================================================//
-//===========================================================================================//
 
-// --- REUSABLE UPLOAD FUNCTIONALITY ---
-// --- 1. FILE UPLOAD STATE & LOGIC ---
-const uploadState = {
-    dr: { files: [], inputId: 'fileInputDR', previewId: 'previewContainerDR' },
-    po: { files: [], inputId: 'fileInputPO', previewId: 'previewContainerPO' }
-};
+    // Close using the 'Cancel' button
+    document.getElementById('cancelModal').onclick = (e) => {
+        e.preventDefault(); // Prevents form submission if it's inside a form
+        modal.style.display = 'none';
+    };
 
-function initUploadBoxes() {
-    ['dr', 'po'].forEach(key => {
-        const state = uploadState[key];
-        const input = document.getElementById(state.inputId);
-        const preview = document.getElementById(state.previewId);
-
-        if (!input) return;
-
-        input.onchange = (e) => {
-            const newFiles = Array.from(e.target.files);
-            if (state.files.length + newFiles.length > 3) {
-                alert("Max 3 files per box.");
-                return;
-            }
-            newFiles.forEach(file => {
-                state.files.push(file);
-                renderFilePreview(file, preview, state, key);
-            });
-        };
+    // Close if the user clicks anywhere outside the white modal box
+    window.addEventListener('click', (event) => {
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
     });
-}
-
-    function renderFilePreview(file, container, state, key) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const div = document.createElement('div');
-            div.className = 'preview-item';
-            
-            // Use a generic icon for non-image files like PDF/XLSX
-            const isImg = file.type.startsWith('image/');
-            const innerHTML = isImg 
-                ? `<img src="${e.target.result}" alt="preview">`
-                : `<div style="display:flex; height:100%; align-items:center; justify-content:center; font-size:20px; color:#666;"><i class="fa-solid fa-file-lines"></i></div>`;
-
-            div.innerHTML = `
-                ${innerHTML}
-                <div class="remove-img"><i class="fa-solid fa-xmark"></i></div>
-            `;
-
-            // Delete functionality
-            div.querySelector('.remove-img').onclick = () => {
-                state.files = state.files.filter(f => f !== file);
-                div.remove();
-            };
-
-            container.appendChild(div);
-        };
-        reader.readAsDataURL(file);
-    }
-
-// --- 2. SUBMIT (CREATE/ADD) LOGIC ---
-const submitBtn = document.getElementById('submitBtn');
-const tableBody = document.querySelector('table tbody');
-
-submitBtn.onclick = function() {
-    // Collect Data
-    const rowData = {
-        poNum: document.getElementById('modalPONum').value || "N/A",
-        supplier: document.getElementById('modalSupplier').value || "N/A",
-        pic: document.querySelector('.custom-select span')?.innerText || "N/A",
-        date: document.querySelector('#datePicker1 input')?.value || "N/A",
-        requestor: document.getElementById('modalRequestor').value || "N/A",
-        poFile: uploadState.po.files.length > 0 ? uploadState.po.files[0].name : "No file",
-        project: document.getElementById('modalProject').value || "N/A",
-        deliveryAt: document.querySelectorAll('.custom-select span')[1]?.innerText || "N/A",
-        tracker: document.querySelectorAll('.custom-select span')[2]?.innerText || "N/A",
-        drFile: uploadState.dr.files.length > 0 ? uploadState.dr.files[0].name : "No file"
-    };
-
-    const rowHTML = `
-        <td>${rowData.poNum}</td>
-        <td>${rowData.supplier}</td>
-        <td>${rowData.pic}</td>
-        <td>${rowData.date}</td>
-        <td>${rowData.requestor}</td>
-        <td><i class="fa-solid fa-file-image"></i> ${rowData.poFile}</td>
-        <td>${rowData.project}</td>
-        <td>${rowData.deliveryAt}</td>
-        <td>${rowData.tracker}</td>
-        <td><i class="fa-solid fa-file-image"></i> ${rowData.drFile}</td>
-        <td class="action-icons">
-            <i class="fa-solid fa-pen-to-square"></i>
-            <i class="fa-solid fa-trash"></i>
-        </td>
-    `;
-
-    const editingRow = prModal.getAttribute('data-editing-row');
-
-    if (editingRow) {
-        // Update existing row
-        const rowToUpdate = tableBody.rows[editingRow];
-        rowToUpdate.innerHTML = rowHTML;
-        prModal.removeAttribute('data-editing-row');
-    } else {
-        // Add new row
-        const newRow = document.createElement('tr');
-        newRow.innerHTML = rowHTML;
-        tableBody.prepend(newRow);
-    }
-
-    resetModal();
-    prModal.style.display = 'none';
-};
-
-// --- 3. EDIT & DELETE LOGIC (Event Delegation) ---
-tableBody.addEventListener('click', (e) => {
-    const row = e.target.closest('tr');
-    
-    // DELETE
-    if (e.target.classList.contains('fa-trash')) {
-        if (confirm("Delete this record?")) row.remove();
-    }
-
-    // EDIT
-    if (e.target.classList.contains('fa-pen-to-square')) {
-        prModal.style.display = 'flex';
-        prModal.querySelector('h2').innerText = "Edit Delivery";
-        submitBtn.innerText = "Save Changes";
-        
-        // Fill Modal with Row Data
-        document.getElementById('modalPONum').value = row.cells[0].innerText;
-        document.getElementById('modalSupplier').value = row.cells[1].innerText;
-        document.getElementById('modalRequestor').value = row.cells[4].innerText;
-        document.getElementById('modalProject').value = row.cells[6].innerText;
-        document.querySelector('#datePicker1 input').value = row.cells[3].innerText;
-        
-        // Track the row index
-        prModal.setAttribute('data-editing-row', row.sectionRowIndex);
-    }
 });
-
-// --- 4. RESET MODAL ---
-function resetModal() {
-    document.querySelectorAll('.modal-body input').forEach(i => i.value = '');
-    document.querySelectorAll('.custom-select span').forEach(s => s.innerText = '');
-    document.getElementById('previewContainerDR').innerHTML = '';
-    document.getElementById('previewContainerPO').innerHTML = '';
-    uploadState.dr.files = [];
-    uploadState.po.files = [];
-    prModal.querySelector('h2').innerText = "Create New Delivery";
-    submitBtn.innerText = "Create";
-}
-
-// Initialize
-initUploadBoxes();
 </script>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.querySelector('.search-box input');
-    const tableRows = () => document.querySelectorAll('table tbody tr');
-
-    // --- 1. SEARCH FILTER LOGIC ---
-    searchInput.addEventListener('input', filterTable);
-
-    function filterTable() {
-        const searchTerm = document.querySelector('.search-box input').value.toLowerCase();
-        const categoryLabel = document.querySelector('#selectDept .select-trigger span').innerText;
-        const categoryTerm = categoryLabel.toLowerCase();
-
-        // Update H2 automatically
-        const categoryHeading = document.querySelector('#categoryHeading');
-        categoryHeading.innerText = (categoryLabel === "Select Category" || categoryLabel === "All Categories") 
-            ? "Supplier for All Categories" 
-            : "Supplier for " + categoryLabel;
-
-        document.querySelectorAll('table tbody tr').forEach(row => {
-            const rowText = row.innerText.toLowerCase();
-            // Column index 11 is 'Line of Business' / Category
-            const rowCategory = row.cells[11].innerText.toLowerCase(); 
-
-            const matchesSearch = rowText.includes(searchTerm);
-            const isAll = (categoryTerm === 'select category' || categoryTerm === 'all categories');
-            
-            // Match logic
-            const matchesCategory = isAll || rowCategory.includes(categoryTerm);
-
-            row.style.display = (matchesSearch && matchesCategory) ? "" : "none";
-        });
-    }
-
-    // --- 2. DATE RANGE FILTER LOGIC ---
-    // We update your existing "Save" button in the calendar dropdown
-    const saveCalendarBtn = document.getElementById('saveCalendarBtn');
-    
-    saveCalendarBtn.addEventListener('click', function() {
-        if (startDate && endDate) {
-            // Your existing label update logic
-            const options = { month: 'short', day: 'numeric' };
-            dateRangeBtn.innerHTML = `<i class="fa-regular fa-calendar"></i> ${startDate.toLocaleDateString('en-US', options)} - ${endDate.toLocaleDateString('en-US', options)} <i class="fa-solid fa-chevron-down"></i>`;
-            
-            // Trigger the filter
-            filterTable();
-        }
-        calendarWrap.style.display = 'none';
-    });
-
-    // Helper to turn table date strings (e.g., "8/27/2025" or "27/08/2025") into Date Objects
-    function parseTableDate(dateStr) {
-    if (!dateStr) return null;
-    
-    // Check if the format is "Jul 3-25" (your current table format)
-    if (dateStr.includes('-')) {
-        const parts = dateStr.replace('-', ' 20').split(' '); 
-        // Turns "Jul 3-25" into "Jul 3 2025"
-        return new Date(parts.join(' '));
-    } 
-    
-    // Check if the format is "03/01/2026" (your modal/input format)
-    if (dateStr.includes('/')) {
-        const [day, month, year] = dateStr.split('/');
-        return new Date(year, month - 1, day);
-    }
-
-    return new Date(dateStr);
-}
-});
-
-//=============================================////=============================================//
-//=============================================////=============================================//
-
 document.querySelectorAll('.side-nav .menu-item').forEach(item => {
     // 1. Initial State: Hide sub-menus on page load (Optional)
     toggleSubMenus(item, false); 
@@ -848,8 +493,35 @@ document.getElementById('exportExcelBtn').onclick = function() {
     downloadLink.click();
     document.body.removeChild(downloadLink);
 };
-</script>
 
+//=============================================////=============================================//
+//=============================================////=============================================//
+
+// --- Header Dropdown Logic ---
+const profileBtn = document.getElementById('profileDropdown');
+const notifBtn = document.getElementById('notifDropdown');
+
+// Toggle Profile Menu
+profileBtn.onclick = (e) => {
+    e.stopPropagation();
+    notifBtn.querySelector('.dropdown-menu').classList.remove('show'); // Close other
+    profileBtn.querySelector('.dropdown-menu').classList.toggle('show');
+};
+
+// Toggle Notification Menu
+notifBtn.onclick = (e) => {
+    e.stopPropagation();
+    profileBtn.querySelector('.dropdown-menu').classList.remove('show'); // Close other
+    notifBtn.querySelector('.dropdown-menu').classList.toggle('show');
+};
+
+// Close menus when clicking anywhere else on the page
+window.addEventListener('click', () => {
+    document.querySelectorAll('.dropdown-menu').forEach(menu => {
+        menu.classList.remove('show');
+    });
+});
+</script>
 
 </body>
 </html>

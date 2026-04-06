@@ -67,6 +67,53 @@ html, body {
     box-sizing: border-box;
 }
 
+/* Container for positioning */
+.dropdown-container {
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+/* The Menu itself */
+.dropdown-menu {
+    display: none; /* Hidden by default */
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    z-index: 1000;
+    margin-top: 10px;
+    padding: 8px 0;
+}
+
+/* Show class toggled by JS */
+.dropdown-menu.show {
+    display: block;
+}
+
+/* Items inside the menu */
+.dropdown-item {
+    padding: 10px 15px;
+    text-decoration: none;
+    display: block;
+    color: #333;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.dropdown-item:hover {
+    background-color: #f5f5f5;
+}
+
+.dropdown-item i {
+    margin-right: 8px;
+    width: 16px;
+}
+
 /* Sidebar Styling */
 .sidebar {
     width: 250px; /* Fixed width */
@@ -378,7 +425,10 @@ th, td {
 .input-icon-wrap input { padding-left: 35px; }
 .input-icon-wrap .right-icon { position: absolute; right: 12px; font-size: 12px; color: #666; }
 
-/* Upload Area */
+/*=============================================================/
+
+/* Container for the upload area */
+
 .upload-box {
     border: 1.5px dashed #aaa;
     border-radius: 20px;
@@ -389,21 +439,48 @@ th, td {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    transition: background 0.3s ease;
-    
 }
 
-.upload-box.drag-over {
-    background: #e1f5fe;
-    border-color: #FF6B00;
+.download-icon { font-size: 28px; color: #aaa; margin: 10px 0; }
+.file-card { font-size: 12px; color: #555; margin-bottom: 10px; font-weight: 300; }
+.upload-hint { font-size: 11px; color: #666; margin: 5px 0; }
+.upload-limit { font-size: 9px; color: #aaa; margin-bottom: 15px; }
+.browse-btn { border: 1px solid #ccc; background: white; padding: 6px 20px; border-radius: 8px; cursor: pointer; font-size: 11px; color: #555; }
+
+.btn-create { background: #FF6B00; color: white; border: none; padding: 12px 45px; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 14px; }
+.btn-cancel { background: transparent; border: none; color: #555; font-weight: bold; cursor: pointer; margin-right: 20px; font-size: 14px; }
+
+/* JPEG, PNG, XLSX text */
+.upload-box p:nth-of-type(3) {
+    font-size: 0.3rem;
+    color: #aaa;
+    margin-bottom: 5px;
+    text-transform: uppercase;
 }
 
-/* Thumbnail Previews */
+/* Browse File Button */
+.browse-btn {
+    background-color: white;
+    color: #555;
+    border: 1px solid #ccc;
+    padding: 10px 35px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.browse-btn:hover {
+    background-color: #f0f0f0;
+}
+
+/* File Preview/Selected Icon Container */
 .preview-container {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-top: 15px;
+    margin-top: 5px;
     width: 100%;
     justify-content: center;
 }
@@ -418,14 +495,26 @@ th, td {
     background: white;
 }
 
-.preview-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+/* The card representing the uploaded file */
+.file-card {
+    position: relative;
+    width: 60px;
+    height: 70px;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
 }
 
-/* Delete Button on Hover */
-.remove-img {
+.file-card i.fa-file {
+    font-size: 30px;
+    color: #666;
+}
+
+/* The Red 'X' Delete Icon */
+.delete-file {
     position: absolute;
     top: 2px;
     right: 2px;
@@ -443,18 +532,14 @@ th, td {
     transition: opacity 0.2s;
 }
 
-.preview-item:hover .remove-img {
+.file-card:hover .delete-file {
     opacity: 1;
 }
+/*===============================================================================*/
 
-.download-icon { font-size: 28px; color: #aaa; margin: 10px 0; }
-.upload-title { font-size: 12px; color: #555; margin-bottom: 10px; }
-.upload-hint { font-size: 11px; color: #666; margin: 5px 0; }
-.upload-limit { font-size: 9px; color: #aaa; margin-bottom: 15px; }
-.browse-btn { border: 1px solid #ccc; background: white; padding: 6px 20px; border-radius: 8px; cursor: pointer; font-size: 11px; color: #555; }
 
-.btn-create { background: #FF6B00; color: white; border: none; padding: 12px 45px; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 14px; }
-.btn-cancel { background: transparent; border: none; color: #555; font-weight: bold; cursor: pointer; margin-right: 20px; font-size: 14px; }
+
+
 
 /* Calendar Precision */
 .calendar-dropdown {

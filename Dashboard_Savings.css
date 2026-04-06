@@ -404,7 +404,7 @@ th, td {
 
 /* Calendar Precision */
 .calendar-dropdown {
-    position: absolute; right: 310px; top: 220px; width: 280px; z-index: 1000; display: none;
+    position: absolute; right: 360px; top: 220px; width: 280px; z-index: 1000; display: none;
     background: #E8E8E8; /* Matches your gray theme */
     border-radius: 15px;
     padding: 12px;
@@ -439,9 +439,15 @@ th, td {
 .day.in-range:nth-of-type(7n) { border-top-right-radius: 0px; border-bottom-right-radius: 0px; }
 .calendar-footer { text-align: right; padding-top: 15px; font-weight: bold; font-size: 12px; color: #444; cursor: pointer; }
 
-/* Custom Select/Dropdown Styling */
-.custom-select, .custom-date-picker { position: relative; width: 100%; }
+/* --- Dropdown & Date Picker Logic --- */
 
+/* 1. Container must be relative so the menu stays attached to it */
+.custom-select, .custom-date-picker { 
+    position: relative; 
+    width: 100%; 
+}
+
+/* 2. The trigger (the box you click) */
 .select-trigger {
     padding: 10px 12px;
     border: 1px solid #ccc;
@@ -452,56 +458,53 @@ th, td {
     align-items: center;
     cursor: pointer;
     font-size: 13px;
+    transition: border-color 0.3s;
 }
 
-.options-list {
+/* 3. The Hidden Menu (Common for both Select and Calendar) */
+.options-list, .mini-calendar {
     position: absolute;
-    top: 100%; left: 0; right: 0;
-    background: #E5E5E5;
-    border-radius: 10px;
-    margin-top: 5px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    display: none;
-    z-index: 3000;
-    overflow: hidden;
+    left: 0;
+    right: 0;
+    background: #E8E8E8; /* Your theme gray */
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    display: none; /* Hidden by default */
+    z-index: 9999; /* Ensure it stays above modal elements */
 }
 
-.options-list.scrollable { max-height: 200px; overflow-y: auto; }
+/* 4. Show logic - When JS adds the .open class */
+.custom-select.open .options-list,
+.custom-date-picker.open .mini-calendar {
+    display: block !important;
+}
+
+/* 5. Dropdown Items Styling */
+.options-list {
+    overflow: hidden;
+    padding: 5px 0;
+}
 
 .options-list div {
     padding: 10px 15px;
     font-size: 13px;
     cursor: pointer;
+    color: #444;
     transition: 0.2s;
 }
 
-.options-list div:hover, .options-list div.active {
-    background: #FF6B00;
+.options-list div:hover, 
+.options-list div.active {
+    background: var(--orange);
     color: white;
 }
 
-/* Mini Calendar for Modal Inputs */
-.mini-calendar {
-    position: absolute;
-    top: 100%; left: 0;
-    background: #E8E8E8;
-    border-radius: 15px;
-    padding: 10px;
-    display: none;
-    width: 250px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+/* 6. Rotate Chevron on Open */
+.custom-select.open .select-trigger i,
+.custom-date-picker.open .right-icon {
+    transform: rotate(180deg);
+    transition: transform 0.3s ease;
 }
-
-.custom-select.open .options-list, 
-.custom-date-picker.open .mini-calendar .calendar-dropdown  { 
-    display: block; 
-    bottom: 100%;
-    top: auto;
-    margin-bottom: 10px;
-    margin-top: 0;
-}
-
-.custom-select.open .select-trigger i { transform: rotate(180deg); }
 
 /* Container for the mini calendar dropdown */
 .mini-calendar {
