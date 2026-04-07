@@ -14,9 +14,20 @@
             <img src="Assets/logo.png" alt="" class="header-logo">
         </div>
         <div class="header-right">
-            <i class="fa-solid fa-bell notification-icon"></i>
-            <div class="profile-icon">
+            <div class="dropdown-container" id="notifDropdown">
+                <i class="fa-solid fa-bell notification-icon"></i>
+                <div class="dropdown-menu">
+                    <div class="dropdown-item">No new notifications</div>
+                </div>
+            </div>
+
+            <div class="profile-icon dropdown-container" id="profileDropdown">
                 <i class="fa-solid fa-circle-user"></i>
+                <div class="dropdown-menu">
+                    <a href="Profile.html" class="dropdown-item"><i class="fa-solid fa-user"></i> Profile</a>
+                    <a href="Calendar.html" class="dropdown-item"><i class="fas fa-calendar-alt"></i> Calendar</a>
+                    <a href="index.html" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Log-out</a>
+                </div>
             </div>
         </div>
     </header>
@@ -85,6 +96,9 @@
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </div>
                 <div class="actions">
+                    <button id="exportExcelBtn" style="background: #1A3E3E; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                        <i class="fa-solid fa-file-excel"></i> Export
+                    </button>
                     <button class="add-btn">+ Add Payment</button>
                 </div>
             </section>
@@ -542,6 +556,69 @@ function toggleSubMenus(menuItem, show) {
         next = next.nextElementSibling;
     }
 }
+
+//=============================================////=============================================//
+//=============================================////=============================================//
+
+document.getElementById('exportExcelBtn').onclick = function() {
+    let csv = [];
+    const rows = document.querySelectorAll("table tr");
+    
+    for (let i = 0; i < rows.length; i++) {
+        // Only export rows that are visible (matches your filters)
+        if (rows[i].style.display !== "none") {
+            let row = [];
+            const cols = rows[i].querySelectorAll("td, th");
+            
+            for (let j = 0; j < cols.length - 1; j++) { // Length - 1 to skip "Actions" column
+                // Clean the text: remove commas (which break CSVs) and Peso signs for better Excel math
+                let data = cols[j].innerText.replace(/,/g, '').replace(/₱/g, '');
+                row.push('"' + data + '"');
+            }
+            csv.push(row.join(","));
+        }
+    }
+
+    // Create the download link
+    const csvFile = new Blob([csv.join("\n")], { type: "text/csv" });
+    const downloadLink = document.createElement("a");
+    const fileName = `Savings_Report_${new Date().toLocaleDateString()}.csv`;
+
+    downloadLink.download = fileName;
+    downloadLink.href = window.URL.createObjectURL(csvFile);
+    downloadLink.style.display = "none";
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+};
+
+//=============================================////=============================================//
+//=============================================////=============================================//
+
+// --- Header Dropdown Logic ---
+const profileBtn = document.getElementById('profileDropdown');
+const notifBtn = document.getElementById('notifDropdown');
+
+// Toggle Profile Menu
+profileBtn.onclick = (e) => {
+    e.stopPropagation();
+    notifBtn.querySelector('.dropdown-menu').classList.remove('show'); // Close other
+    profileBtn.querySelector('.dropdown-menu').classList.toggle('show');
+};
+
+// Toggle Notification Menu
+notifBtn.onclick = (e) => {
+    e.stopPropagation();
+    profileBtn.querySelector('.dropdown-menu').classList.remove('show'); // Close other
+    notifBtn.querySelector('.dropdown-menu').classList.toggle('show');
+};
+
+// Close menus when clicking anywhere else on the page
+window.addEventListener('click', () => {
+    document.querySelectorAll('.dropdown-menu').forEach(menu => {
+        menu.classList.remove('show');
+    });
+});
 </script>
 
 </body>

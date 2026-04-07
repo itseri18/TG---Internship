@@ -221,38 +221,182 @@ html, body {
     transition: 0.3s;
 }
 
+/* Content Area */
+.content-area {
+    flex-grow: 1;
+    overflow: auto; /* Allows vertical and horizontal scrolling */
+    height: calc(100vh - 70px);
+    padding: 30px 50px;
+}
+
+.filters-bar {
+    display: flex;
+    align-items: center; /* Vertically centers the h2 and the actions div */
+    justify-content: space-between; /* Pushes h2 to the left and buttons to the right */
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.filters-bar h2 {
+    margin: 0; /* Critical: Removes default browser spacing that pushes other elements */
+    font-size: 1.25rem; /* Adjust as needed */
+    font-weight: 600;
+    color: #333;
+    white-space: nowrap; /* Prevents the text from wrapping and breaking layout */
+}
+
+.filters-bar .actions {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Consistent spacing between buttons */
+}
+
+.search-box {
+    position: relative;
+    width: 50%;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 10px;
+    border: 1px solid #DDD;
+    background: #FAFAFA;
+}
+
+.search-box i {
+    position: absolute;
+    right: 15px;
+    top: 13px;
+    color: #AAA;
+}
+
+.actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.date-select {
+    padding: 10px 15px;
+    border: 1px solid #DDD;
+    border-radius: 8px;
+    background: #EEE;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+}
+
+.add-btn {
+    background: var(--orange);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.1s ease;
+}
+
+.add-btn:hover {
+    background-color: #e66000; /* A slightly darker orange */
+    transform: translateY(-1px); /* Slight lift effect */
+}
+
+.add-btn:active {
+    transform: translateY(0);
+}
+
+/* Table */
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto; /* Specifically for left-to-right table scrolling */
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-top: 20px;
+}
+
+table {
+   width: 100%;
+    min-width: 1200px; /* Forces horizontal scroll if the window is narrow */
+    border-collapse: collapse;
+}
+
+thead tr {
+    background: var(--teal);
+    color: white;
+
+    
+}
+
+tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+tbody tr:hover {
+    background-color: #f9f9f9; /* Subtle gray highlight for the row */
+}
+
+th:first-child {
+    border-top-left-radius: 15px;
+}
+
+th:last-child {
+    border-top-right-radius: 15px;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    font-size: 11.5px;
+    border-bottom: 1px solid #EEE;
+    white-space: nowrap;
+}
+
+
+/* Ensure the Actions column and Status indicator are handled together */
+.action-icons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: none; /* Prevents double lines in flex container */
+    display: inline-block;
+}
+.action-icons i {
+    margin-right: 15px;
+    cursor: pointer;
+    color: #555;
+    transition: 0.2s;
+}
+
+.action-icons i:hover {
+    color: var(--orange); /* Changed from --accent-orange to match your :root */
+}
+
+.notification-icon, .profile-icon {
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.notification-icon:hover, .profile-icon:hover {
+    opacity: 0.8;
+}
+
+.date-select {
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.date-select:hover {
+    background: #e2e2e2;
+}
+
 /*===========================================================================
 /*===========================================================================
 
 /* Color Palette & Base */
-:root {
-    --primary-orange: #FF8C00;
-    --bg-light: #F8F9FA;
-    --text-black: #1A1A1A;
-    --input-bg: #F3F4F6;
-    --border-dashed: #D1D5DB;
-}
-
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--bg-light);
-    margin: 0;
-    color: var(--text-black);
-}
-
-/* Layout */
-.app-container {
-    display: flex;
-    min-height: 100vh;
-}
-
-.sidebar {
-    width: 250px;
-    background: #000; /* Black Theme */
-    color: white;
-    padding: 20px;
-}
-
 .content-area {
     flex: 1;
     padding: 40px;

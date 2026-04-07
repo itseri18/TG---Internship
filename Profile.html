@@ -73,7 +73,7 @@
     <div class="profile-left">
         <div class="avatar-wrapper" id="avatarClickArea" style="cursor: pointer;">
             <div class="camera-overlay"><i class="fa-solid fa-camera"></i></div>
-            <img src="Assets/user-placeholder.png" id="profileDisplay" alt="Profile Image">
+            <img src="Assets/Gemini_Generated_Image_fn585mfn585mfn58.png" id="profileDisplay" alt="Profile Image">
             <input type="file" id="imageInput" accept="image/*" style="display: none;">
         </div>
 
@@ -110,126 +110,137 @@
     </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const imageInput = document.getElementById('imageInput');
-        const profileDisplay = document.getElementById('profileDisplay');
-        const avatarClickArea = document.getElementById('avatarClickArea');
-        const saveBtn = document.getElementById('saveBtn');
+document.addEventListener('DOMContentLoaded', () => {
+    // --- Elements ---
+    const imageInput = document.getElementById('imageInput');
+    const profileDisplay = document.getElementById('profileDisplay');
+    const avatarClickArea = document.getElementById('avatarClickArea');
+    const saveBtn = document.getElementById('saveBtn');
+    const editBtn = document.getElementById('editBtn');
+    
+    // Select all inputs
+    const inputs = [
+        document.getElementById('userName'),
+        document.getElementById('userEmail'),
+        document.getElementById('userPhone'),
+        document.getElementById('userAddress')
+    ];
 
-        // --- 1. Image Upload & Preview ---
-        avatarClickArea.addEventListener('click', () => {
-            imageInput.click(); // Trigger the hidden file input
-        });
-
-        imageInput.addEventListener('change', function() {
-            const file = this.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    // Update the image src with the uploaded file
-                    profileDisplay.setAttribute('src', e.target.result);
-                }
-                reader.readAsDataURL(file);
-            }
-        });
-
-        // --- 2. Validation & Saving ---
-        saveBtn.addEventListener('click', () => {
-            const name = document.querySelector('input[type="text"]').value;
-            const email = document.querySelector('input[type="email"]').value;
-            const phone = document.querySelectorAll('input[type="text"]')[1].value;
-
-            // Simple Regex for Email Validation
-            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            
-            if (name.length < 2) {
-                alert("Please enter a valid name.");
-                return;
-            }
-
-            if (!emailPattern.test(email)) {
-                alert("Please enter a valid email address.");
-                return;
-            }
-
-            if (phone.length < 8) {
-                alert("Please enter a valid phone number.");
-                return;
-            }
-
-            // Simulate a Save Action
-            saveBtn.innerText = "SAVING...";
-            saveBtn.disabled = true;
-
-            setTimeout(() => {
-                alert("Profile updated successfully!");
-                saveBtn.innerText = "SAVE";
-                saveBtn.disabled = false;
-            }, 1000);
-        });
+    // --- 1. INITIAL STATE ---
+    // Ensure all fields are locked when the page loads
+    inputs.forEach(input => {
+        if(input) input.disabled = true;
     });
-</script>
 
-<script>
-document.querySelectorAll('.side-nav .menu-item').forEach(item => {
-    // 1. Initial State: Hide sub-menus on page load (Optional)
-    toggleSubMenus(item, false); 
+    // --- 2. EDIT PROFILE BUTTON (FIXED) ---
+    editBtn.addEventListener('click', (e) => {
+        e.preventDefault(); 
+        
+        // Check state of the first element in the array
+        const currentlyDisabled = inputs.disabled;
+        
+        if (currentlyDisabled) {
+            // UNLOCK FIELDS
+            inputs.forEach(field => {
+                if(field) field.disabled = false;
+            });
+            editBtn.innerText = "LOCK FIELDS";
+            inputs.focus(); // Focus on the name field
+        } else {
+            // LOCK FIELDS
+            inputs.forEach(field => {
+                if(field) field.disabled = true;
+            });
+            editBtn.innerText = "EDIT PROFILE";
+        }
+    });
 
-    item.style.cursor = 'pointer'; // Ensure user knows it's clickable
+    // --- 3. IMAGE UPLOAD (FIXED) ---
+    avatarClickArea.addEventListener('click', () => {
+        imageInput.click(); 
+    });
 
-    item.addEventListener('click', function() {
-        // Toggle the caret rotation
-        const caret = this.querySelector('.caret');
-        if (caret) {
-            caret.style.transform = caret.style.transform === 'rotate(180deg)' ? 'rotate(0deg)' : 'rotate(180deg)';
-            caret.style.transition = 'transform 0.3s ease';
+    imageInput.addEventListener('change', function(e) {
+        // Access the first file specifically
+        const file = e.target.files; 
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                profileDisplay.src = event.target.result; 
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // --- 4. SAVE BUTTON ---
+    saveBtn.addEventListener('click', (e) => {
+        e.preventDefault(); 
+
+        const name = document.getElementById('userName').value;
+        const email = document.getElementById('userEmail').value;
+        const phone = document.getElementById('userPhone').value;
+
+        if (!name || !email || !phone) {
+            return alert("Please fill in the required fields.");
         }
 
-        // Check current state of the first sub-menu item to determine if we show or hide
-        const firstSub = this.nextElementSibling;
-        const isHidden = !firstSub || firstSub.style.display === 'none';
-        
-        toggleSubMenus(this, isHidden);
+        saveBtn.innerText = "SAVING...";
+        saveBtn.disabled = true;
+
+        setTimeout(() => {
+            alert("Profile updated successfully!");
+            saveBtn.innerText = "SAVE";
+            saveBtn.disabled = false;
+            
+            // Re-lock fields after saving
+            inputs.forEach(input => { if(input) input.disabled = true; });
+            editBtn.innerText = "EDIT PROFILE";
+        }, 800);
     });
-});
 
-function toggleSubMenus(menuItem, show) {
-    let next = menuItem.nextElementSibling;
-    
-    while (next && (next.classList.contains('sub-menu') || next.classList.contains('active-tab'))) {
-        next.style.display = show ? 'block' : 'none';
-        next = next.nextElementSibling;
-    }
-}
+    // --- 5. SIDEBAR & DROPDOWN LOGIC ---
+    document.querySelectorAll('.side-nav .menu-item').forEach(item => {
+        let next = item.nextElementSibling;
+        while (next && next.classList.contains('sub-menu')) {
+            next.style.display = 'none';
+            next = next.nextElementSibling;
+        }
 
-//=============================================////=============================================//
-//=============================================////=============================================//
-
-// --- Header Dropdown Logic ---
-const profileBtn = document.getElementById('profileDropdown');
-const notifBtn = document.getElementById('notifDropdown');
-
-// Toggle Profile Menu
-profileBtn.onclick = (e) => {
-    e.stopPropagation();
-    notifBtn.querySelector('.dropdown-menu').classList.remove('show'); // Close other
-    profileBtn.querySelector('.dropdown-menu').classList.toggle('show');
-};
-
-// Toggle Notification Menu
-notifBtn.onclick = (e) => {
-    e.stopPropagation();
-    profileBtn.querySelector('.dropdown-menu').classList.remove('show'); // Close other
-    notifBtn.querySelector('.dropdown-menu').classList.toggle('show');
-};
-
-// Close menus when clicking anywhere else on the page
-window.addEventListener('click', () => {
-    document.querySelectorAll('.dropdown-menu').forEach(menu => {
-        menu.classList.remove('show');
+        item.addEventListener('click', function() {
+            const caret = this.querySelector('.caret');
+            if (caret) {
+                caret.style.transform = caret.style.transform === 'rotate(180deg)' ? 'rotate(0deg)' : 'rotate(180deg)';
+            }
+            let sub = this.nextElementSibling;
+            while (sub && sub.classList.contains('sub-menu')) {
+                sub.style.display = sub.style.display === 'none' ? 'block' : 'none';
+                sub = sub.nextElementSibling;
+            }
+        });
     });
+
+    const profileBtn = document.getElementById('profileDropdown');
+    const notifBtn = document.getElementById('notifDropdown');
+
+    if(profileBtn) profileBtn.onclick = (e) => {
+        e.stopPropagation();
+        profileBtn.querySelector('.dropdown-menu').classList.toggle('show');
+    };
+
+    window.onclick = () => {
+        document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
+    };
 });
 </script>
+
+<style>
+/* Essential fix for dropdown visibility */
+.dropdown-menu.show {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+</style>
 
 </body>
 </html>

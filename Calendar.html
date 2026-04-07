@@ -66,262 +66,251 @@
         </aside>
 
         <main class="flex-1 flex flex-col lg:flex-row overflow-hidden">
-            
-            <section class="flex-1 p-6 md:p-8 overflow-y-auto custom-scrollbar bg-white">
-                <div class="flex items-center justify-between mb-8">
-                    <div>
-                        <h2 id="currentMonthYear" class="text-2xl font-bold text-gray-800">April 2026</h2>
-                        <p class="text-gray-500 text-sm">Manage your facility schedule</p>
-                    </div>
+        <section class="flex-1 p-6 md:p-8 overflow-y-auto custom-scrollbar bg-white">
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h2 id="currentMonthYear" class="text-2xl font-bold text-gray-800">April 2026</h2>
+                    <p class="text-gray-500 text-sm">Manage your facility schedule</p>
+                </div>
+                <div class="flex items-center gap-4">
                     <div class="flex bg-gray-100 p-1 rounded-lg">
-                        <button class="px-4 py-1.5 bg-white shadow-sm rounded-md text-sm font-medium text-gray-800">Month</button>
-                        <button class="px-4 py-1.5 text-sm font-medium text-gray-500 hover:text-gray-800 transition-colors">Week</button>
+                        <button onclick="changeMonth(-1)" class="px-3 py-1.5 hover:bg-white rounded-md transition-all"><i class="fa-solid fa-chevron-left text-xs"></i></button>
+                        <button onclick="changeMonth(1)" class="px-3 py-1.5 hover:bg-white rounded-md transition-all"><i class="fa-solid fa-chevron-right text-xs"></i></button>
                     </div>
+                    <button onclick="goToToday()" class="text-sm font-bold text-orange-500 hover:underline">Today</button>
                 </div>
-
-                <div class="border border-gray-100 rounded-2xl overflow-hidden shadow-sm">
-                    <div class="calendar-grid bg-gray-50 border-b border-gray-100">
-                        <div class="py-4 text-center text-[10px] font-bold text-gray-400 uppercase tracking-widest">Sun</div>
-                        <div class="py-4 text-center text-[10px] font-bold text-gray-400 uppercase tracking-widest">Mon</div>
-                        <div class="py-4 text-center text-[10px] font-bold text-gray-400 uppercase tracking-widest">Tue</div>
-                        <div class="py-4 text-center text-[10px] font-bold text-gray-400 uppercase tracking-widest">Wed</div>
-                        <div class="py-4 text-center text-[10px] font-bold text-gray-400 uppercase tracking-widest">Thu</div>
-                        <div class="py-4 text-center text-[10px] font-bold text-gray-400 uppercase tracking-widest">Fri</div>
-                        <div class="py-4 text-center text-[10px] font-bold text-gray-400 uppercase tracking-widest">Sat</div>
-                    </div>
-                    <div id="calendarGrid" class="calendar-grid bg-white">
-                        </div>
-                </div>
-            </section>
-
-            <section class="w-full lg:w-[380px] bg-gray-50 border-l border-gray-200 p-8 flex flex-col">
-                <div class="flex items-center justify-between mb-6">
-                    <h3 class="font-bold text-lg text-gray-800">Upcoming Activities</h3>
-                    <span id="eventCountBadge" class="bg-orange-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full">0</span>
-                </div>
-                
-                <div id="activityList" class="flex-1 overflow-y-auto pr-2 custom-scrollbar space-y-4">
-                    </div>
-            </section>
-        </main>
-    </div>
-
-    <button onclick="openModal()" class="fixed bottom-8 right-8 w-14 h-14 bg-orange-500 hover:bg-orange-600 text-white rounded-full shadow-lg shadow-orange-200 flex items-center justify-center text-2xl transition-all hover:scale-110 active:scale-95 z-[60]">
-        <i class="fa-solid fa-plus"></i>
-    </button>
-
-    <div id="eventModal" class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm hidden items-center justify-center z-[100] p-4">
-        <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden transform transition-all scale-95 opacity-0" id="modalBox">
-            <div class="px-8 py-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
-                <h3 id="modalTitle" class="text-xl font-bold text-gray-800">Create Event</h3>
-                <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div class="p-8 space-y-5">
-                <input type="hidden" id="editIndex">
-                <div>
-                    <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Event Title</label>
-                    <input type="text" id="eventTitle" placeholder="e.g. Facility Inspection" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none">
+
+            <div class="border border-gray-100 rounded-2xl overflow-hidden shadow-sm">
+                <div class="grid grid-cols-7 bg-gray-50 border-b border-gray-100">
+                    <div class="py-4 text-center text-[10px] font-bold text-gray-400 uppercase tracking-widest">Sun</div>
+                    <div class="py-4 text-center text-[10px] font-bold text-gray-400 uppercase tracking-widest">Mon</div>
+                    <div class="py-4 text-center text-[10px] font-bold text-gray-400 uppercase tracking-widest">Tue</div>
+                    <div class="py-4 text-center text-[10px] font-bold text-gray-400 uppercase tracking-widest">Wed</div>
+                    <div class="py-4 text-center text-[10px] font-bold text-gray-400 uppercase tracking-widest">Thu</div>
+                    <div class="py-4 text-center text-[10px] font-bold text-gray-400 uppercase tracking-widest">Fri</div>
+                    <div class="py-4 text-center text-[10px] font-bold text-gray-400 uppercase tracking-widest">Sat</div>
                 </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Date</label>
-                    <input type="date" id="eventDate" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Status</label>
-                    <select id="eventStatus" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none">
-                        <option value="Upcoming">Upcoming</option>
-                        <option value="Done">Done</option>
-                        <option value="Overdue">Overdue</option>
-                    </select>
-                </div>
-                <div class="pt-4 flex gap-3">
-                    <button onclick="closeModal()" class="flex-1 py-3 text-gray-500 font-semibold hover:bg-gray-100 rounded-xl transition-all">Cancel</button>
-                    <button onclick="saveEvent()" class="flex-1 py-3 bg-orange-500 text-white font-bold rounded-xl shadow-md hover:bg-orange-600 transition-all">Save Event</button>
-                </div>
+                <div id="calendarGrid" class="grid grid-cols-7 bg-white"></div>
+            </div>
+        </section>
+
+        <section class="w-full lg:w-[380px] bg-gray-50 border-l border-gray-200 p-8 flex flex-col">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="font-bold text-lg text-gray-800">Upcoming Activities</h3>
+                <span id="eventCountBadge" class="bg-orange-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full">0</span>
+            </div>
+            <div id="activityList" class="flex-1 overflow-y-auto pr-2 custom-scrollbar space-y-4"></div>
+        </section>
+    </main>
+</div>
+
+<button onclick="openModal()" class="fixed bottom-8 right-8 w-14 h-14 bg-orange-500 hover:bg-orange-600 text-white rounded-full shadow-lg shadow-orange-200 flex items-center justify-center text-2xl transition-all hover:scale-110 active:scale-95 z-">
+    <i class="fa-solid fa-plus"></i>
+</button>
+
+<div id="eventModal" class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm hidden items-center justify-center z- p-4">
+    <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden transform transition-all scale-95 opacity-0" id="modalBox">
+        <div class="px-8 py-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+            <h3 id="modalTitle" class="text-xl font-bold text-gray-800">Create Event</h3>
+            <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="p-8 space-y-5">
+            <input type="hidden" id="editIndex">
+            <div>
+                <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Event Title</label>
+                <input type="text" id="eventTitle" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Date</label>
+                <input type="date" id="eventDate" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Status</label>
+                <select id="eventStatus" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none">
+                    <option value="Upcoming">Upcoming</option>
+                    <option value="Done">Done</option>
+                    <option value="Overdue">Overdue</option>
+                </select>
+            </div>
+            <div class="pt-4 flex gap-3">
+                <button onclick="closeModal()" class="flex-1 py-3 text-gray-500 font-semibold hover:bg-gray-100 rounded-xl transition-all">Cancel</button>
+                <button onclick="saveEvent()" class="flex-1 py-3 bg-orange-500 text-white font-bold rounded-xl shadow-md hover:bg-orange-600 transition-all">Save Event</button>
             </div>
         </div>
     </div>
+</div>
 
-    <script>
-        // Use a consistent key for localStorage
-        const STORAGE_KEY = 'pro_events_v1';
-        let events = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [
-            { title: "Project Kickoff", date: "2026-04-01", status: "Done" },
-            { title: "Design Review", date: "2026-04-12", status: "Upcoming" },
-            { title: "Safety Audit", date: "2026-04-21", status: "Overdue" }
-        ];
+<script>
+    const STORAGE_KEY = 'pro_events_v1';
+    let events = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [
+        { title: "Project Kickoff", date: "2026-04-01", status: "Done" },
+        { title: "Design Review", date: "2026-04-12", status: "Upcoming" },
+        { title: "Safety Audit", date: "2026-04-21", status: "Overdue" }
+    ];
 
-        function init() {
-            renderCalendar();
-            renderActivityFeed();
+    let currentDisplayDate = new Date(2026, 3, 1); // Start at April 2026
+
+    function init() {
+        renderCalendar();
+        renderActivityFeed();
+    }
+
+    function changeMonth(offset) {
+        currentDisplayDate.setMonth(currentDisplayDate.getMonth() + offset);
+        renderCalendar();
+    }
+
+    function goToToday() {
+        currentDisplayDate = new Date();
+        renderCalendar();
+    }
+
+    function renderCalendar() {
+        const grid = document.getElementById('calendarGrid');
+        const monthYearLabel = document.getElementById('currentMonthYear');
+        grid.innerHTML = '';
+        
+        const year = currentDisplayDate.getFullYear();
+        const month = currentDisplayDate.getMonth();
+        
+        monthYearLabel.innerText = new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' }).format(currentDisplayDate);
+
+        const firstDayOfMonth = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const daysInPrevMonth = new Date(year, month, 0).getDate();
+
+        const today = new Date();
+
+        // Previous Month "Padding" Days
+        for (let i = firstDayOfMonth; i > 0; i--) {
+            const day = daysInPrevMonth - i + 1;
+            const dateStr = `${year}-${String(month).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+            grid.innerHTML += createDayHTML(day, dateStr, false, false);
         }
 
-        function renderCalendar() {
-            const grid = document.getElementById('calendarGrid');
-            grid.innerHTML = '';
-            
-            // For demo, we are sticking to April 2026 as per your design
-            const year = 2026;
-            const month = 3; // April (0-indexed)
-            
-            const firstDay = new Date(year, month, 1).getDay();
-            const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-            // Render Empty Days for padding
-            for (let i = 0; i < firstDay; i++) {
-                grid.innerHTML += `<div class="h-24 md:h-32 border-b border-r border-gray-100 bg-gray-50/30"></div>`;
-            }
-
-            // Render Actual Days
-            for (let d = 1; d <= daysInMonth; d++) {
-                const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-                const dayEvents = events.filter(e => e.date === dateStr);
-                const isToday = (d === 6 && month === 3 && year === 2026); // Match your "April 6" logic
-
-                grid.innerHTML += `
-                    <div class="h-24 md:h-32 border-b border-r border-gray-100 p-2 group hover:bg-orange-50/30 transition-colors cursor-pointer relative" onclick="openDateModal('${dateStr}')">
-                        <span class="text-sm font-bold ${isToday ? 'bg-orange-500 text-white w-7 h-7 flex items-center justify-center rounded-full shadow-md' : 'text-gray-400 group-hover:text-gray-800'} transition-all">${d}</span>
-                        <div class="mt-1 space-y-1">
-                            ${dayEvents.slice(0, 2).map(e => {
-                                let colorClass = e.status === 'Done' ? 'bg-green-100 text-green-700 border-green-200' : 
-                                                 (e.status === 'Overdue' ? 'bg-red-100 text-red-700 border-red-200' : 
-                                                 'bg-orange-100 text-orange-700 border-orange-200');
-                                return `<div class="text-[9px] px-1.5 py-0.5 rounded font-bold truncate border ${colorClass}">${e.title}</div>`;
-                            }).join('')}
-                            ${dayEvents.length > 2 ? `<div class="text-[9px] text-gray-400 font-bold pl-1">+${dayEvents.length - 2} more</div>` : ''}
-                        </div>
-                    </div>
-                `;
-            }
+        // Current Month Days
+        for (let d = 1; d <= daysInMonth; d++) {
+            const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+            const isToday = today.getDate() === d && today.getMonth() === month && today.getFullYear() === year;
+            grid.innerHTML += createDayHTML(d, dateStr, true, isToday);
         }
 
-        function renderActivityFeed() {
-            const list = document.getElementById('activityList');
-            const badge = document.getElementById('eventCountBadge');
-            list.innerHTML = '';
-            
-            // Sort: Date ascending
-            events.sort((a,b) => new Date(a.date) - new Date(b.date));
-            badge.innerText = events.length;
+        // Next Month "Padding" Days
+        const totalSlots = 42; // 6 rows of 7 days
+        const remainingSlots = totalSlots - (firstDayOfMonth + daysInMonth);
+        for (let i = 1; i <= remainingSlots; i++) {
+            const dateStr = `${year}-${String(month + 2).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+            grid.innerHTML += createDayHTML(i, dateStr, false, false);
+        }
+    }
 
-            if(events.length === 0) {
-                list.innerHTML = `
-                    <div class="flex flex-col items-center justify-center h-64 text-center">
-                        <i class="fa-solid fa-calendar-xmark text-4xl text-gray-200 mb-4"></i>
-                        <p class="text-gray-400 text-sm">No activities scheduled</p>
-                    </div>`;
-                return;
-            }
+    function createDayHTML(day, dateStr, isCurrentMonth, isToday) {
+        const dayEvents = events.filter(e => e.date === dateStr);
+        const opacityClass = isCurrentMonth ? '' : 'bg-gray-50/50 text-gray-300';
+        
+        return `
+            <div class="h-24 md:h-32 border-b border-r border-gray-100 p-2 group hover:bg-orange-50/30 transition-colors cursor-pointer relative ${opacityClass}" onclick="openDateModal('${dateStr}')">
+                <span class="text-sm font-bold ${isToday ? 'bg-orange-500 text-white w-7 h-7 flex items-center justify-center rounded-full shadow-md' : 'text-gray-400 group-hover:text-gray-800'} transition-all">${day}</span>
+                <div class="mt-1 space-y-1">
+                    ${dayEvents.slice(0, 2).map(e => {
+                        let colorClass = e.status === 'Done' ? 'bg-green-100 text-green-700 border-green-200' : 
+                                         (e.status === 'Overdue' ? 'bg-red-100 text-red-700 border-red-200' : 
+                                         'bg-orange-100 text-orange-700 border-orange-200');
+                        return `<div class="text-[9px] px-1.5 py-0.5 rounded font-bold truncate border ${colorClass}">${e.title}</div>`;
+                    }).join('')}
+                    ${dayEvents.length > 2 ? `<div class="text-[9px] text-gray-400 font-bold pl-1">+${dayEvents.length - 2} more</div>` : ''}
+                </div>
+            </div>
+        `;
+    }
 
-            events.forEach((ev, idx) => {
-                const statusStyles = {
-                    'Done': 'bg-green-500 text-green-500 bg-green-50',
-                    'Overdue': 'bg-red-500 text-red-500 bg-red-50',
-                    'Upcoming': 'bg-orange-500 text-orange-500 bg-orange-50'
-                };
-                
-                const style = statusStyles[ev.status] || statusStyles['Upcoming'];
-                const dotColor = style.split(' ')[0];
-                const bgColor = style.split(' ')[2];
+    // Modal & Event Logic (Save/Delete/Edit)
+    function openModal(idx = null) {
+        const modal = document.getElementById('eventModal');
+        const box = document.getElementById('modalBox');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        setTimeout(() => { box.classList.remove('scale-95', 'opacity-0'); box.classList.add('scale-100', 'opacity-100'); }, 10);
 
-                list.innerHTML += `
-                    <div class="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all group">
-                        <div class="flex justify-between items-start mb-3">
-                            <span class="${bgColor} text-[10px] font-bold uppercase px-2 py-1 rounded-lg flex items-center gap-1.5">
-                                <span class="w-1.5 h-1.5 rounded-full ${dotColor}"></span>
-                                <span class="text-gray-700">${ev.status}</span>
-                            </span>
-                            <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <button onclick="editEvent(${idx})" class="text-gray-400 hover:text-orange-500"><i class="fa-solid fa-pen-to-square text-xs"></i></button>
-                                <button onclick="deleteEvent(${idx})" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-trash-can text-xs"></i></button>
-                            </div>
-                        </div>
-                        <h4 class="font-bold text-gray-800 mb-1">${ev.title}</h4>
-                        <div class="flex items-center text-xs text-gray-400 gap-2">
-                            <i class="fa-regular fa-calendar"></i>
-                            <span>${new Date(ev.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
-                        </div>
-                    </div>
-                `;
-            });
+        if(idx !== null) {
+            document.getElementById('modalTitle').innerText = "Edit Activity";
+            document.getElementById('eventTitle').value = events[idx].title;
+            document.getElementById('eventDate').value = events[idx].date;
+            document.getElementById('eventStatus').value = events[idx].status;
+            document.getElementById('editIndex').value = idx;
+        } else {
+            document.getElementById('modalTitle').innerText = "Create Event";
+            document.getElementById('editIndex').value = "";
+        }
+    }
+
+    function openDateModal(date) { openModal(); document.getElementById('eventDate').value = date; }
+
+    function closeModal() {
+        const modal = document.getElementById('eventModal');
+        const box = document.getElementById('modalBox');
+        box.classList.remove('scale-100', 'opacity-100'); box.classList.add('scale-95', 'opacity-0');
+        setTimeout(() => { modal.classList.add('hidden'); modal.classList.remove('flex'); }, 200);
+    }
+
+    function saveEvent() {
+        const title = document.getElementById('eventTitle').value;
+        const date = document.getElementById('eventDate').value;
+        const status = document.getElementById('eventStatus').value;
+        const idx = document.getElementById('editIndex').value;
+
+        if(!title || !date) return alert("Please provide a title and date.");
+
+        if(idx !== "") events[idx] = { title, date, status };
+        else events.push({ title, date, status });
+
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(events));
+        closeModal();
+        renderCalendar();
+        renderActivityFeed();
+    }
+
+    function deleteEvent(idx) {
+        if(confirm("Delete this activity?")) {
+            events.splice(idx, 1);
             localStorage.setItem(STORAGE_KEY, JSON.stringify(events));
-        }
-
-        // Modal Logic
-        function openModal(idx = null) {
-            const modal = document.getElementById('eventModal');
-            const box = document.getElementById('modalBox');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            
-            setTimeout(() => {
-                box.classList.remove('scale-95', 'opacity-0');
-                box.classList.add('scale-100', 'opacity-100');
-            }, 10);
-
-            if(idx !== null) {
-                document.getElementById('modalTitle').innerText = "Edit Activity";
-                document.getElementById('eventTitle').value = events[idx].title;
-                document.getElementById('eventDate').value = events[idx].date;
-                document.getElementById('eventStatus').value = events[idx].status;
-                document.getElementById('editIndex').value = idx;
-            } else {
-                document.getElementById('modalTitle').innerText = "Create Event";
-                document.getElementById('editIndex').value = "";
-            }
-        }
-
-        function openDateModal(date) {
-            openModal();
-            document.getElementById('eventDate').value = date;
-        }
-
-        function closeModal() {
-            const modal = document.getElementById('eventModal');
-            const box = document.getElementById('modalBox');
-            box.classList.remove('scale-100', 'opacity-100');
-            box.classList.add('scale-95', 'opacity-0');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-                document.getElementById('editIndex').value = '';
-                document.getElementById('eventTitle').value = '';
-                document.getElementById('eventDate').value = '';
-            }, 200);
-        }
-
-        function saveEvent() {
-            const title = document.getElementById('eventTitle').value;
-            const date = document.getElementById('eventDate').value;
-            const status = document.getElementById('eventStatus').value;
-            const idx = document.getElementById('editIndex').value;
-
-            if(!title || !date) return alert("Please provide a title and date.");
-
-            if(idx !== "") {
-                events[idx] = { title, date, status };
-            } else {
-                events.push({ title, date, status });
-            }
-
-            closeModal();
             renderCalendar();
             renderActivityFeed();
         }
+    }
 
-        function deleteEvent(idx) {
-            if(confirm("Permanently delete this activity?")) {
-                events.splice(idx, 1);
-                renderCalendar();
-                renderActivityFeed();
-            }
+    function renderActivityFeed() {
+        const list = document.getElementById('activityList');
+        const badge = document.getElementById('eventCountBadge');
+        list.innerHTML = '';
+        events.sort((a,b) => new Date(a.date) - new Date(b.date));
+        badge.innerText = events.length;
+
+        if(events.length === 0) {
+            list.innerHTML = `<div class="text-center py-10 text-gray-400 text-sm">No activities.</div>`;
+            return;
         }
 
-        function editEvent(idx) { openModal(idx); }
+        events.forEach((ev, idx) => {
+            list.innerHTML += `
+                <div class="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all group">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="text-[10px] font-bold uppercase px-2 py-1 rounded-lg bg-orange-50 text-orange-500">${ev.status}</span>
+                        <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button onclick="openModal(${idx})" class="text-gray-400 hover:text-orange-500"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button onclick="deleteEvent(${idx})" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                    </div>
+                    <h4 class="font-bold text-gray-800">${ev.title}</h4>
+                    <p class="text-xs text-gray-400 mt-1">${new Date(ev.date).toLocaleDateString()}</p>
+                </div>
+            `;
+        });
+    }
 
-        window.onload = init;
-    </script>
-
+    window.onload = init;
+</script>
 
 <script>
 document.querySelectorAll('.side-nav .menu-item').forEach(item => {
@@ -358,71 +347,25 @@ function toggleSubMenus(menuItem, show) {
 //=============================================////=============================================//
 //=============================================////=============================================//
 
+// --- Header Dropdown Logic ---
+const profileBtn = document.getElementById('profileDropdown');
+const notifBtn = document.getElementById('notifDropdown');
 
-
-document.getElementById('exportExcelBtn').onclick = function() {
-    let csv = [];
-    const rows = document.querySelectorAll("table tr");
-    
-    for (let i = 0; i < rows.length; i++) {
-        // Only export rows that are visible (matches your filters)
-        if (rows[i].style.display !== "none") {
-            let row = [];
-            const cols = rows[i].querySelectorAll("td, th");
-            
-            for (let j = 0; j < cols.length - 1; j++) { // Length - 1 to skip "Actions" column
-                // Clean the text: remove commas (which break CSVs) and Peso signs for better Excel math
-                let data = cols[j].innerText.replace(/,/g, '').replace(/₱/g, '');
-                row.push('"' + data + '"');
-            }
-            csv.push(row.join(","));
-        }
-    }
-
-    // Create the download link
-    const csvFile = new Blob([csv.join("\n")], { type: "text/csv" });
-    const downloadLink = document.createElement("a");
-    const fileName = `Savings_Report_${new Date().toLocaleDateString()}.csv`;
-
-    downloadLink.download = fileName;
-    downloadLink.href = window.URL.createObjectURL(csvFile);
-    downloadLink.style.display = "none";
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
+// Toggle Profile Menu
+profileBtn.onclick = (e) => {
+    e.stopPropagation();
+    notifBtn.querySelector('.dropdown-menu').classList.remove('show'); // Close other
+    profileBtn.querySelector('.dropdown-menu').classList.toggle('show');
 };
 
-//=============================================////=============================================//
-//=============================================////=============================================//
-
-// --- Header Dropdown Logic ---
-const profileDropdown = document.getElementById('profileDropdown');
-const notifDropdown = document.getElementById('notifDropdown');
-
-function toggleDropdown(dropdown) {
-    const menu = dropdown.querySelector('.dropdown-menu');
-    const isOpen = menu.classList.contains('show');
-    
-    // Close all first
-    document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
-    
-    // If it wasn't open, open it
-    if (!isOpen) {
-        menu.classList.add('show');
-    }
-}
-
-profileDropdown.addEventListener('click', function(e) {
+// Toggle Notification Menu
+notifBtn.onclick = (e) => {
     e.stopPropagation();
-    toggleDropdown(this);
-});
+    profileBtn.querySelector('.dropdown-menu').classList.remove('show'); // Close other
+    notifBtn.querySelector('.dropdown-menu').classList.toggle('show');
+};
 
-notifDropdown.addEventListener('click', function(e) {
-    e.stopPropagation();
-    toggleDropdown(this);
-});
-
-// Close menus when clicking anywhere else
+// Close menus when clicking anywhere else on the page
 window.addEventListener('click', () => {
     document.querySelectorAll('.dropdown-menu').forEach(menu => {
         menu.classList.remove('show');
@@ -431,4 +374,4 @@ window.addEventListener('click', () => {
 </script>
 
 </body>
-</html>    
+</html>

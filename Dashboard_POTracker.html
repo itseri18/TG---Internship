@@ -14,9 +14,20 @@
             <img src="Assets/logo.png" alt="" class="header-logo">
         </div>
         <div class="header-right">
-            <i class="fa-solid fa-bell notification-icon"></i>
-            <div class="profile-icon">
+            <div class="dropdown-container" id="notifDropdown">
+                <i class="fa-solid fa-bell notification-icon"></i>
+                <div class="dropdown-menu">
+                    <div class="dropdown-item">No new notifications</div>
+                </div>
+            </div>
+
+            <div class="profile-icon dropdown-container" id="profileDropdown">
                 <i class="fa-solid fa-circle-user"></i>
+                <div class="dropdown-menu">
+                    <a href="Profile.html" class="dropdown-item"><i class="fa-solid fa-user"></i> Profile</a>
+                    <a href="Calendar.html" class="dropdown-item"><i class="fas fa-calendar-alt"></i> Calendar</a>
+                    <a href="index.html" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Log-out</a>
+                </div>
             </div>
         </div>
     </header>
@@ -43,6 +54,11 @@
                     <span>Inventory</span>
                     <i class="fa-solid fa-chevron-down caret"></i>
                 </div>
+                <div class="sub-menu"><a href="#">YTD</a></div>
+                <div class="sub-menu"><a href="#">Products</a></div>
+                <div class="sub-menu"><a href="#">Stock In</a></div>
+                <div class="sub-menu"><a href="#">Stock Out</a></div>
+                <div class="sub-menu"><a href="#">Pull-Out Supplies</a></div>
             </nav>
         </aside>
 
@@ -514,6 +530,32 @@
         downloadLink.click();
         document.body.removeChild(downloadLink);
     };
+
+        
+    // --- Header Dropdown Logic ---
+    const profileBtn = document.getElementById('profileDropdown');
+    const notifBtn = document.getElementById('notifDropdown');
+
+    // Toggle Profile Menu
+    profileBtn.onclick = (e) => {
+        e.stopPropagation();
+        notifBtn.querySelector('.dropdown-menu').classList.remove('show'); // Close other
+        profileBtn.querySelector('.dropdown-menu').classList.toggle('show');
+    };
+
+    // Toggle Notification Menu
+    notifBtn.onclick = (e) => {
+        e.stopPropagation();
+        profileBtn.querySelector('.dropdown-menu').classList.remove('show'); // Close other
+        notifBtn.querySelector('.dropdown-menu').classList.toggle('show');
+    };
+
+    // Close menus when clicking anywhere else on the page
+    window.addEventListener('click', () => {
+        document.querySelectorAll('.dropdown-menu').forEach(menu => {
+            menu.classList.remove('show');
+        });
+    });
     </script>
 
 </body>
